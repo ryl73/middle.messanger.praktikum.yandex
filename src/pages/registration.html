@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="../styles/main.scss"/>
+</head>
+<body>
+<div class="login-page">
+  {{#> Modal modifier="login"}}
+  <div class="modal__content">
+    <h2 class="modal__header">Регистрация</h2>
+    <div class="modal__inputs">
+      {{> Input name="email" label="Почта"}}
+      {{> Input name="login" label="Логин"}}
+      {{> Input name="first_name" label="Имя"}}
+      {{> Input name="second_name" label="Фамилия"}}
+      {{> Input name="phone" label="Телефон"}}
+      {{> Input name="password" type="password" label="Пароль"}}
+      {{> Input name="password" type="password" label="Повторите пароль"}}
+    </div>
+  </div>
+  <div class="modal__controls">
+    {{> Button label="Создать аккаунт"}}
+    <a class="link" href="../pages/login.html">Войти</a>
+  </div>
+  {{/Modal}}
+</div>
+</body>
+</html>

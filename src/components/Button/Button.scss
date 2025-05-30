@@ -1,0 +1,19 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  padding: 8px 12px;
+  border: none;
+  background-color: $blue;
+  color: $white;
+  border-radius: 8px;
+  @include set-font(14px, 20px, 500);
+  cursor: pointer;
+  transition: opacity $transition-duration $transition-function;
+
+  @include hover {
+    opacity: 0.8;
+  }
+}

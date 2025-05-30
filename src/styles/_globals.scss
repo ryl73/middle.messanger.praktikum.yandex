@@ -1,0 +1,38 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: $fs-base;
+  line-height: $lh-base;
+
+  margin: 0;
+  padding: 0;
+
+  background: $white;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.link {
+  @include set-font(12px, 16px, 500);
+  color: $blue;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity $transition-duration $transition-function;
+
+  @include hover {
+    opacity: 0.8;
+  }
+}
