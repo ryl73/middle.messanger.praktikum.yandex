@@ -16,21 +16,35 @@ body {
   padding: 0;
 
   background: $white;
+
+  &.scroll-lock {
+    overflow: hidden !important;
+  }
 }
 
-.login-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+.container {
+  width: 100%;
+  max-width: calc($container-width + 32px + 32px);
+  margin: 0 auto;
+  padding: 0 32px;
+
+  &.flex {
+    display: flex;
+    padding: 0;
+    flex: 1 1 0;
+    max-width: $container-width;
+  }
 }
 
 .link {
-  @include set-font(12px, 16px, 500);
   color: $blue;
   text-decoration: none;
   cursor: pointer;
   transition: opacity $transition-duration $transition-function;
+
+  &.red {
+    color: $red;
+  }
 
   @include hover {
     opacity: 0.8;

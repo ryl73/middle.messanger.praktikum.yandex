@@ -1,3 +1,7 @@
-<button class="button">
-    {{label}}
+<button id="{{id}}" class="button {{modifier}}" {{#if disabled}}disabled{{/if}}>
+    {{#if label}}
+        <span>{{label}}</span>
+    {{else}}
+        {{> icon}}
+    {{/if}}
 </button>

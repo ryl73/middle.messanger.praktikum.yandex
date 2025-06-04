@@ -2,11 +2,22 @@
 @use "variables";
 @use "mixins";
 @use "fonts";
+@use "typography";
 
 // base
 @use "globals";
 
+// pages
+@use "pages";
+
+// views
+@use "views/profile";
+
 // components
 @use "../components/Button/Button";
 @use "../components/Input/Input";
+@use "../components/Card/Card";
 @use "../components/Modal/Modal";
+@use "../components/InfoField/InfoField";
+@use "../components/Avatar/Avatar";
+@use "../components/Header/Header";
