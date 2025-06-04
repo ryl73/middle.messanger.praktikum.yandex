@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use 'variables' as *;
 
 @mixin set-font($font-size, $line-height: 1.2, $font-weight: 400) {
   font-family: $font-family-primary;

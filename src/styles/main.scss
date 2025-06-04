@@ -1,8 +1,8 @@
 // utils
-@use "variables";
-@use "mixins";
-@use "fonts";
-@use "typography";
+@use "utils/variables";
+@use "utils/mixins";
+@use "utils/fonts";
+@use "utils/typography";
 
 // base
 @use "globals";
@@ -12,6 +12,7 @@
 
 // views
 @use "views/profile";
+@use "views/error";
 
 // components
 @use "../components/Button/Button";

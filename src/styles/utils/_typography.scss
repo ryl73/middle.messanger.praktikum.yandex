@@ -1,6 +1,10 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+.fs-h1 {
+  @include set-font(64px, 64px, 500);
+}
+
 .fs-h2 {
   @include set-font(24px, 32px, 500);
 }

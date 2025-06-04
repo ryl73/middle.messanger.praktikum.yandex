@@ -4,7 +4,7 @@
         {{#> Card modifier="login"}}
             <div class="card__content">
                 <h2 class="fs-h2">Регистрация</h2>
-                <div class="card__inputs">
+                <form class="card__inputs">
                     {{> Input name="email" label="Почта"}}
                     {{> Input name="login" label="Логин"}}
                     {{> Input name="first_name" label="Имя"}}
@@ -12,7 +12,7 @@
                     {{> Input name="phone" label="Телефон"}}
                     {{> Input name="password" type="password" label="Пароль"}}
                     {{> Input name="password_repeat" type="password" label="Повторите пароль"}}
-                </div>
+                </form>
             </div>
             <div class="card__controls">
                 {{> Button label="Создать аккаунт"}}

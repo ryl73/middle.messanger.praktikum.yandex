@@ -55,8 +55,14 @@ export default class App {
                 displayName: this.state.userInfo.displayName,
                 phone: this.state.userInfo.phone,
             });
-        } else {
+        } else if (this.state.currentPage === 'main') {
             template = Handlebars.compile(Pages.Main);
+            this.appElement.innerHTML = template({});
+        } else if (this.state.currentPage === '500') {
+            template = Handlebars.compile(Pages.NotResponding);
+            this.appElement.innerHTML = template({});
+        } else {
+            template = Handlebars.compile(Pages.NotFound);
             this.appElement.innerHTML = template({});
         }
 
