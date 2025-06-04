@@ -2,28 +2,28 @@
 @use 'utils/mixins' as *;
 
 .page {
-  min-height: 100vh;
+	min-height: 100vh;
 }
 
 .login-page {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .profile-page {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-  &__back-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    background-color: $lotion;
-  }
+	&__back-section {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 64px;
+		background-color: $lotion;
+	}
 
-  &__main-section {
-    flex: 1 1 0;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
-  }
+	&__main-section {
+		flex: 1 1 0;
+		box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+	}
 }

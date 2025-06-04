@@ -1,1 +1,1 @@
-export { default as NotFound } from './404.hbs?raw'
+export { default as NotFound } from './404.hbs?raw';
