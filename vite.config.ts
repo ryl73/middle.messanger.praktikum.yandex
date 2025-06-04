@@ -1,11 +1,19 @@
 import {defineConfig} from "vite";
-import handlebars from 'vite-plugin-handlebars';
+import {resolve} from 'path';
+import {fileURLToPath, URL} from "node:url";
 
 export default defineConfig({
-    plugins: [
-        handlebars(),
-    ],
+    root: resolve(__dirname, 'src'),
+    publicDir: resolve(__dirname, 'public'),
+    build: {
+        outDir: resolve(__dirname, 'dist')
+    },
     server: {
         port: 3000
-    }
+    },
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
+    },
 })

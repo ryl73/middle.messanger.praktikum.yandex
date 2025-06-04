@@ -1,0 +1,52 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid $gainsboro;
+  outline: none;
+  transition: all $transition-duration $transition-function;
+  @include set-font(14px, 20px);
+
+  @include hover {
+    &:not(&:focus) {
+      border: 1px solid $spanishgray;
+    }
+  }
+
+  &:focus {
+    border: 1px solid $blue;
+    outline: none;
+  }
+
+  &__container {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    margin-top: 16px;
+  }
+
+  &__label {
+    position: absolute;
+    top: 9px;
+    left: 13px;
+    @include set-font(14px, 20px);
+    color: $spanishgray;
+    transition: all $transition-function $transition-duration;
+    pointer-events: none;
+    background: white;
+  }
+
+  &::placeholder {
+    color: $spanishgray;
+  }
+
+  &__label:has(+ .input:focus),
+  &__label:has(+ .input:not(:placeholder-shown)) {
+    transform: translate(-13px, -25px);
+    @include set-font(12px, 12px);
+  }
+}

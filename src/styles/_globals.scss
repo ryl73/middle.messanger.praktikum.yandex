@@ -1,0 +1,52 @@
+@use 'utils/variables' as *;
+@use 'utils/mixins' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: $fs-base;
+  line-height: $lh-base;
+
+  margin: 0;
+  padding: 0;
+
+  background: $white;
+
+  &.scroll-lock {
+    overflow: hidden !important;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: calc($container-width + 32px + 32px);
+  margin: 0 auto;
+  padding: 0 32px;
+
+  &.flex {
+    display: flex;
+    padding: 0;
+    flex: 1 1 0;
+    max-width: $container-width;
+  }
+}
+
+.link {
+  color: $blue;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity $transition-duration $transition-function;
+
+  &.red {
+    color: $red;
+  }
+
+  @include hover {
+    opacity: 0.8;
+  }
+}

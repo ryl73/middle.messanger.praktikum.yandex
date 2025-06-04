@@ -1,0 +1,9 @@
+<div class="avatar" data-modal="{{modalId}}">
+    <img alt="avatar" src="{{src}}">
+    <span>{{hoverText}}</span>
+</div>
+{{#> Modal id=modalId }}
+    <h2 class="fs-h2">Загрузить файл</h2>
+    <a class="link" tabindex="0">Выбрать файл на компьютере</a>
+    {{> Button label="Изменить" disabled="true"}}
+{{/ Modal }}

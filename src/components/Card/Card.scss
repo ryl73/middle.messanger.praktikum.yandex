@@ -1,0 +1,46 @@
+@use '../../styles/utils/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  max-width: 360px;
+  margin: 0 auto;
+
+  &__header {
+    @include set-font(24px, 32px, 500);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    .button {
+      width: 100%;
+    }
+  }
+
+  &.login {
+    justify-content: space-between;
+    min-height: 450px;
+  }
+}

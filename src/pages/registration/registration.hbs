@@ -1,0 +1,23 @@
+<div class="page login-page">
+    {{> Header}}
+    <div class="container">
+        {{#> Card modifier="login"}}
+            <div class="card__content">
+                <h2 class="fs-h2">Регистрация</h2>
+                <form class="card__inputs">
+                    {{> Input name="email" label="Почта"}}
+                    {{> Input name="login" label="Логин"}}
+                    {{> Input name="first_name" label="Имя"}}
+                    {{> Input name="second_name" label="Фамилия"}}
+                    {{> Input name="phone" label="Телефон"}}
+                    {{> Input name="password" type="password" label="Пароль"}}
+                    {{> Input name="password_repeat" type="password" label="Повторите пароль"}}
+                </form>
+            </div>
+            <div class="card__controls">
+                {{> Button label="Создать аккаунт"}}
+                <a class="link fs-p-bold" data-page="login">Войти</a>
+            </div>
+        {{/Card}}
+    </div>
+</div>

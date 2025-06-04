@@ -1,0 +1,15 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.info-field {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  border-bottom: 1px solid $brightgray;
+  padding: 12px 0;
+  @include set-font(16px, 20px);
+
+  &__value {
+    color: $spanishgray;
+  }
+}
