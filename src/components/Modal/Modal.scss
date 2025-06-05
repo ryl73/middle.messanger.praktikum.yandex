@@ -9,7 +9,7 @@
 	z-index: 999;
 	border: none;
 	border-radius: 12px;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+	box-shadow: 0 0 6px $black02;
 	min-width: 340px;
 
 	&::backdrop {

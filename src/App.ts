@@ -7,6 +7,7 @@ import Avatar from './components/Avatar/Avatar.hbs?raw';
 import Card from './components/Card/Card.hbs?raw';
 import InfoField from './components/InfoField/InfoField.hbs?raw';
 import Input from './components/Input/Input.hbs?raw';
+import FileInput from './components/FileInput/FileInput.hbs?raw';
 import Modal from './components/Modal/Modal.hbs?raw';
 import Header from './components/Header/Header.hbs?raw';
 
@@ -15,6 +16,7 @@ Handlebars.registerPartial('Avatar', Avatar);
 Handlebars.registerPartial('Card', Card);
 Handlebars.registerPartial('InfoField', InfoField);
 Handlebars.registerPartial('Input', Input);
+Handlebars.registerPartial('FileInput', FileInput);
 Handlebars.registerPartial('Modal', Modal);
 Handlebars.registerPartial('Header', Header);
 
@@ -74,8 +76,10 @@ export default class App {
 		links.forEach((link) => {
 			link.addEventListener('click', (e) => {
 				e.preventDefault();
-				const target = e.target as HTMLElement;
-				this.changePage(target.dataset.page as string);
+				const target = e.target;
+				if (target && target instanceof HTMLElement) {
+					this.changePage(target.dataset.page as string);
+				}
 			});
 		});
 

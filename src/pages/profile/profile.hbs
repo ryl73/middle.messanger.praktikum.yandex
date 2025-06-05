@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div class="profile__content edit">
+                    <form class="profile__content edit">
                         <div class="profile__content__fields inputs">
                             {{> Input name="email" label="Почта" value=email}}
                             {{> Input name="login" label="Логин" value=login}}
@@ -56,20 +56,20 @@
                             {{> Input name="phone" label="Телефон" value=phone}}
                         </div>
                         <div class="profile__controls">
-                            {{> Button id="save-data" label="Сохранить"}}
+                            {{> Button id="save-data" label="Сохранить" type="submit"}}
                         </div>
-                    </div>
+                    </form>
 
-                    <div class="profile__content edit-password">
+                    <form class="profile__content edit-password">
                         <div class="profile__content__fields inputs">
                             {{> Input name="oldPassword" type="password" label="Старый пароль"}}
                             {{> Input name="newPassword" type="password" label="Новый пароль"}}
                             {{> Input name="newPassword_repeat" type="password" label="Повторите новый пароль"}}
                         </div>
                         <div class="profile__controls">
-                            {{> Button id="save-password" label="Сохранить"}}
+                            {{> Button id="save-password" label="Сохранить" type="submit"}}
                         </div>
-                    </div>
+                    </form>
                 </div>
             </section>
         </main>
