@@ -2,30 +2,30 @@
 @use '../../styles/utils/mixins' as *;
 
 .modal {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
-  min-width: 340px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 999;
+	border: none;
+	border-radius: 12px;
+	box-shadow: 0 0 6px $black02;
+	min-width: 340px;
 
-  &::backdrop {
-    background: #0000001A;
-    backdrop-filter: blur(10px);
-  }
+	&::backdrop {
+		background: #0000001a;
+		backdrop-filter: blur(10px);
+	}
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 32px;
-    gap: 64px;
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 32px;
+		gap: 64px;
 
-    .button {
-      width: 100%;
-    }
-  }
+		.button {
+			width: 100%;
+		}
+	}
 }

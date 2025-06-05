@@ -1,16 +1,16 @@
 @use 'variables' as *;
 
 @mixin set-font($font-size, $line-height: 1.2, $font-weight: 400) {
-  font-family: $font-family-primary;
-  font-size: $font-size;
-  font-weight: $font-weight;
-  line-height: $line-height;
+	font-family: $font-family-primary;
+	font-size: $font-size;
+	font-weight: $font-weight;
+	line-height: $line-height;
 }
 
 @mixin hover() {
-  @media (hover: hover) {
-    &:hover {
-      @content;
-    }
-  }
+	@media (hover: hover) {
+		&:hover {
+			@content;
+		}
+	}
 }

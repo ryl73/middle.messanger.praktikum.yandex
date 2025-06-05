@@ -1,24 +1,25 @@
 // utils
-@use "utils/variables";
-@use "utils/mixins";
-@use "utils/fonts";
-@use "utils/typography";
+@use 'utils/variables';
+@use 'utils/mixins';
+@use 'utils/fonts';
+@use 'utils/typography';
 
 // base
-@use "globals";
+@use 'globals';
 
 // pages
-@use "pages";
+@use 'pages';
 
 // views
-@use "views/profile";
-@use "views/error";
+@use 'views/profile';
+@use 'views/error';
 
 // components
-@use "../components/Button/Button";
-@use "../components/Input/Input";
-@use "../components/Card/Card";
-@use "../components/Modal/Modal";
-@use "../components/InfoField/InfoField";
-@use "../components/Avatar/Avatar";
-@use "../components/Header/Header";
+@use '../components/Button/Button';
+@use '../components/Input/Input';
+@use '../components/FileInput/FileInput';
+@use '../components/Card/Card';
+@use '../components/Modal/Modal';
+@use '../components/InfoField/InfoField';
+@use '../components/Avatar/Avatar';
+@use '../components/Header/Header';
