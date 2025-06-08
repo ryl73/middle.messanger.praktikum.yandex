@@ -1,0 +1,54 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.avatar {
+	max-width: 130px;
+	aspect-ratio: 1;
+	position: relative;
+	cursor: pointer;
+	border-radius: 50%;
+
+	span {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 2;
+		text-align: center;
+		color: $white;
+		opacity: 0;
+		transition: opacity $transition-function $transition-duration;
+		user-select: none;
+		@include set-font(16px, 20px, 500);
+	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		background-color: $black02;
+		border-radius: 50%;
+		backdrop-filter: blur(5px);
+		opacity: 0;
+		transition: opacity $transition-function $transition-duration;
+	}
+
+	@include hover {
+		&:after {
+			opacity: 1;
+		}
+
+		span {
+			opacity: 1;
+		}
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+}
