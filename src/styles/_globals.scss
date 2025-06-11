@@ -2,19 +2,17 @@
 @use 'utils/mixins' as *;
 
 * {
-	margin: 0;
-	padding: 0;
 	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 body {
+	padding: 0;
+	margin: 0;
 	font-family: $font-family-primary;
 	font-size: $fs-base;
 	line-height: $lh-base;
-
-	margin: 0;
-	padding: 0;
-
 	background: $white;
 
 	&.scroll-lock {
@@ -25,14 +23,14 @@ body {
 .container {
 	width: 100%;
 	max-width: calc($container-width + 32px + 32px);
-	margin: 0 auto;
 	padding: 0 32px;
+	margin: 0 auto;
 
 	&.flex {
 		display: flex;
-		padding: 0;
 		flex: 1 1 0;
 		max-width: $container-width;
+		padding: 0;
 	}
 }
 
