@@ -1,0 +1,31 @@
+import Block from '@/services/Block.ts';
+import ButtonTemplate from './Button.hbs?raw';
+
+export type ButtonProps = {
+	label?: string;
+	icon?: string;
+	disabled?: boolean;
+	type?: string;
+	onClick?: (e: Event) => void;
+};
+
+export class Button extends Block {
+	constructor(props: ButtonProps) {
+		super({
+			...props,
+			events: {
+				root: {
+					click: (e: Event) => {
+						if (props.onClick) {
+							props.onClick(e);
+						}
+					},
+				},
+			},
+		});
+	}
+
+	override render(): string {
+		return ButtonTemplate;
+	}
+}

@@ -2,11 +2,13 @@
 	<label class='input__label' for='{{name}}'>{{label}}</label>
 	<input
 		id='{{name}}'
-		class='input'
+		class='input{{#if isError}} error{{/if}}'
 		name='{{name}}'
 		placeholder='{{placeholder}}'
-		type='{{type}}'
+		{{#if type}} type='{{type}}' {{/if}}
 		value='{{value}}'
 	/>
-	<div class='input__label_error'>{{errorMessage}}</div>
+	{{#if isError}}
+		<div class='input__label_error'>{{errorMessage}}</div>
+	{{/if}}
 </div>

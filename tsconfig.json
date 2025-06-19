@@ -20,10 +20,13 @@
 		/* Linting */
 		"strict": true,
 		"noUnusedLocals": true,
+		"noImplicitAny": true,
 		"noUnusedParameters": true,
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true
+		"noUncheckedSideEffectImports": true,
+		"sourceMap": true,
+		"strictNullChecks": true
 	},
 	"include": ["src"]
 }

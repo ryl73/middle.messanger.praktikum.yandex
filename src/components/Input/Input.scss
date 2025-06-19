@@ -7,19 +7,23 @@
 	outline: none;
 	border: 1px solid $gainsboro;
 	border-radius: 8px;
-	transition: all $transition-duration $transition-function;
+	transition: border-color $transition-duration $transition-function;
 
 	@include set-font(14px, 20px);
 
 	@include hover {
-		&:not(&:focus) {
-			border: 1px solid $spanishgray;
+		&:not(&:focus, &.error) {
+			border-color: $spanishgray;
 		}
 	}
 
 	&:focus {
 		outline: none;
-		border: 1px solid $blue;
+		border-color: $blue;
+	}
+
+	&.error {
+		border-color: $red;
 	}
 
 	&__container {
@@ -40,6 +44,12 @@
 		transition: all $transition-function $transition-duration;
 
 		@include set-font(14px, 20px);
+
+		&_error {
+			color: $red;
+
+			@include set-font(12px, 12px);
+		}
 	}
 
 	&::placeholder {

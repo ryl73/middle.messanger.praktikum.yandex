@@ -3,24 +3,13 @@
     <div class="container flex">
         <aside class="profile-page__back-section">
             <a class="link" data-page="main">
-                {{#> Button modifier="round"}}
-                    {{#*inline "icon" }}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    {{/inline}}
-                {{/Button}}
+				{{{ ButtonBack }}}
             </a>
         </aside>
         <main class="container profile-page__main-section">
             <section class="profile">
                 <div class="profile__header">
-                    {{> Avatar
-                            src="/media/images/avatar-default.png"
-                            size="130"
-                            hoverText="Поменять аватар"
-                            modalId="avatar"
-                    }}
+                    {{{ Avatar }}}
                     <h2 class="fs-h2">{{displayName}}</h2>
                 </div>
                 <div class="profile__content__container">
@@ -48,26 +37,26 @@
 
                     <form class="profile__content edit">
                         <div class="profile__content__fields inputs">
-                            {{> Input name="email" label="Почта" value=email}}
-                            {{> Input name="login" label="Логин" value=login}}
-                            {{> Input name="first_name" label="Имя" value=firstName}}
-                            {{> Input name="second_name" label="Фамилия" value=secondName}}
-                            {{> Input name="display_name" label="Имя в чате" value=displayName}}
-                            {{> Input name="phone" label="Телефон" value=phone}}
+							{{{ EmailInput }}}
+							{{{ LoginInput }}}
+							{{{ FirstNameInput }}}
+							{{{ SecondNameInput }}}
+							{{{ DisplayNameInput }}}
+							{{{ PhoneInput }}}
                         </div>
                         <div class="profile__controls">
-                            {{> Button id="save-data" label="Сохранить" type="submit"}}
+							{{{ ButtonSaveInfo }}}
                         </div>
                     </form>
 
                     <form class="profile__content edit-password">
                         <div class="profile__content__fields inputs">
-                            {{> Input name="oldPassword" type="password" label="Старый пароль"}}
-                            {{> Input name="newPassword" type="password" label="Новый пароль"}}
-                            {{> Input name="newPassword_repeat" type="password" label="Повторите новый пароль"}}
+							{{{ OldPasswordInput }}}
+							{{{ NewPasswordInput }}}
+							{{{ NewPasswordRepeatInput }}}
                         </div>
                         <div class="profile__controls">
-                            {{> Button id="save-password" label="Сохранить" type="submit"}}
+                            {{{ ButtonSavePassword }}}
                         </div>
                     </form>
                 </div>
