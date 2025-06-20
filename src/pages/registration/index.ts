@@ -3,6 +3,8 @@ import Registration from './Registration.hbs?raw';
 import { Button } from '@/components/Button/Button.ts';
 import { Input } from '@/components/Input/Input.ts';
 import Validation from '@/services/Validation.ts';
+import { Link } from '@/components/Link/Link.ts';
+import { Header } from '@/components/Header/Header.ts';
 
 export default class RegistrationPage extends Block {
 	constructor() {
@@ -61,6 +63,7 @@ export default class RegistrationPage extends Block {
 		];
 
 		super({
+			Header: new Header(),
 			EmailInput,
 			LoginInput,
 			FirstNameInput,
@@ -87,6 +90,11 @@ export default class RegistrationPage extends Block {
 					});
 					console.log(isValidArr.every((valid) => valid));
 				},
+			}),
+			LinkLogin: new Link({
+				label: 'Войти',
+				font: 'fs-p-bold',
+				page: 'login',
 			}),
 		});
 	}

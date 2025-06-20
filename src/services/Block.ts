@@ -7,6 +7,7 @@ type BlockProps = Record<string, any>;
 export default class Block {
 	static EVENTS = {
 		INIT: 'init',
+		FLOW_CBM: 'flow:component-before-mount',
 		FLOW_CDM: 'flow:component-did-mount',
 		FLOW_CDU: 'flow:component-did-update',
 		FLOW_RENDER: 'flow:render',
@@ -64,12 +65,14 @@ export default class Block {
 
 	private _registerEvents(eventBus: EventBus): void {
 		eventBus.on(Block.EVENTS.INIT, this.init.bind(this) as EventCallback);
+		eventBus.on(Block.EVENTS.FLOW_CBM, this._componentBeforeMount.bind(this) as EventCallback);
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this) as EventCallback);
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) as EventCallback);
 		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this) as EventCallback);
 	}
 
 	protected init(): void {
+		this.dispatchComponentBeforeMount();
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 		this.dispatchComponentDidMount();
 	}
@@ -78,10 +81,20 @@ export default class Block {
 		this.componentDidMount();
 	}
 
+	private _componentBeforeMount(): void {
+		this.componentBeforeMount();
+	}
+
 	protected componentDidMount(): void {}
+
+	protected componentBeforeMount(): void {}
 
 	public dispatchComponentDidMount(): void {
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+	}
+
+	public dispatchComponentBeforeMount(): void {
+		this.eventBus().emit(Block.EVENTS.FLOW_CBM);
 	}
 
 	private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): void {

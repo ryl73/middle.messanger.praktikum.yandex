@@ -5,6 +5,7 @@ export type ButtonProps = {
 	label?: string;
 	icon?: string;
 	disabled?: boolean;
+	modifier?: string;
 	type?: string;
 	onClick?: (e: Event) => void;
 };

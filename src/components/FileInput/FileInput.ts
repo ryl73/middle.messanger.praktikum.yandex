@@ -3,7 +3,9 @@ import FileInputTemplate from './FileInput.hbs?raw';
 
 export type FileInputProps = {
 	label: string;
+	value?: File | null;
 	onClick?: (e: Event) => void;
+	onChange?: (e: FileList | null) => void;
 };
 
 export class FileInput extends Block {
@@ -18,11 +20,25 @@ export class FileInput extends Block {
 						}
 					},
 				},
+				input: {
+					change: (e: Event) => {
+						if (props.onChange) {
+							const target = e.target;
+							if (target instanceof HTMLInputElement) {
+								props.onChange(target.files);
+							}
+						}
+					},
+				},
 			},
 		});
 	}
 
 	override render(): string {
 		return FileInputTemplate;
+	}
+
+	get value() {
+		return this.props.value;
 	}
 }

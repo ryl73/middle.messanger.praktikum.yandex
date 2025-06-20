@@ -1,25 +1,23 @@
 <div class="page login-page">
-    {{> Header}}
+    {{{ Header }}}
     <div class="container">
-		<form>
-			{{#> Card modifier="login"}}
-				<div class="card__content">
-					<h2 class="fs-h2">Регистрация</h2>
-					<div class="card__inputs">
-						{{{ EmailInput }}}
-						{{{ LoginInput }}}
-						{{{ FirstNameInput }}}
-						{{{ SecondNameInput }}}
-						{{{ PhoneInput }}}
-						{{{ PasswordInput }}}
-						{{{ PasswordRepeatInput }}}
-					</div>
+		<form class="card login">
+			<div class="card__content">
+				<h2 class="fs-h2">Регистрация</h2>
+				<div class="card__inputs">
+					{{{ EmailInput }}}
+					{{{ LoginInput }}}
+					{{{ FirstNameInput }}}
+					{{{ SecondNameInput }}}
+					{{{ PhoneInput }}}
+					{{{ PasswordInput }}}
+					{{{ PasswordRepeatInput }}}
 				</div>
-				<div class="card__controls">
-					{{{ ButtonRegister }}}
-					<a class="link fs-p-bold" data-page="login">Войти</a>
-				</div>
-			{{/Card}}
+			</div>
+			<div class="card__controls">
+				{{{ ButtonRegister }}}
+				{{{ LinkLogin }}}
+			</div>
 		</form>
     </div>
 </div>

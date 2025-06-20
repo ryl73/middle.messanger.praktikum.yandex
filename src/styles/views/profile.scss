@@ -52,6 +52,10 @@
 		display: flex;
 		flex-direction: column;
 
+		&.gapped {
+			gap: 12px;
+		}
+
 		&__control {
 			display: flex;
 			gap: 32px;

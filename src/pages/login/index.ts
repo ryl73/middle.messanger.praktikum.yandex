@@ -3,6 +3,8 @@ import Login from './login.hbs?raw';
 import { Button } from '@/components/Button/Button.ts';
 import { Input } from '@/components/Input/Input.ts';
 import Validation from '@/services/Validation.ts';
+import { Link } from '@/components/Link/Link.ts';
+import { Header } from '@/components/Header/Header.ts';
 
 export default class LoginPage extends Block {
 	constructor() {
@@ -22,6 +24,7 @@ export default class LoginPage extends Block {
 		const inputArr = [LoginInput, PasswordInput];
 
 		super({
+			Header: new Header(),
 			LoginInput,
 			PasswordInput,
 			ButtonLogin: new Button({
@@ -35,6 +38,11 @@ export default class LoginPage extends Block {
 					});
 					console.log(isValidArr.every((valid) => valid));
 				},
+			}),
+			LinkRegistration: new Link({
+				label: 'Нет аккаунта? Зарегистрируйтесь!',
+				font: 'fs-p-bold',
+				page: 'registration',
 			}),
 		});
 	}

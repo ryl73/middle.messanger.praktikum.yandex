@@ -13,13 +13,14 @@
 // views
 @use 'views/profile';
 @use 'views/error';
+@use 'views/card';
 
 // components
 @use '../components/Button/Button';
 @use '../components/Input/Input';
 @use '../components/FileInput/FileInput';
-@use '../components/Card/Card';
 @use '../components/Modal/Modal';
 @use '../components/InfoField/InfoField';
 @use '../components/Avatar/Avatar';
 @use '../components/Header/Header';
+@use '../components/Link/Link';

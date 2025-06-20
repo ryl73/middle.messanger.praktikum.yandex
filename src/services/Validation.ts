@@ -2,12 +2,13 @@ import type Block from '@/services/Block.ts';
 
 export default class Validation {
 	static REGEX: Record<string, RegExp> = {
-		email: /^[a-zA-Z0-9._-]+@[a-zA-Z]+\\.([a-zA-Z]{2,})$\n/,
+		email: /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.([a-zA-Z]{2,})$/,
 		login: /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/,
 		password: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
 		phone: /^\+?\d{10,15}$/,
 		first_name: /^[A-ZА-ЯЁ][a-zа-яёA-ZА-ЯЁ-]*$/,
 		second_name: /^[A-ZА-ЯЁ][a-zа-яёA-ZА-ЯЁ-]*$/,
+		display_name: /^[A-ZА-ЯЁ][a-zа-яёA-ZА-ЯЁ-]*$/,
 	};
 	private regex: RegExp | null = null;
 	private rule: boolean | null = null;

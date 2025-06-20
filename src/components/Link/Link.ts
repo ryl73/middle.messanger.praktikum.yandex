@@ -1,14 +1,17 @@
 import Block from '@/services/Block.ts';
-import ModalTemplate from './Modal.hbs?raw';
+import LinkTemplate from './Link.hbs?raw';
 
-export type ModalProps = {
-	title?: string;
-	slot?: Block[];
+export type InputProps = {
+	modifier?: string;
+	font?: string;
+	page?: string;
+	href?: string;
+	label: string;
 	onClick?: (e: Event) => void;
 };
 
-export class Modal extends Block {
-	constructor(props: ModalProps) {
+export class Link extends Block {
+	constructor(props: InputProps) {
 		super({
 			...props,
 			events: {
@@ -24,6 +27,6 @@ export class Modal extends Block {
 	}
 
 	override render(): string {
-		return ModalTemplate;
+		return LinkTemplate;
 	}
 }

@@ -1,9 +1,7 @@
-<div class="avatar" data-modal="{{modalId}}">
-    <img alt="avatar" src="{{src}}">
-    <span>{{hoverText}}</span>
+<div>
+	<div class="avatar" data-modal="{{modalId}}">
+		<img alt="avatar" src="{{src}}">
+		<span>{{hoverText}}</span>
+	</div>
+	{{{ AvatarModal }}}
 </div>
-{{#> Modal id=modalId }}
-    <h2 class="fs-h2">Загрузить файл</h2>
-	{{{ FileInput }}}
-	{{{ ButtonSave }}}
-{{/ Modal }}

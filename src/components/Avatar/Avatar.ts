@@ -1,27 +1,22 @@
 import Block from '@/services/Block.ts';
 import AvatarTemplate from './Avatar.hbs?raw';
-import { FileInput } from '@/components/FileInput/FileInput.ts';
-import { Button } from '@/components/Button/Button.ts';
+import type { Modal } from '@/components/Modal/Modal.ts';
 
 export type AvatarProps = {
-	src: string;
+	src?: string;
 	hoverText: string;
+	AvatarModal: Modal;
 	onClick?: (e: Event) => void;
 };
 
 export class Avatar extends Block {
+	static defaultAvatar = '/media/images/avatar-default.png';
+
 	constructor(props: AvatarProps) {
 		super({
-			FileInput: new FileInput({
-				label: 'Выбрать файл на компьютере',
-			}),
-			ButtonSave: new Button({
-				label: 'Изменить',
-				disabled: true,
-			}),
 			...props,
 			events: {
-				root: {
+				'.avatar': {
 					click: (e: Event) => {
 						if (props.onClick) {
 							props.onClick(e);
@@ -34,5 +29,17 @@ export class Avatar extends Block {
 
 	override render(): string {
 		return AvatarTemplate;
+	}
+
+	override componentBeforeMount() {
+		if (!this.props.src) {
+			this.setProps({
+				src: Avatar.defaultAvatar,
+			});
+		}
+	}
+
+	get modal(): Modal {
+		return this.props.Modal;
 	}
 }

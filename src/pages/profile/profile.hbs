@@ -1,5 +1,5 @@
 <div class="page profile-page">
-    {{> Header}}
+    {{{ Header }}}
     <div class="container flex">
         <aside class="profile-page__back-section">
             <a class="link" data-page="main">
@@ -9,28 +9,28 @@
         <main class="container profile-page__main-section">
             <section class="profile">
                 <div class="profile__header">
-                    {{{ Avatar }}}
+                    {{{ AvatarComponent }}}
                     <h2 class="fs-h2">{{displayName}}</h2>
                 </div>
                 <div class="profile__content__container">
                     <div class="profile__content info active">
                         <div class="profile__content__fields">
-                            {{> InfoField label="Почта" value=email }}
-                            {{> InfoField label="Логин" value=login }}
-                            {{> InfoField label="Имя" value=firstName }}
-                            {{> InfoField label="Фамилия" value=secondName }}
-                            {{> InfoField label="Имя в чате" value=displayName }}
-                            {{> InfoField label="Телефон" value=phone }}
+                            {{{ InfoFieldEmail }}}
+                            {{{ InfoFieldLogin }}}
+                            {{{ InfoFieldFirstName }}}
+                            {{{ InfoFieldSecondName }}}
+                            {{{ InfoFieldDisplayName }}}
+                            {{{ InfoFieldPhone }}}
                         </div>
                         <div class="profile__controls">
                             <div class="profile__controls__control">
-                                <a id="change-data" class="link fs-default-bold">Изменить данные</a>
+                                {{{ LinkChangeInfo }}}
                             </div>
                             <div class="profile__controls__control">
-                                <a id="change-password" class="link fs-default-bold">Изменить пароль</a>
+								{{{ LinkChangePassword }}}
                             </div>
                             <div class="profile__controls__control">
-                                <a class="link fs-default-bold red" data-page="login">Выйти</a>
+								{{{ LinkLogout }}}
                             </div>
                         </div>
                     </div>
@@ -44,8 +44,9 @@
 							{{{ DisplayNameInput }}}
 							{{{ PhoneInput }}}
                         </div>
-                        <div class="profile__controls">
+                        <div class="profile__controls gapped">
 							{{{ ButtonSaveInfo }}}
+							{{{ LinkCancelInfo }}}
                         </div>
                     </form>
 
@@ -55,8 +56,9 @@
 							{{{ NewPasswordInput }}}
 							{{{ NewPasswordRepeatInput }}}
                         </div>
-                        <div class="profile__controls">
+                        <div class="profile__controls gapped">
                             {{{ ButtonSavePassword }}}
+							{{{ LinkCancelPassword }}}
                         </div>
                     </form>
                 </div>

@@ -4,43 +4,73 @@ import { Button } from '@/components/Button/Button.ts';
 import { Input } from '@/components/Input/Input.ts';
 import Validation from '@/services/Validation.ts';
 import { Avatar } from '@/components/Avatar/Avatar.ts';
+import { Modal } from '@/components/Modal/Modal.ts';
+import { FileInput } from '@/components/FileInput/FileInput.ts';
+import { InfoField } from '@/components/InfoField/InfoField.ts';
+import { Link } from '@/components/Link/Link.ts';
+import { Header } from '@/components/Header/Header.ts';
+
+type ProfilePageProps = {
+	email: string;
+	login: string;
+	firstName: string;
+	secondName: string;
+	displayName: string;
+	phone: string;
+	avatar?: string;
+};
 
 export default class ProfilePage extends Block {
-	constructor() {
+	constructor(props: ProfilePageProps) {
+		const INITIAL_VALUE_MAP: Record<string, string> = {
+			email: props.email,
+			login: props.login,
+			first_name: props.firstName,
+			second_name: props.secondName,
+			display_name: props.displayName,
+			phone: props.phone,
+		};
+
 		const EmailInput = new Input({
 			name: 'email',
 			label: 'Почта',
 			errorMessage: 'Неверная почта',
+			value: props.email,
 		});
 
 		const LoginInput = new Input({
 			name: 'login',
 			label: 'Логин',
 			errorMessage: 'Неверный логин',
+			value: props.login,
 		});
 
 		const FirstNameInput = new Input({
 			name: 'first_name',
 			label: 'Имя',
 			errorMessage: 'Неверное имя',
+			value: props.firstName,
 		});
 
 		const SecondNameInput = new Input({
 			name: 'second_name',
 			label: 'Фамилия',
 			errorMessage: 'Неверная фамилия',
+			value: props.secondName,
 		});
 
 		const DisplayNameInput = new Input({
 			name: 'display_name',
 			label: 'Имя в чате',
 			errorMessage: 'Неверное имя',
+			value: props.displayName,
 		});
 
 		const PhoneInput = new Input({
 			name: 'phone',
 			label: 'Телефон',
 			errorMessage: 'Неверный телефон',
+			value: props.phone,
 		});
 
 		const OldPasswordInput = new Input({
@@ -75,7 +105,159 @@ export default class ProfilePage extends Block {
 
 		const passwordEditInputArr = [OldPasswordInput, NewPasswordInput, NewPasswordRepeatInput];
 
+		const SaveButton = new Button({
+			label: 'Изменить',
+			disabled: true,
+			onClick: () => {
+				console.log(AvatarInput.value);
+				const modalEl = AvatarModal.getContent();
+				if (modalEl instanceof HTMLDialogElement) {
+					modalEl.close();
+				}
+			},
+		});
+
+		const AvatarInput = new FileInput({
+			label: 'Выбрать файл на компьютере',
+			onClick: (e) => {
+				const inputContainer = e.currentTarget;
+				if (inputContainer instanceof HTMLElement) {
+					const inputEl = inputContainer.querySelector('input');
+					if (inputEl instanceof HTMLInputElement) {
+						inputEl.click();
+					}
+				}
+			},
+			onChange: (files) => {
+				if (files) {
+					AvatarInput.setProps({
+						value: files[0],
+						label: files[0].name,
+					});
+					SaveButton.setProps({
+						disabled: false,
+					});
+				}
+			},
+		});
+
+		const AvatarModal = new Modal({
+			title: 'Загрузить файл',
+			slot: [AvatarInput, SaveButton],
+		});
+
+		const AvatarComponent = new Avatar({
+			src: props.avatar,
+			hoverText: 'Поменять аватар',
+			AvatarModal,
+			onClick: () => {
+				const modalEl = AvatarModal.getContent();
+				if (modalEl instanceof HTMLDialogElement) {
+					modalEl.showModal();
+					document.body.classList.add('scroll-lock');
+					const handleModalClick = (e: Event) => {
+						const target = e.target as HTMLElement;
+						const currentTarget = e.currentTarget as HTMLDialogElement;
+
+						const isClickedOnBackdrop = target === currentTarget;
+
+						if (isClickedOnBackdrop) {
+							currentTarget.close();
+						}
+					};
+					modalEl.addEventListener('click', handleModalClick);
+				}
+			},
+		});
+
+		const LinkChangeInfo = new Link({
+			label: 'Изменить данные',
+			font: 'fs-default-bold',
+			onClick: () => {
+				this.setActiveFrame(1);
+			},
+		});
+
+		const LinkChangePassword = new Link({
+			label: 'Изменить пароль',
+			font: 'fs-default-bold',
+			onClick: () => {
+				this.setActiveFrame(2);
+			},
+		});
+
+		const LinkLogout = new Link({
+			label: 'Выйти',
+			font: 'fs-default-bold',
+			modifier: 'red',
+			page: 'login',
+		});
+
+		const LinkCancelInfo = new Link({
+			label: 'Отменить',
+			font: 'fs-p-bold',
+			onClick: () => {
+				infoEditInputArr.forEach((input) => {
+					input.setProps({
+						value: INITIAL_VALUE_MAP[input.name],
+						isError: false,
+					});
+				});
+				this.setActiveFrame(0);
+			},
+		});
+
+		const LinkCancelPassword = new Link({
+			label: 'Отменить',
+			font: 'fs-p-bold',
+			onClick: () => {
+				passwordEditInputArr.forEach((input) => {
+					input.setProps({
+						value: '',
+						isError: false,
+					});
+				});
+				this.setActiveFrame(0);
+			},
+		});
+
+		const ButtonSaveInfo = new Button({
+			label: 'Сохранить',
+			type: 'submit',
+			onClick: (e) => {
+				e.preventDefault();
+				const isValidArr: boolean[] = [];
+				infoEditInputArr.forEach((input) => {
+					const isValid = new Validation(input.value, input.name).validate(input);
+					isValidArr.push(isValid);
+				});
+				const isValid = isValidArr.every((valid) => valid);
+				if (isValid) {
+					this.setActiveFrame(0);
+				}
+			},
+		});
+
+		const ButtonSavePassword = new Button({
+			label: 'Сохранить',
+			type: 'submit',
+			onClick: (e) => {
+				e.preventDefault();
+				const isValidArr: boolean[] = [];
+				passwordEditInputArr.forEach((input) => {
+					const isValid = new Validation(input.value, input.name).validate(input);
+					isValidArr.push(isValid);
+				});
+				const isValid = isValidArr.every((valid) => valid);
+				if (isValid) {
+					this.setActiveFrame(0);
+				}
+			},
+		});
+
 		super({
+			...props,
+			Header: new Header(),
 			EmailInput,
 			LoginInput,
 			FirstNameInput,
@@ -85,47 +267,57 @@ export default class ProfilePage extends Block {
 			OldPasswordInput,
 			NewPasswordInput,
 			NewPasswordRepeatInput,
-			Avatar: new Avatar({
-				src: '/media/images/avatar-default.png',
-				hoverText: 'Поменять аватар',
+			InfoFieldEmail: new InfoField({
+				label: 'Почта',
+				value: props.email,
 			}),
+			InfoFieldLogin: new InfoField({
+				label: 'Логин',
+				value: props.login,
+			}),
+			InfoFieldFirstName: new InfoField({
+				label: 'Имя',
+				value: props.firstName,
+			}),
+			InfoFieldSecondName: new InfoField({
+				label: 'Фамилия',
+				value: props.secondName,
+			}),
+			InfoFieldDisplayName: new InfoField({
+				label: 'Имя в чате',
+				value: props.displayName,
+			}),
+			InfoFieldPhone: new InfoField({
+				label: 'Телефон',
+				value: props.phone,
+			}),
+			AvatarComponent,
+			LinkChangeInfo,
+			LinkChangePassword,
+			LinkLogout,
+			LinkCancelInfo,
+			LinkCancelPassword,
 			ButtonBack: new Button({
+				modifier: 'round',
 				icon: `
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-						<path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-				`,
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+							<path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					`,
 			}),
-			ButtonSaveInfo: new Button({
-				label: 'Сохранить',
-				type: 'submit',
-				onClick: (e) => {
-					e.preventDefault();
-					const isValidArr: boolean[] = [];
-					infoEditInputArr.forEach((input) => {
-						const isValid = new Validation(input.value, input.name).validate(input);
-						isValidArr.push(isValid);
-					});
-					console.log(isValidArr.every((valid) => valid));
-				},
-			}),
-			ButtonSavePassword: new Button({
-				label: 'Сохранить',
-				type: 'submit',
-				onClick: (e) => {
-					e.preventDefault();
-					const isValidArr: boolean[] = [];
-					passwordEditInputArr.forEach((input) => {
-						const isValid = new Validation(input.value, input.name).validate(input);
-						isValidArr.push(isValid);
-					});
-					console.log(isValidArr.every((valid) => valid));
-				},
-			}),
+			ButtonSaveInfo,
+			ButtonSavePassword,
 		});
 	}
 
 	override render(): string {
 		return Profile;
+	}
+
+	public setActiveFrame(index: number) {
+		const profileContent = document.querySelectorAll('.profile__content');
+
+		profileContent.forEach((elem) => elem.classList.remove('active'));
+		profileContent[index].classList.add('active');
 	}
 }

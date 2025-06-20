@@ -1,18 +1,9 @@
-import Handlebars from 'handlebars';
-
-import Card from './components/Card/Card.hbs?raw';
-import InfoField from './components/InfoField/InfoField.hbs?raw';
-import Header from './components/Header/Header.hbs?raw';
-
 import LoginPage from '@/pages/login';
 import RegistrationPage from '@/pages/registration';
 import Page500 from '@/pages/500';
 import Page404 from '@/pages/404';
 import ProfilePage from '@/pages/profile';
-
-Handlebars.registerPartial('Card', Card);
-Handlebars.registerPartial('InfoField', InfoField);
-Handlebars.registerPartial('Header', Header);
+import MainPage from '@/pages/main';
 
 export default class App {
 	appElement: HTMLDivElement;
@@ -27,7 +18,8 @@ export default class App {
 				firstName: 'Иван',
 				secondName: 'Иванов',
 				displayName: 'Иван',
-				phone: '+7 (909) 967 30 30',
+				phone: '+79099673030',
+				avatar: null,
 			},
 		};
 		this.appElement = document.getElementById('app') as HTMLDivElement;
@@ -49,15 +41,19 @@ export default class App {
 				this.appElement.firstElementChild.replaceWith(registrationPage.getContent());
 			}
 		} else if (this.state.currentPage === 'profile') {
-			const loginPage = new ProfilePage();
+			const loginPage = new ProfilePage(this.state.userInfo);
 			if (!this.appElement.firstElementChild) {
 				this.appElement.appendChild(loginPage.getContent());
 			} else {
 				this.appElement.firstElementChild.replaceWith(loginPage.getContent());
 			}
 		} else if (this.state.currentPage === 'main') {
-			// template = Handlebars.compile(Pages.Main);
-			// this.appElement.innerHTML = template({});
+			const mainPage = new MainPage();
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(mainPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(mainPage.getContent());
+			}
 		} else if (this.state.currentPage === '500') {
 			const loginPage = new Page500();
 			if (!this.appElement.firstElementChild) {
@@ -83,31 +79,12 @@ export default class App {
 		links.forEach((link) => {
 			link.addEventListener('click', (e) => {
 				e.preventDefault();
-				const target = e.target;
+				const target = e.currentTarget;
 				if (target && target instanceof HTMLElement) {
 					this.changePage(target.dataset.page as string);
 				}
 			});
 		});
-
-		const profileContent = document.querySelectorAll('.profile__content');
-
-		const changeDataButton = document.getElementById('change-data');
-		const changePasswordButton = document.getElementById('change-password');
-		const saveDataButton = document.getElementById('save-data');
-		const savePasswordButton = document.getElementById('save-password');
-
-		changeDataButton?.addEventListener('click', () => this.setActiveFrame(profileContent, 1));
-		changePasswordButton?.addEventListener('click', () =>
-			this.setActiveFrame(profileContent, 2)
-		);
-		saveDataButton?.addEventListener('click', () => this.setActiveFrame(profileContent, 0));
-		savePasswordButton?.addEventListener('click', () => this.setActiveFrame(profileContent, 0));
-	}
-
-	setActiveFrame(elements: NodeListOf<Element>, index: number) {
-		elements.forEach((elem) => elem.classList.remove('active'));
-		elements[index].classList.add('active');
 	}
 
 	changePage(page: string) {
