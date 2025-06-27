@@ -1,17 +1,15 @@
 import Block from '@/services/Block.ts';
-import LinkTemplate from './Link.hbs?raw';
+import ListItemTemplate from './ListItem.hbs?raw';
 
-export type InputProps = {
-	modifier?: string;
-	font?: string;
-	page?: string;
-	href?: string;
+export type ListItemProps = {
+	icon: string;
 	label: string;
+	class?: string;
 	onClick?: (e: Event) => void;
 };
 
-export class Link extends Block {
-	constructor(props: InputProps) {
+export default class ListItem extends Block {
+	constructor(props: ListItemProps) {
 		super({
 			...props,
 			events: {
@@ -25,6 +23,6 @@ export class Link extends Block {
 	}
 
 	override render(): string {
-		return LinkTemplate;
+		return ListItemTemplate;
 	}
 }

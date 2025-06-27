@@ -4,14 +4,16 @@ import Validation from '@/services/Validation.ts';
 
 export type InputProps = {
 	name: string;
-	label: string;
+	label?: string;
 	placeholder?: string;
 	value?: string;
 	type?: string;
 	isError?: boolean;
 	errorMessage?: string;
+	search?: boolean;
 	onBlur?: (e: Event) => void;
 	onFocus?: (e: Event) => void;
+	onInput?: (value: string) => void;
 };
 
 export class Input extends Block {
@@ -22,9 +24,7 @@ export class Input extends Block {
 			events: {
 				input: {
 					focus: (e: Event) => {
-						if (props.onFocus) {
-							props.onFocus(e);
-						}
+						props.onFocus?.(e);
 					},
 					blur: (e: Event) => {
 						const inputEl = e.target;
@@ -32,11 +32,19 @@ export class Input extends Block {
 							this.setProps({
 								value: inputEl.value,
 							});
-							const validate = new Validation(inputEl.value, props.name);
-							validate.validate(this);
+							if (props.errorMessage) {
+								const validate = new Validation(inputEl.value, props.name);
+								validate.validate(this);
+							}
 						}
-						if (props.onBlur) {
-							props.onBlur(e);
+						props.onBlur?.(e);
+					},
+					input: (e: Event) => {
+						if (props.onInput) {
+							const inputEl = e.target;
+							if (inputEl instanceof HTMLInputElement) {
+								props.onInput(inputEl.value);
+							}
 						}
 					},
 				},

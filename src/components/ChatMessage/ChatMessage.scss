@@ -1,0 +1,75 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.chat-message {
+	max-width: min(60%, 600px);
+	padding: 8px;
+	white-space: normal;
+	background-color: $lotion;
+	border-radius: 8px;
+
+	@include set-font(16px, 24px);
+
+	&.outcome {
+		float: right;
+		align-self: flex-end;
+		background-color: $lavender;
+	}
+
+	&__time {
+		@include set-font(12px, 12px);
+
+		float: right;
+		display: flex;
+		align-items: flex-end;
+		height: 24px;
+		margin-left: 8px;
+		color: $spanishgray;
+
+		&__check {
+			width: 24px;
+			height: 24px;
+			margin-bottom: -4px;
+
+			&.read {
+				color: $blue;
+			}
+		}
+	}
+
+	&.image {
+		position: relative;
+		padding: 0;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border: 2px solid transparent;
+			border-radius: 8px;
+		}
+
+		.chat-message__time {
+			position: absolute;
+			right: 8px;
+			bottom: 8px;
+			float: none;
+			flex: 0 0 auto;
+			min-width: 24px;
+			height: 20px;
+			padding: 0 8px;
+			margin-left: 0;
+			line-height: 18px;
+			color: $white;
+			text-align: center;
+			background-color: $black02;
+			border-radius: 11px;
+			transition: background-color $transition-duration $transition-function;
+
+			&__check {
+				margin-bottom: -2px;
+			}
+		}
+	}
+}

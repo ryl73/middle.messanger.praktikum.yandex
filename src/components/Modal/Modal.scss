@@ -12,6 +12,10 @@
 	box-shadow: 0 0 6px $black02;
 	transform: translate(-50%, -50%);
 
+	h2 {
+		text-align: center;
+	}
+
 	&::backdrop {
 		background: #0000001a;
 		backdrop-filter: blur(10px);
@@ -20,12 +24,29 @@
 	&__content {
 		display: flex;
 		flex-direction: column;
-		gap: 64px;
+		gap: 40px;
 		align-items: center;
 		padding: 32px;
 
 		.button {
 			width: 100%;
+		}
+
+		.input__container {
+			width: 100%;
+			margin-top: 0;
+		}
+	}
+
+	&.small {
+		max-width: 400px;
+
+		.modal__content {
+			gap: 0;
+
+			.button {
+				margin: 40px 0 16px;
+			}
 		}
 	}
 }

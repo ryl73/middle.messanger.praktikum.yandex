@@ -15,9 +15,7 @@ export class FileInput extends Block {
 			events: {
 				root: {
 					click: (e: Event) => {
-						if (props.onClick) {
-							props.onClick(e);
-						}
+						props.onClick?.(e);
 					},
 				},
 				input: {
@@ -25,7 +23,13 @@ export class FileInput extends Block {
 						if (props.onChange) {
 							const target = e.target;
 							if (target instanceof HTMLInputElement) {
+								const files = target.files;
 								props.onChange(target.files);
+								if (files) {
+									this.setProps({
+										label: files[0].name,
+									});
+								}
 							}
 						}
 					},

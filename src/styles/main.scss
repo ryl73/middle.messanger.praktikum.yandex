@@ -14,6 +14,7 @@
 @use 'views/profile';
 @use 'views/error';
 @use 'views/card';
+@use 'views/main';
 
 // components
 @use '../components/Button/Button';
@@ -24,3 +25,10 @@
 @use '../components/Avatar/Avatar';
 @use '../components/Header/Header';
 @use '../components/Link/Link';
+@use '../components/ChatsAside/ChatsAside';
+@use '../components/ChatsMain/ChatsMain';
+@use '../components/ChatItem/ChatItem';
+@use '../components/Popover/Popover';
+@use '../components/ListItem/ListItem';
+@use '../components/ChatMessage/ChatMessage';
+@use '../components/ChatMessageGroup/ChatMessageGroup';

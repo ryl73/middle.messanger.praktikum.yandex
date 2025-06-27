@@ -4,8 +4,8 @@ import type { Modal } from '@/components/Modal/Modal.ts';
 
 export type AvatarProps = {
 	src?: string;
-	hoverText: string;
-	AvatarModal: Modal;
+	hoverText?: string;
+	AvatarModal?: Modal;
 	onClick?: (e: Event) => void;
 };
 

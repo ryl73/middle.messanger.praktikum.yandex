@@ -5,5 +5,8 @@
 		"stylelint-config-recess-order"
 	],
 	"plugins": ["stylelint-order"],
-	"ignoreFiles": ["dist/*"]
+	"ignoreFiles": ["dist/*"],
+	"rules": {
+		"selector-class-pattern": null
+	}
 }

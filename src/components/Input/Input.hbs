@@ -1,8 +1,13 @@
-<div class='input__container'>
+<div class='input__container{{#if label}} with-label{{/if}}'>
 	<label class='input__label' for='{{name}}'>{{label}}</label>
+	{{#if search}}
+		<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M10.8532 11.4138C9.51259 12.8457 7.33902 12.8457 5.99841 11.4138C4.65779 9.98187 4.65779 7.66027 5.99841 6.22834C7.33902 4.79642 9.51259 4.79642 10.8532 6.22834C12.1938 7.66026 12.1938 9.98187 10.8532 11.4138ZM11.2655 12.7968C9.43028 14.2961 6.79422 14.1494 5.11572 12.3566C3.28761 10.404 3.28761 7.23815 5.11572 5.28553C6.94383 3.33291 9.90779 3.33291 11.7359 5.28553C13.4143 7.07828 13.5518 9.8937 12.1482 11.8539L15.4874 15.4206L14.6048 16.3634L11.2655 12.7968Z" fill="#999999"/>
+		</svg>
+	{{/if}}
 	<input
 		id='{{name}}'
-		class='input{{#if isError}} error{{/if}}'
+		class='input{{#if isError}} error{{/if}}{{#if search}} search{{/if}}'
 		name='{{name}}'
 		placeholder='{{placeholder}}'
 		{{#if type}} type='{{type}}' {{/if}}

@@ -110,10 +110,7 @@ export default class ProfilePage extends Block {
 			disabled: true,
 			onClick: () => {
 				console.log(AvatarInput.value);
-				const modalEl = AvatarModal.getContent();
-				if (modalEl instanceof HTMLDialogElement) {
-					modalEl.close();
-				}
+				AvatarModal.close();
 			},
 		});
 
@@ -132,7 +129,6 @@ export default class ProfilePage extends Block {
 				if (files) {
 					AvatarInput.setProps({
 						value: files[0],
-						label: files[0].name,
 					});
 					SaveButton.setProps({
 						disabled: false,
@@ -144,6 +140,14 @@ export default class ProfilePage extends Block {
 		const AvatarModal = new Modal({
 			title: 'Загрузить файл',
 			slot: [AvatarInput, SaveButton],
+			onClose: () => {
+				if (AvatarInput.value) {
+					AvatarInput.setProps({
+						value: null,
+						label: 'Выбрать файл на компьютере',
+					});
+				}
+			},
 		});
 
 		const AvatarComponent = new Avatar({
@@ -151,22 +155,7 @@ export default class ProfilePage extends Block {
 			hoverText: 'Поменять аватар',
 			AvatarModal,
 			onClick: () => {
-				const modalEl = AvatarModal.getContent();
-				if (modalEl instanceof HTMLDialogElement) {
-					modalEl.showModal();
-					document.body.classList.add('scroll-lock');
-					const handleModalClick = (e: Event) => {
-						const target = e.target as HTMLElement;
-						const currentTarget = e.currentTarget as HTMLDialogElement;
-
-						const isClickedOnBackdrop = target === currentTarget;
-
-						if (isClickedOnBackdrop) {
-							currentTarget.close();
-						}
-					};
-					modalEl.addEventListener('click', handleModalClick);
-				}
+				AvatarModal.show();
 			},
 		});
 

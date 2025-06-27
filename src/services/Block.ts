@@ -23,11 +23,6 @@ export default class Block {
 
 	protected lists: Record<string, any[]>;
 
-	private _transitionEndTimer: NodeJS.Timeout | null = null;
-	private _fallbackTimer: NodeJS.Timeout | null = null;
-
-	private _transitionEndListener?: (e: TransitionEvent) => void;
-
 	protected eventBus: () => EventBus;
 
 	constructor(propsWithChildren: BlockProps = {}) {
@@ -102,8 +97,7 @@ export default class Block {
 		if (!response) {
 			return;
 		}
-		this._bindTransitionEndRerender();
-		// this._render();
+		this._render();
 	}
 
 	protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
@@ -171,9 +165,6 @@ export default class Block {
 	}
 
 	protected _render(): void {
-		if (this._element && this._transitionEndListener) {
-			this._element.removeEventListener('transitionend', this._transitionEndListener);
-		}
 		console.log('Render');
 		const propsAndStubs = { ...this.props };
 		const tmpId = Math.floor(100000 + Math.random() * 900000);
@@ -217,28 +208,6 @@ export default class Block {
 		this._element = newElement;
 		this._addEvents();
 		this.addAttributes();
-	}
-
-	private _bindTransitionEndRerender(): void {
-		if (!this._element) return;
-
-		this._transitionEndListener = () => {
-			if (this._transitionEndTimer) {
-				clearTimeout(this._transitionEndTimer);
-			}
-			this._transitionEndTimer = setTimeout(() => {
-				this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-			}, 50);
-		};
-
-		this._element.addEventListener('transitionend', this._transitionEndListener);
-
-		if (this._fallbackTimer) {
-			clearTimeout(this._fallbackTimer);
-		}
-		this._fallbackTimer = setTimeout(() => {
-			this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-		}, 300);
 	}
 
 	// Переопределяется пользователем. Необходимо вернуть разметку
