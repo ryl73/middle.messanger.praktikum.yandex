@@ -35,32 +35,13 @@
                         </div>
                     </div>
 
-                    <form class="profile__content edit">
-                        <div class="profile__content__fields inputs">
-							{{{ EmailInput }}}
-							{{{ LoginInput }}}
-							{{{ FirstNameInput }}}
-							{{{ SecondNameInput }}}
-							{{{ DisplayNameInput }}}
-							{{{ PhoneInput }}}
-                        </div>
-                        <div class="profile__controls gapped">
-							{{{ ButtonSaveInfo }}}
-							{{{ LinkCancelInfo }}}
-                        </div>
-                    </form>
+                    <div class="profile__content edit">
+                        {{{ ProfileEditForm }}}
+                    </div>
 
-                    <form class="profile__content edit-password">
-                        <div class="profile__content__fields inputs">
-							{{{ OldPasswordInput }}}
-							{{{ NewPasswordInput }}}
-							{{{ NewPasswordRepeatInput }}}
-                        </div>
-                        <div class="profile__controls gapped">
-                            {{{ ButtonSavePassword }}}
-							{{{ LinkCancelPassword }}}
-                        </div>
-                    </form>
+                    <div class="profile__content edit-password">
+						{{{ PasswordEditForm }}}
+                    </div>
                 </div>
             </section>
         </main>

@@ -13,6 +13,7 @@
 	transform: translate(-50%, -50%);
 
 	h2 {
+		margin-bottom: 48px;
 		text-align: center;
 	}
 
@@ -21,12 +22,15 @@
 		backdrop-filter: blur(10px);
 	}
 
+	&__container {
+		padding: 32px;
+	}
+
 	&__content {
 		display: flex;
 		flex-direction: column;
-		gap: 40px;
+		gap: 16px;
 		align-items: center;
-		padding: 32px;
 
 		.button {
 			width: 100%;
@@ -40,13 +44,5 @@
 
 	&.small {
 		max-width: 400px;
-
-		.modal__content {
-			gap: 0;
-
-			.button {
-				margin: 40px 0 16px;
-			}
-		}
 	}
 }

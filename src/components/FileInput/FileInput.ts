@@ -3,6 +3,8 @@ import FileInputTemplate from './FileInput.hbs?raw';
 
 export type FileInputProps = {
 	label: string;
+	name: string;
+	errorMessage?: string;
 	value?: File | null;
 	onClick?: (e: Event) => void;
 	onChange?: (e: FileList | null) => void;
@@ -44,5 +46,13 @@ export class FileInput extends Block {
 
 	get value() {
 		return this.props.value;
+	}
+
+	get name() {
+		return this.props.name;
+	}
+
+	get isValidate() {
+		return this.props.errorMessage;
 	}
 }

@@ -1,7 +1,7 @@
 import Block from '@/services/Block.ts';
 import LinkTemplate from './Link.hbs?raw';
 
-export type InputProps = {
+export type LinkProps = {
 	modifier?: string;
 	font?: string;
 	page?: string;
@@ -11,7 +11,7 @@ export type InputProps = {
 };
 
 export class Link extends Block {
-	constructor(props: InputProps) {
+	constructor(props: LinkProps) {
 		super({
 			...props,
 			events: {

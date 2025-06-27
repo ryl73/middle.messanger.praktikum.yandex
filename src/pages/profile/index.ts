@@ -1,14 +1,14 @@
 import Block from '@/services/Block.ts';
-import Profile from './profile.hbs?raw';
+import ProfileTemplate from './profile.hbs?raw';
 import { Button } from '@/components/Button/Button.ts';
 import { Input } from '@/components/Input/Input.ts';
-import Validation from '@/services/Validation.ts';
 import { Avatar } from '@/components/Avatar/Avatar.ts';
 import { Modal } from '@/components/Modal/Modal.ts';
 import { FileInput } from '@/components/FileInput/FileInput.ts';
 import { InfoField } from '@/components/InfoField/InfoField.ts';
 import { Link } from '@/components/Link/Link.ts';
 import { Header } from '@/components/Header/Header.ts';
+import Form from '@/components/Form/Form.ts';
 
 type ProfilePageProps = {
 	email: string;
@@ -73,6 +73,24 @@ export default class ProfilePage extends Block {
 			value: props.phone,
 		});
 
+		const ProfileEditForm = new Form({
+			InputList: [
+				EmailInput,
+				LoginInput,
+				FirstNameInput,
+				SecondNameInput,
+				DisplayNameInput,
+				PhoneInput,
+			],
+			initialValues: INITIAL_VALUE_MAP,
+			onCancel: () => {
+				this.setActiveFrame(0);
+			},
+			onSubmit: () => {
+				this.setActiveFrame(0);
+			},
+		});
+
 		const OldPasswordInput = new Input({
 			name: 'oldPassword',
 			label: 'Старый пароль',
@@ -94,28 +112,20 @@ export default class ProfilePage extends Block {
 			errorMessage: 'Пароли не совпадают',
 		});
 
-		const infoEditInputArr = [
-			EmailInput,
-			LoginInput,
-			FirstNameInput,
-			SecondNameInput,
-			DisplayNameInput,
-			PhoneInput,
-		];
-
-		const passwordEditInputArr = [OldPasswordInput, NewPasswordInput, NewPasswordRepeatInput];
-
-		const SaveButton = new Button({
-			label: 'Изменить',
-			disabled: true,
-			onClick: () => {
-				console.log(AvatarInput.value);
-				AvatarModal.close();
+		const PasswordEditForm = new Form({
+			InputList: [OldPasswordInput, NewPasswordInput, NewPasswordRepeatInput],
+			removeList: ['newPassword_repeat'],
+			onCancel: () => {
+				this.setActiveFrame(0);
+			},
+			onSubmit: () => {
+				this.setActiveFrame(0);
 			},
 		});
 
 		const AvatarInput = new FileInput({
 			label: 'Выбрать файл на компьютере',
+			name: 'avatar',
 			onClick: (e) => {
 				const inputContainer = e.currentTarget;
 				if (inputContainer instanceof HTMLElement) {
@@ -130,16 +140,28 @@ export default class ProfilePage extends Block {
 					AvatarInput.setProps({
 						value: files[0],
 					});
-					SaveButton.setProps({
+					AvatarEditForm.buttonSubmitEl.setProps({
 						disabled: false,
 					});
 				}
 			},
 		});
 
+		const AvatarEditForm = new Form({
+			InputList: [AvatarInput],
+			noCancel: true,
+			submitProps: {
+				label: 'Изменить',
+				disabled: true,
+			},
+			onSubmit: () => {
+				AvatarModal.close();
+			},
+		});
+
 		const AvatarModal = new Modal({
 			title: 'Загрузить файл',
-			slot: [AvatarInput, SaveButton],
+			slot: [AvatarEditForm],
 			onClose: () => {
 				if (AvatarInput.value) {
 					AvatarInput.setProps({
@@ -147,6 +169,9 @@ export default class ProfilePage extends Block {
 						label: 'Выбрать файл на компьютере',
 					});
 				}
+				AvatarEditForm.buttonSubmitEl.setProps({
+					disabled: true,
+				});
 			},
 		});
 
@@ -182,80 +207,9 @@ export default class ProfilePage extends Block {
 			page: 'login',
 		});
 
-		const LinkCancelInfo = new Link({
-			label: 'Отменить',
-			font: 'fs-p-bold',
-			onClick: () => {
-				infoEditInputArr.forEach((input) => {
-					input.setProps({
-						value: INITIAL_VALUE_MAP[input.name],
-						isError: false,
-					});
-				});
-				this.setActiveFrame(0);
-			},
-		});
-
-		const LinkCancelPassword = new Link({
-			label: 'Отменить',
-			font: 'fs-p-bold',
-			onClick: () => {
-				passwordEditInputArr.forEach((input) => {
-					input.setProps({
-						value: '',
-						isError: false,
-					});
-				});
-				this.setActiveFrame(0);
-			},
-		});
-
-		const ButtonSaveInfo = new Button({
-			label: 'Сохранить',
-			type: 'submit',
-			onClick: (e) => {
-				e.preventDefault();
-				const isValidArr: boolean[] = [];
-				infoEditInputArr.forEach((input) => {
-					const isValid = new Validation(input.value, input.name).validate(input);
-					isValidArr.push(isValid);
-				});
-				const isValid = isValidArr.every((valid) => valid);
-				if (isValid) {
-					this.setActiveFrame(0);
-				}
-			},
-		});
-
-		const ButtonSavePassword = new Button({
-			label: 'Сохранить',
-			type: 'submit',
-			onClick: (e) => {
-				e.preventDefault();
-				const isValidArr: boolean[] = [];
-				passwordEditInputArr.forEach((input) => {
-					const isValid = new Validation(input.value, input.name).validate(input);
-					isValidArr.push(isValid);
-				});
-				const isValid = isValidArr.every((valid) => valid);
-				if (isValid) {
-					this.setActiveFrame(0);
-				}
-			},
-		});
-
 		super({
 			...props,
 			Header: new Header(),
-			EmailInput,
-			LoginInput,
-			FirstNameInput,
-			SecondNameInput,
-			DisplayNameInput,
-			PhoneInput,
-			OldPasswordInput,
-			NewPasswordInput,
-			NewPasswordRepeatInput,
 			InfoFieldEmail: new InfoField({
 				label: 'Почта',
 				value: props.email,
@@ -284,8 +238,6 @@ export default class ProfilePage extends Block {
 			LinkChangeInfo,
 			LinkChangePassword,
 			LinkLogout,
-			LinkCancelInfo,
-			LinkCancelPassword,
 			ButtonBack: new Button({
 				modifier: 'round',
 				icon: `
@@ -294,13 +246,13 @@ export default class ProfilePage extends Block {
 						</svg>
 					`,
 			}),
-			ButtonSaveInfo,
-			ButtonSavePassword,
+			ProfileEditForm,
+			PasswordEditForm,
 		});
 	}
 
 	override render(): string {
-		return Profile;
+		return ProfileTemplate;
 	}
 
 	public setActiveFrame(index: number) {

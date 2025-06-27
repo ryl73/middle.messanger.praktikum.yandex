@@ -1,6 +1,6 @@
 import Block from '@/services/Block.ts';
 import InputTemplate from './Input.hbs?raw';
-import Validation from '@/services/Validation.ts';
+import { validateInput } from '@/utils/validation.ts';
 
 export type InputProps = {
 	name: string;
@@ -17,10 +17,10 @@ export type InputProps = {
 };
 
 export class Input extends Block {
-	constructor(props: InputProps) {
+	constructor({ value = '', ...props }: InputProps) {
 		super({
 			...props,
-			value: props.value || '',
+			value,
 			events: {
 				input: {
 					focus: (e: Event) => {
@@ -33,8 +33,7 @@ export class Input extends Block {
 								value: inputEl.value,
 							});
 							if (props.errorMessage) {
-								const validate = new Validation(inputEl.value, props.name);
-								validate.validate(this);
+								validateInput(this);
 							}
 						}
 						props.onBlur?.(e);
@@ -64,7 +63,7 @@ export class Input extends Block {
 		return this.props.name;
 	}
 
-	get isError() {
-		return this.props.isError;
+	get isValidate() {
+		return this.props.errorMessage;
 	}
 }

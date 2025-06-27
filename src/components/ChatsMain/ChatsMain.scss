@@ -6,52 +6,6 @@
 	flex-direction: column;
 	box-shadow: 0 0 4px $black02;
 
-	&__nav {
-		display: flex;
-		justify-content: space-between;
-		padding: 16px 0;
-		margin: 0 16px;
-		border-bottom: 1px solid $brightgray;
-
-		&__info {
-			display: flex;
-			gap: 8px;
-			align-items: center;
-
-			&__avatar {
-				flex: none;
-				width: 38px;
-				height: 38px;
-				border-radius: 50%;
-
-				&--default {
-					width: 100%;
-					height: 100%;
-					background-color: $brightgray;
-					border-radius: 50%;
-				}
-			}
-
-			&__title {
-				@include set-font(16px, 20px);
-			}
-		}
-
-		.popover__action svg {
-			color: $spanishgray;
-			cursor: pointer;
-			transition: color $transition-duration $transition-function;
-
-			@include hover {
-				color: $blue;
-			}
-
-			&.active {
-				color: $blue;
-			}
-		}
-	}
-
 	&__content {
 		flex: 1 1 0;
 		padding: 16px;
@@ -62,36 +16,6 @@
 			flex-direction: column;
 			gap: 8px;
 			justify-content: flex-end;
-		}
-	}
-
-	&__search-bar {
-		display: flex;
-		gap: 16px;
-		padding: 16px 0;
-		margin: 0 16px;
-		border-top: 1px solid $brightgray;
-
-		.input__container {
-			flex: 1 1 300px;
-		}
-
-		.button {
-			flex: none;
-		}
-
-		.popover__action svg {
-			color: $spanishgray;
-			cursor: pointer;
-			transition: color $transition-duration $transition-function;
-
-			@include hover {
-				color: $blue;
-			}
-
-			&.active {
-				color: $blue;
-			}
 		}
 	}
 }

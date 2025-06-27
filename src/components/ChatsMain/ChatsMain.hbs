@@ -1,28 +1,9 @@
 <div class="chats-main">
-	<nav class="chats-main__nav">
-		<div class="chats-main__nav__info">
-			<div class="chats-main__nav__info__avatar">
-				{{#if avatar}}
-					<img src="{{ avatar }}" alt="avatar" />
-				{{else}}
-					<div class="chats-main__nav__info__avatar--default"></div>
-				{{/if}}
-			</div>
-			<span class="chats-main__nav__info__title">{{ title }}</span>
-		</div>
-		{{{ ChatSettingsPopover }}}
-		{{{ ChatRemoveModal }}}
-		{{{ ChatUserRemoveModal }}}
-		{{{ ChatUserAddModal }}}
-	</nav>
+	{{{ MainNavbar }}}
 	<div class="chats-main__content">
 		<div class="chats-main__content__message-list">
 			{{{ ChatMessageGroupList }}}
 		</div>
 	</div>
-	<div class="chats-main__search-bar">
-		{{{ AttachFilePopover }}}
-		{{{ MessageInput }}}
-		{{{ ButtonSendMessage }}}
-	</div>
+	{{{ MainSearchbar }}}
 </div>

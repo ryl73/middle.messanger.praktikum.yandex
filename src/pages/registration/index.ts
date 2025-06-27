@@ -1,10 +1,8 @@
 import Block from '@/services/Block.ts';
 import Registration from './Registration.hbs?raw';
-import { Button } from '@/components/Button/Button.ts';
 import { Input } from '@/components/Input/Input.ts';
-import Validation from '@/services/Validation.ts';
-import { Link } from '@/components/Link/Link.ts';
 import { Header } from '@/components/Header/Header.ts';
+import Form from '@/components/Form/Form.ts';
 
 export default class RegistrationPage extends Block {
 	constructor() {
@@ -52,15 +50,26 @@ export default class RegistrationPage extends Block {
 			errorMessage: 'Пароли не совпадают',
 		});
 
-		const inputArr = [
-			EmailInput,
-			LoginInput,
-			FirstNameInput,
-			SecondNameInput,
-			PhoneInput,
-			PasswordInput,
-			PasswordRepeatInput,
-		];
+		const RegistrationForm = new Form({
+			InputList: [
+				EmailInput,
+				LoginInput,
+				FirstNameInput,
+				SecondNameInput,
+				PhoneInput,
+				PasswordInput,
+				PasswordRepeatInput,
+			],
+			submitProps: {
+				label: 'Создать аккаунт',
+			},
+			cancelProps: {
+				label: 'Войти',
+			},
+			removeList: ['password_repeat'],
+			onCancel: () => {},
+			onSubmit: () => {},
+		});
 
 		super({
 			Header: new Header(),
@@ -71,31 +80,7 @@ export default class RegistrationPage extends Block {
 			PhoneInput,
 			PasswordInput,
 			PasswordRepeatInput,
-			ButtonRegister: new Button({
-				label: 'Создать аккаунт',
-				onClick: (e) => {
-					e.preventDefault();
-					const isValidArr: boolean[] = [];
-					inputArr.forEach((input) => {
-						let isValid;
-						if (input === PasswordRepeatInput) {
-							isValid = new Validation(
-								input.value,
-								input.value === PasswordInput.value && input.value !== ''
-							).validate(input);
-						} else {
-							isValid = new Validation(input.value, input.name).validate(input);
-						}
-						isValidArr.push(isValid);
-					});
-					console.log(isValidArr.every((valid) => valid));
-				},
-			}),
-			LinkLogin: new Link({
-				label: 'Войти',
-				font: 'fs-p-bold',
-				page: 'login',
-			}),
+			RegistrationForm,
 		});
 	}
 

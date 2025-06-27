@@ -7,6 +7,7 @@ import type { ChatListItem, LastMessage } from '@/types/chat.ts';
 import { Button } from '@/components/Button/Button.ts';
 import { Modal } from '@/components/Modal/Modal.ts';
 import getStringFromUTC from '@/utils/getStringFromUTC.ts';
+import Form from '@/components/Form/Form.ts';
 
 type MainAsideProps = {
 	avatarSrc?: string;
@@ -41,34 +42,37 @@ export default class ChatsAside extends Block {
 			ChatList.push(Chat);
 		});
 
-		const SaveButton = new Button({
-			label: 'Добавить',
-			disabled: true,
-			onClick: () => {
-				console.log(ChatNameInput.value);
-				ChatAddModal.close();
-			},
-		});
-
 		const ChatNameInput = new Input({
 			label: 'Название',
-			name: 'chat_name',
+			name: 'title',
 			onInput: (value) => {
 				if (value !== '') {
-					SaveButton.setProps({
+					ChatAddForm.buttonSubmitEl.setProps({
 						disabled: false,
 					});
 				} else {
-					SaveButton.setProps({
+					ChatAddForm.buttonSubmitEl.setProps({
 						disabled: true,
 					});
 				}
 			},
 		});
 
+		const ChatAddForm = new Form({
+			InputList: [ChatNameInput],
+			noCancel: true,
+			submitProps: {
+				label: 'Добавить',
+				disabled: true,
+			},
+			onSubmit: () => {
+				ChatAddModal.close();
+			},
+		});
+
 		const ChatAddModal = new Modal({
 			title: 'Добавить чат',
-			slot: [ChatNameInput, SaveButton],
+			slot: [ChatAddForm],
 			onClose: () => {
 				ChatNameInput.setProps({
 					value: '',

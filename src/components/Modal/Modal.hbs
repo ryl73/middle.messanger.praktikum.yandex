@@ -1,9 +1,10 @@
 <dialog class="modal {{ modifier }}">
-    <div class="modal__content">
+    <div class="modal__container">
 		{{#if title}}
 			<h2 class="fs-h2">{{ title }}</h2>
 		{{/if}}
-
-        {{{ slot }}}
+		<div class="modal__content">
+			{{{ slot }}}
+		</div>
     </div>
 </dialog>
