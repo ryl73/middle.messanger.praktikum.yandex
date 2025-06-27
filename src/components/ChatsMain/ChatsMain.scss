@@ -18,4 +18,15 @@
 			justify-content: flex-end;
 		}
 	}
+
+	&__no-selected-chat {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		color: $spanishgray;
+
+		@include set-font(16px, 20px);
+	}
 }

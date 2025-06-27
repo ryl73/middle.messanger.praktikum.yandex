@@ -7,6 +7,7 @@ import MainSearchbar from '@/components/MainSearchbar/MainSearchbar.ts';
 type ChatsMainProps = {
 	avatar: string | null;
 	title: string;
+	selectedChat?: number | null;
 };
 
 export default class ChatsMain extends Block {

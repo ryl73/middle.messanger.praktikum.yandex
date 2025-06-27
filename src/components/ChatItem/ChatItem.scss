@@ -10,6 +10,10 @@
 	transition: all $transition-duration $transition-function;
 
 	@include hover {
+		background-color: $blue02;
+	}
+
+	&.active {
 		color: $white;
 		background-color: $blue;
 

@@ -8,12 +8,25 @@ export type ChatItemProps = {
 	time: string;
 	unreadCount?: number;
 	avatar: string | null;
+	active?: boolean;
+	onClick?: (e: Event) => void;
 };
 
 export default class ChatItem extends Block {
-	constructor(props: ChatItemProps) {
+	constructor({ active = false, ...props }: ChatItemProps) {
 		super({
 			...props,
+			active,
+			events: {
+				root: {
+					click: (e: Event) => {
+						props.onClick?.(e);
+						this.setProps({
+							active: true,
+						});
+					},
+				},
+			},
 		});
 	}
 

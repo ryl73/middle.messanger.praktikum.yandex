@@ -8,10 +8,12 @@ import { Button } from '@/components/Button/Button.ts';
 import { Modal } from '@/components/Modal/Modal.ts';
 import getStringFromUTC from '@/utils/getStringFromUTC.ts';
 import Form from '@/components/Form/Form.ts';
+import type ChatsMain from '@/components/ChatsMain/ChatsMain.ts';
 
 type MainAsideProps = {
 	avatarSrc?: string;
 	chatList: ChatListItem[];
+	main: ChatsMain;
 };
 
 export default class ChatsAside extends Block {
@@ -38,6 +40,16 @@ export default class ChatsAside extends Block {
 				lastMessageContent: getLastMessageContent(chat.last_message),
 				lastMessageAuthor: undefined,
 				time: getStringFromUTC(chat.last_message.time),
+				onClick: () => {
+					ChatList.forEach((chat) => {
+						chat.setProps({
+							active: false,
+						});
+					});
+					props.main.setProps({
+						selectedChat: chat.id,
+					});
+				},
 			});
 			ChatList.push(Chat);
 		});

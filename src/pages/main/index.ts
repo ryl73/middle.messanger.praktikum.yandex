@@ -7,15 +7,20 @@ import ChatsMain from '@/components/ChatsMain/ChatsMain.ts';
 
 export default class MainPage extends Block {
 	constructor() {
+		const ChatsMainComponent = new ChatsMain({
+			avatar: null,
+			title: 'Андрей',
+		});
+
+		const ChatsAsideComponent = new ChatsAside({
+			chatList: MainPage.getChatList(),
+			main: ChatsMainComponent,
+		});
+
 		super({
 			Header: new Header(),
-			ChatsAside: new ChatsAside({
-				chatList: MainPage.getChatList(),
-			}),
-			ChatsMain: new ChatsMain({
-				avatar: null,
-				title: 'Андрей',
-			}),
+			ChatsAsideComponent,
+			ChatsMainComponent,
 		});
 	}
 
