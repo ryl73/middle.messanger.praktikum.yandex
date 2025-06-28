@@ -10,7 +10,7 @@ export type ChatListItem = {
 };
 
 export type LastMessage = {
-	user: User;
+	user: Partial<User>;
 	time: string;
 	content: string;
 };
