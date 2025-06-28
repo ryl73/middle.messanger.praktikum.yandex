@@ -31,7 +31,7 @@ export default class ChatsMain extends Block {
 						},
 						{
 							id: 2,
-							content: '/assets/images/image.jpg',
+							content: '/media/images/image.jpg',
 							time: '2025-06-27T14:22:54.000Z',
 						},
 						{
