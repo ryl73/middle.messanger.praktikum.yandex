@@ -1,4 +1,6 @@
-const CHAT_LIST = [
+import type { ChatListItem } from '@/types/chat.ts';
+
+const CHAT_LIST: ChatListItem[] = [
 	{
 		id: 1,
 		title: 'Андрей',

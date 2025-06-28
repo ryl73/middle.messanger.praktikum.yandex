@@ -15,6 +15,7 @@ export default class MainPage extends Block {
 		const ChatsAsideComponent = new ChatsAside({
 			chatList: MainPage.getChatList(),
 			main: ChatsMainComponent,
+			avatarSrc: null,
 		});
 
 		super({

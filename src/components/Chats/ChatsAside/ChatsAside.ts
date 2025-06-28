@@ -11,7 +11,7 @@ import Form from '@/components/Form/Form.ts';
 import type ChatsMain from '@/components/Chats/ChatsMain/ChatsMain.ts';
 
 type MainAsideProps = {
-	avatarSrc?: string;
+	avatarSrc: string | null;
 	chatList: ChatListItem[];
 	main: ChatsMain;
 };
