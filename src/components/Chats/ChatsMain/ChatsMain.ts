@@ -1,8 +1,8 @@
 import Block from '@/services/Block.ts';
 import ChatsMainTemplate from './ChatsMain.hbs?raw';
-import ChatMessageGroup from '@/components/ChatMessageGroup/ChatMessageGroup.ts';
-import MainNavbar from '@/components/MainNavbar/MainNavbar.ts';
-import MainSearchbar from '@/components/MainSearchbar/MainSearchbar.ts';
+import ChatMessageGroup from '@/components/Chats/ChatMessageGroup/ChatMessageGroup.ts';
+import MainNavbar from '@/components/Main/MainNavbar/MainNavbar.ts';
+import MainSearchbar from '@/components/Main/MainSearchbar/MainSearchbar.ts';
 
 type ChatsMainProps = {
 	avatar: string | null;

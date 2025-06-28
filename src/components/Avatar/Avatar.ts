@@ -3,7 +3,7 @@ import AvatarTemplate from './Avatar.hbs?raw';
 import type { Modal } from '@/components/Modal/Modal.ts';
 
 export type AvatarProps = {
-	src?: string;
+	src: string | null;
 	hoverText?: string;
 	AvatarModal?: Modal;
 	onClick?: (e: Event) => void;

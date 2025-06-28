@@ -8,20 +8,29 @@ const METHODS = {
 
 type METHODS = (typeof METHODS)[keyof typeof METHODS];
 
-type Options = {
+type RequestData = Record<string, string | number | boolean | null | undefined> | FormData;
+
+type Options<T = RequestData> = {
 	method: METHODS;
-	data?: Record<string, any>;
+	data?: T;
 	headers?: Record<string, string>;
 	timeout?: number;
 };
 
-type OptionsWithoutMethod = Omit<Options, 'method'>;
+type OptionsWithoutMethod<T = RequestData> = Omit<Options<T>, 'method'>;
 
-const queryStringify = (data: Record<string, any>): string => {
+const queryStringify = (data: Exclude<RequestData, FormData>): string => {
 	if (typeof data !== 'object' || data === null) {
 		throw new Error('Data must be a non-null object');
 	}
-	return `?${new URLSearchParams(data).toString()}`;
+	return `?${new URLSearchParams(
+		Object.entries(data).reduce<Record<string, string>>((acc, [key, value]) => {
+			if (value !== undefined && value !== null) {
+				acc[key] = String(value);
+			}
+			return acc;
+		}, {})
+	).toString()}`;
 };
 
 class HTTPTransport {
@@ -36,7 +45,11 @@ class HTTPTransport {
 
 			const isGet = method === METHODS.GET;
 
-			const fullUrl = isGet && data ? `${url}${queryStringify(data)}` : url;
+			const fullUrl =
+				isGet && data && !(data instanceof FormData)
+					? `${url}${queryStringify(data)}`
+					: url;
+
 			xhr.open(method, fullUrl);
 
 			Object.entries(headers).forEach(([key, value]) => {
@@ -56,7 +69,11 @@ class HTTPTransport {
 			if (isGet || !data) {
 				xhr.send();
 			} else {
-				xhr.send(data instanceof FormData ? data : JSON.stringify(data));
+				const payload = data instanceof FormData ? data : JSON.stringify(data);
+				if (!(data instanceof FormData)) {
+					xhr.setRequestHeader('Content-Type', 'application/json');
+				}
+				xhr.send(payload);
 			}
 		});
 	};

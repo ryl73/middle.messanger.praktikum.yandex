@@ -1,10 +1,10 @@
 import Block from '@/services/Block.ts';
 import FormTemplate from './Form.hbs?raw';
 import type { Input } from '@/components/Input/Input.ts';
-import { validateForm } from '@/utils/validation.ts';
 import { Link, type LinkProps } from '@/components/Link/Link.ts';
 import { Button, type ButtonProps } from '@/components/Button/Button.ts';
 import type { FileInput } from '@/components/FileInput/FileInput.ts';
+import Validation from '@/services/Validation.ts';
 
 type FromProps = {
 	InputList: (Input | FileInput)[];
@@ -53,7 +53,7 @@ export default class Form extends Block {
 				root: {
 					submit: (e: SubmitEvent) => {
 						e.preventDefault();
-						const isFormValid = validateForm(...props.InputList);
+						const isFormValid = Validation.validateForm(...props.InputList);
 						if (!isFormValid) return;
 
 						const target = e.target;

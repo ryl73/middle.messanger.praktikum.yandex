@@ -96,7 +96,6 @@ export default class MainSearchbar extends Block {
 				root: {
 					submit: (e: SubmitEvent) => {
 						e.preventDefault();
-						if (MessageInput.value === '') return;
 
 						const target = e.target;
 						if (target instanceof HTMLFormElement) {
@@ -106,6 +105,10 @@ export default class MainSearchbar extends Block {
 
 							MessageInput.setProps({
 								value: '',
+							});
+
+							ButtonSendMessage.setProps({
+								disabled: true,
 							});
 						}
 					},

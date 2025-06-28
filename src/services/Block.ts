@@ -2,7 +2,10 @@ import EventBus, { type EventCallback } from '../utils/event-bus.ts';
 import Handlebars from 'handlebars';
 import isEqual from '@/utils/isEqual.ts';
 
+// Пропсы могут иметь любое значение
 type BlockProps = Record<string, any>;
+
+type BlockLists = Record<string, (Block | string)[]>;
 
 export default class Block {
 	static EVENTS = {
@@ -21,9 +24,12 @@ export default class Block {
 
 	protected children: Record<string, Block>;
 
-	protected lists: Record<string, any[]>;
+	protected lists: BlockLists;
 
 	protected eventBus: () => EventBus;
+
+	private _pendingPropsUpdate = false;
+	private _oldPropsSnapshot: BlockProps | null = null;
 
 	constructor(propsWithChildren: BlockProps = {}) {
 		const eventBus = new EventBus();
@@ -100,6 +106,20 @@ export default class Block {
 		this._render();
 	}
 
+	private _queuePropsUpdate(oldProps: BlockProps) {
+		if (!this._pendingPropsUpdate) {
+			this._pendingPropsUpdate = true;
+			this._oldPropsSnapshot = oldProps;
+
+			queueMicrotask(() => {
+				this._pendingPropsUpdate = false;
+				const latestProps = { ...this.props };
+				this.eventBus().emit(Block.EVENTS.FLOW_CDU, this._oldPropsSnapshot!, latestProps);
+				this._oldPropsSnapshot = null;
+			});
+		}
+	}
+
 	protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
 		return !isEqual(oldProps, newProps);
 	}
@@ -107,11 +127,11 @@ export default class Block {
 	private _getChildrenPropsAndProps(propsAndChildren: BlockProps): {
 		children: Record<string, Block>;
 		props: BlockProps;
-		lists: Record<string, any[]>;
+		lists: BlockLists;
 	} {
 		const children: Record<string, Block> = {};
 		const props: BlockProps = {};
-		const lists: Record<string, any[]> = {};
+		const lists: BlockLists = {};
 
 		Object.entries(propsAndChildren).forEach(([key, value]) => {
 			if (value instanceof Block) {
@@ -136,10 +156,10 @@ export default class Block {
 		});
 	}
 
-	protected setAttributes(attr: any): void {
+	protected setAttributes(attr: Record<string, string>): void {
 		Object.entries(attr).forEach(([key, value]) => {
 			if (this._element) {
-				this._element.setAttribute(key, value as string);
+				this._element.setAttribute(key, value);
 			}
 		});
 	}
@@ -152,7 +172,7 @@ export default class Block {
 		Object.assign(this.props, nextProps);
 	};
 
-	public setLists = (nextList: Record<string, any[]>): void => {
+	public setLists = (nextList: BlockLists): void => {
 		if (!nextList) {
 			return;
 		}
@@ -231,11 +251,11 @@ export default class Block {
 				const value = target[prop];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target: BlockProps, prop: string, value: any) {
+			set(target: BlockProps, prop: string, value: unknown) {
 				const oldProps = { ...target };
 				target[prop] = value;
 
-				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, target);
+				self._queuePropsUpdate(oldProps);
 				return true;
 			},
 			deleteProperty() {

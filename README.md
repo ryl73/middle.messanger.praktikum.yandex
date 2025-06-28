@@ -18,7 +18,7 @@
 - Язык - TypeScript;
 - Припроцессор CSS - SCSS;
 - Сборщик - Vite;
-- Шаблонизатор - Hadllebars;
+- Шаблонизатор - Handlebars;
 - Линтеры - ESLint, Stylelint;
 - Проект развернут на сервисе Netlify https://dapper-phoenix-812a34.netlify.app/.
 

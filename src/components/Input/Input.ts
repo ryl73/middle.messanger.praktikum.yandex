@@ -1,6 +1,6 @@
 import Block from '@/services/Block.ts';
 import InputTemplate from './Input.hbs?raw';
-import { validateInput } from '@/utils/validation.ts';
+import Validation from '@/services/Validation.ts';
 
 export type InputProps = {
 	name: string;
@@ -29,11 +29,12 @@ export class Input extends Block {
 					blur: (e: Event) => {
 						const inputEl = e.target;
 						if (inputEl instanceof HTMLInputElement) {
-							this.setProps({
-								value: inputEl.value,
-							});
 							if (props.errorMessage) {
-								validateInput(this);
+								Validation.validateInput(this);
+							} else {
+								this.setProps({
+									value: inputEl.value,
+								});
 							}
 						}
 						props.onBlur?.(e);
@@ -55,8 +56,12 @@ export class Input extends Block {
 		return InputTemplate;
 	}
 
-	get value() {
-		return this.props.value;
+	get value(): string {
+		const inputEl = this.getContent().querySelector('input');
+		if (inputEl instanceof HTMLInputElement) {
+			return inputEl.value;
+		}
+		return '';
 	}
 
 	get name() {

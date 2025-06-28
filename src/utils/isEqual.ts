@@ -1,20 +1,24 @@
-export function isEqual(obj1: any, obj2: any) {
-	if (obj1 === obj2) return true;
+export function isEqual(a: unknown, b: unknown): boolean {
+	if (a === b) return true;
 
-	if (obj1 == null || typeof obj1 !== 'object' || obj2 == null || typeof obj2 !== 'object') {
+	if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
 		return false;
 	}
 
-	if (Array.isArray(obj1) !== Array.isArray(obj2)) return false;
+	if (Array.isArray(a) !== Array.isArray(b)) return false;
 
-	const keysA = Object.keys(obj1);
-	const keysB = Object.keys(obj2);
+	const keysA = Object.keys(a as object);
+	const keysB = Object.keys(b as object);
 
 	if (keysA.length !== keysB.length) return false;
 
 	for (const key of keysA) {
 		if (!keysB.includes(key)) return false;
-		if (!isEqual(obj1[key], obj2[key])) return false;
+
+		const valA = (a as Record<string, unknown>)[key];
+		const valB = (b as Record<string, unknown>)[key];
+
+		if (!isEqual(valA, valB)) return false;
 	}
 
 	return true;

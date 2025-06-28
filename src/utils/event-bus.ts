@@ -1,7 +1,7 @@
 export type EventCallback = (...args: unknown[]) => void;
 
 export default class EventBus {
-	private listeners: Record<string, EventCallback[]>;
+	private readonly listeners: Record<string, EventCallback[]>;
 
 	constructor() {
 		this.listeners = {};

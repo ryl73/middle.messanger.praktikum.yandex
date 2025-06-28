@@ -9,25 +9,16 @@ import { InfoField } from '@/components/InfoField/InfoField.ts';
 import { Link } from '@/components/Link/Link.ts';
 import { Header } from '@/components/Header/Header.ts';
 import Form from '@/components/Form/Form.ts';
-
-type ProfilePageProps = {
-	email: string;
-	login: string;
-	firstName: string;
-	secondName: string;
-	displayName: string;
-	phone: string;
-	avatar?: string;
-};
+import type { User } from '@/types/user.ts';
 
 export default class ProfilePage extends Block {
-	constructor(props: ProfilePageProps) {
+	constructor(props: User) {
 		const INITIAL_VALUE_MAP: Record<string, string> = {
 			email: props.email,
 			login: props.login,
-			first_name: props.firstName,
-			second_name: props.secondName,
-			display_name: props.displayName,
+			first_name: props.first_name,
+			second_name: props.second_name,
+			display_name: props.display_name,
 			phone: props.phone,
 		};
 
@@ -49,21 +40,21 @@ export default class ProfilePage extends Block {
 			name: 'first_name',
 			label: 'Имя',
 			errorMessage: 'Неверное имя',
-			value: props.firstName,
+			value: props.first_name,
 		});
 
 		const SecondNameInput = new Input({
 			name: 'second_name',
 			label: 'Фамилия',
 			errorMessage: 'Неверная фамилия',
-			value: props.secondName,
+			value: props.second_name,
 		});
 
 		const DisplayNameInput = new Input({
 			name: 'display_name',
 			label: 'Имя в чате',
 			errorMessage: 'Неверное имя',
-			value: props.displayName,
+			value: props.display_name,
 		});
 
 		const PhoneInput = new Input({
@@ -220,15 +211,15 @@ export default class ProfilePage extends Block {
 			}),
 			InfoFieldFirstName: new InfoField({
 				label: 'Имя',
-				value: props.firstName,
+				value: props.first_name,
 			}),
 			InfoFieldSecondName: new InfoField({
 				label: 'Фамилия',
-				value: props.secondName,
+				value: props.second_name,
 			}),
 			InfoFieldDisplayName: new InfoField({
 				label: 'Имя в чате',
-				value: props.displayName,
+				value: props.display_name,
 			}),
 			InfoFieldPhone: new InfoField({
 				label: 'Телефон',

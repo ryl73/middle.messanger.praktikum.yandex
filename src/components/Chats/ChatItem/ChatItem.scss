@@ -1,5 +1,5 @@
-@use '../../styles/utils/variables' as *;
-@use '../../styles/utils/mixins' as *;
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
 
 .chat-item {
 	display: flex;
@@ -11,41 +11,6 @@
 
 	@include hover {
 		background-color: $blue02;
-	}
-
-	&.active {
-		color: $white;
-		background-color: $blue;
-
-		.chat-item__content__last-message {
-			color: $white;
-
-			&__author {
-				color: $white;
-			}
-		}
-
-		.chat-item__info__time {
-			color: $white;
-		}
-
-		.chat-item__info__badge {
-			background-color: $spanishgray;
-		}
-	}
-
-	&__avatar {
-		flex: none;
-		width: 56px;
-		height: 56px;
-		border-radius: 50%;
-
-		&--default {
-			width: 100%;
-			height: 100%;
-			background-color: $brightgray;
-			border-radius: 50%;
-		}
 	}
 
 	&__content {
@@ -107,6 +72,41 @@
 			transition: background-color $transition-duration $transition-function;
 
 			@include set-font(14px, 22px);
+		}
+	}
+
+	&.active {
+		color: $white;
+		background-color: $blue;
+
+		.chat-item__content__last-message {
+			color: $white;
+
+			&__author {
+				color: $white;
+			}
+		}
+
+		.chat-item__info__time {
+			color: $white;
+		}
+
+		.chat-item__info__badge {
+			background-color: $spanishgray;
+		}
+	}
+
+	&__avatar {
+		flex: none;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+
+		&--default {
+			width: 100%;
+			height: 100%;
+			background-color: $brightgray;
+			border-radius: 50%;
 		}
 	}
 }

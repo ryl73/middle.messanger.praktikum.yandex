@@ -1,9 +1,9 @@
 import Block from '@/services/Block.ts';
 import MainTemplate from './main.hbs?raw';
 import { Header } from '@/components/Header/Header.ts';
-import ChatsAside from '@/components/ChatsAside/ChatsAside.ts';
+import ChatsAside from '@/components/Chats/ChatsAside/ChatsAside.ts';
 import CHAT_LIST from '@/mocks/chatList.ts';
-import ChatsMain from '@/components/ChatsMain/ChatsMain.ts';
+import ChatsMain from '@/components/Chats/ChatsMain/ChatsMain.ts';
 
 export default class MainPage extends Block {
 	constructor() {

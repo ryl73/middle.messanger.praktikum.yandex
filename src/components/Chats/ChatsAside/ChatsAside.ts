@@ -1,14 +1,14 @@
 import Block from '@/services/Block.ts';
 import ChatsAsideTemplate from './ChatsAside.hbs?raw';
-import ChatItem from '@/components/ChatItem/ChatItem.ts';
+import ChatItem from '@/components/Chats/ChatItem/ChatItem.ts';
 import { Avatar } from '@/components/Avatar/Avatar.ts';
 import { Input } from '@/components/Input/Input.ts';
 import type { ChatListItem, LastMessage } from '@/types/chat.ts';
 import { Button } from '@/components/Button/Button.ts';
 import { Modal } from '@/components/Modal/Modal.ts';
-import getStringFromUTC from '@/utils/getStringFromUTC.ts';
+import { getTime } from '@/utils/getTime.ts';
 import Form from '@/components/Form/Form.ts';
-import type ChatsMain from '@/components/ChatsMain/ChatsMain.ts';
+import type ChatsMain from '@/components/Chats/ChatsMain/ChatsMain.ts';
 
 type MainAsideProps = {
 	avatarSrc?: string;
@@ -39,7 +39,7 @@ export default class ChatsAside extends Block {
 				unreadCount: chat.unread_count > 0 ? chat.unread_count : undefined,
 				lastMessageContent: getLastMessageContent(chat.last_message),
 				lastMessageAuthor: undefined,
-				time: getStringFromUTC(chat.last_message.time),
+				time: getTime(chat.last_message.time),
 				onClick: () => {
 					ChatList.forEach((chat) => {
 						chat.setProps({
@@ -88,6 +88,9 @@ export default class ChatsAside extends Block {
 			onClose: () => {
 				ChatNameInput.setProps({
 					value: '',
+				});
+				ChatAddForm.buttonSubmitEl.setProps({
+					disabled: true,
 				});
 			},
 		});

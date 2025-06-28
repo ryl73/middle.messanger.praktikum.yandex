@@ -1,8 +1,8 @@
 import Block from '@/services/Block.ts';
 import ChatMessageGroupTemplate from './ChatMessageGroup.hbs?raw';
-import ChatMessage from '@/components/ChatMessage/ChatMessage.ts';
+import ChatMessage from '@/components/Chats/ChatMessage/ChatMessage.ts';
 import type { Message } from '@/types/message.ts';
-import getStringFromUTC from '@/utils/getStringFromUTC.ts';
+import { getTimeStringFromUTC } from '@/utils/getTime.ts';
 
 type ChatMessageGroupProps = {
 	group: Record<string, Message[]>;
@@ -22,7 +22,7 @@ export default class ChatMessageGroup extends Block {
 			const ChatMessageItem = new ChatMessage({
 				content: message.content,
 				image: isImage(message.content),
-				time: getStringFromUTC(message.time),
+				time: getTimeStringFromUTC(message.time),
 				read: message.read,
 				outcome: message.outcome,
 			});

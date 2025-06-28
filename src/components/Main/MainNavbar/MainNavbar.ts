@@ -119,6 +119,9 @@ export default class MainNavbar extends Block {
 				ChatUserAddLoginInput.setProps({
 					value: '',
 				});
+				ChatUserAddForm.buttonSubmitEl.setProps({
+					disabled: true,
+				});
 			},
 		});
 
@@ -156,6 +159,9 @@ export default class MainNavbar extends Block {
 			onClose: () => {
 				ChatUserRemoveLoginInput.setProps({
 					value: '',
+				});
+				ChatUserRemoveForm.buttonSubmitEl.setProps({
+					disabled: true,
 				});
 			},
 		});

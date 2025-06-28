@@ -1,4 +1,5 @@
-import type Block from '@/services/Block.ts';
+import type { Input } from '@/components/Input/Input.ts';
+import type { FileInput } from '@/components/FileInput/FileInput.ts';
 
 export default class Validation {
 	static REGEX: Record<string, RegExp> = {
@@ -37,7 +38,7 @@ export default class Validation {
 		this.regex = Validation.REGEX[name];
 	}
 
-	public validate(instance: Block): boolean {
+	public validate(instance: Input): boolean {
 		let isValid;
 		if (this.regex) {
 			isValid = this.regex.test(this.value);
@@ -46,14 +47,36 @@ export default class Validation {
 		}
 		if (!isValid) {
 			instance.setProps({
+				value: this.value,
 				isError: true,
 			});
 			return false;
 		}
 
 		instance.setProps({
+			value: this.value,
 			isError: false,
 		});
 		return true;
+	}
+
+	static validateInput(input: Input | FileInput): boolean {
+		const validator = new Validation(input.value, input.name);
+		return validator.validate(input);
+	}
+	static validateForm(...inputs: (Input | FileInput)[]): boolean {
+		let isFormValid = true;
+
+		inputs.forEach((input) => {
+			if (input.isValidate) {
+				const isValid = this.validateInput(input);
+
+				if (!isValid) {
+					isFormValid = false;
+				}
+			}
+		});
+
+		return isFormValid;
 	}
 }

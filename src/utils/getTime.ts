@@ -1,4 +1,4 @@
-export default function getStringFromUTC(utcString: string): string {
+export function getTime(utcString: string): string {
 	const months = [
 		'Янв',
 		'Фев',
@@ -34,4 +34,9 @@ export default function getStringFromUTC(utcString: string): string {
 		const year = date.getFullYear();
 		return `${day}.${month}.${year}`;
 	}
+}
+
+export function getTimeStringFromUTC(utcString: string): string {
+	const date = new Date(utcString);
+	return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
 }

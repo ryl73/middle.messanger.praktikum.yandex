@@ -4,20 +4,27 @@ import Page500 from '@/pages/500';
 import Page404 from '@/pages/404';
 import ProfilePage from '@/pages/profile';
 import MainPage from '@/pages/main';
+import type { User } from '@/types/user.ts';
+
+export type AppState = {
+	currentPage: string;
+	userInfo: User;
+};
 
 export default class App {
 	appElement: HTMLDivElement;
-	state: any;
+	state: AppState;
 
 	constructor() {
 		this.state = {
 			currentPage: 'login',
 			userInfo: {
+				id: 1,
 				email: 'pochta@yandex.ru',
 				login: 'ivanivanov',
-				firstName: 'Иван',
-				secondName: 'Иванов',
-				displayName: 'Иван',
+				first_name: 'Иван',
+				second_name: 'Иванов',
+				display_name: 'Иван',
 				phone: '+79099673030',
 				avatar: null,
 			},

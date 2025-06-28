@@ -1,6 +1,5 @@
-@use '../../styles/utils/variables' as *;
-@use '../../styles/utils/mixins' as *;
-
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
 
 .chat-message-group {
 	&__title {
