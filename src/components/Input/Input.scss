@@ -4,49 +4,80 @@
 .input {
 	width: 100%;
 	padding: 8px 12px;
-	border-radius: 8px;
-	border: 1px solid $gainsboro;
 	outline: none;
-	transition: all $transition-duration $transition-function;
+	background-color: transparent;
+	border: 1px solid $gainsboro;
+	border-radius: 8px;
+	transition: border-color $transition-duration $transition-function;
+
 	@include set-font(14px, 20px);
 
 	@include hover {
-		&:not(&:focus) {
-			border: 1px solid $spanishgray;
+		&:not(&:focus, &.error) {
+			border-color: $spanishgray;
 		}
 	}
 
 	&:focus {
-		border: 1px solid $blue;
 		outline: none;
+		border-color: $blue;
+	}
+
+	&.error {
+		border-color: $red;
+	}
+
+	&.search {
+		padding: 8px 12px 8px 30px;
 	}
 
 	&__container {
+		position: relative;
 		display: inline-flex;
 		flex-direction: column;
 		gap: 4px;
-		position: relative;
-		margin-top: 16px;
+
+		&.with-label {
+			margin-top: 16px;
+		}
+
+		svg {
+			position: absolute;
+			top: 7px;
+			left: 6px;
+			width: 24px;
+			height: 24px;
+		}
 	}
 
 	&__label {
 		position: absolute;
 		top: 9px;
 		left: 13px;
-		@include set-font(14px, 20px);
 		color: $spanishgray;
-		transition: all $transition-function $transition-duration;
 		pointer-events: none;
+		user-select: none;
 		background: white;
+		transition: all $transition-function $transition-duration;
+
+		@include set-font(14px, 20px);
+
+		&_error {
+			color: $red;
+
+			@include set-font(12px, 12px);
+		}
 	}
 
 	&::placeholder {
 		color: $spanishgray;
+		user-select: none;
 	}
 
 	&__label:has(+ .input:focus),
 	&__label:has(+ .input:not(:placeholder-shown)) {
 		transform: translate(-13px, -25px);
+
 		@include set-font(12px, 12px);
 	}
 }

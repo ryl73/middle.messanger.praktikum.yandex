@@ -3,10 +3,11 @@
 
 .info-field {
 	display: flex;
-	justify-content: space-between;
 	gap: 32px;
-	border-bottom: 1px solid $brightgray;
+	justify-content: space-between;
 	padding: 12px 0;
+	border-bottom: 1px solid $brightgray;
+
 	@include set-font(16px, 20px);
 
 	&__value {

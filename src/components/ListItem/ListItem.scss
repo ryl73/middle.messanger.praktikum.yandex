@@ -1,0 +1,59 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.list-item {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	padding: 8px;
+	white-space: nowrap;
+	cursor: pointer;
+	user-select: none;
+	border-radius: 8px;
+	transition: all $transition-function $transition-duration;
+
+	@include hover {
+		color: $white;
+		background-color: $blue;
+
+		.list-item__icon svg {
+			color: $white;
+		}
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&__icon {
+		flex: none;
+		width: 24px;
+		height: 24px;
+
+		svg {
+			color: $blue;
+			transition: color $transition-function $transition-duration;
+		}
+	}
+
+	&.red {
+		color: $red;
+
+		@include hover {
+			color: $white;
+			background-color: $red;
+
+			.list-item__icon svg {
+				color: $white;
+			}
+		}
+
+		.list-item__icon svg {
+			color: $red;
+		}
+	}
+
+	&__label {
+		@include set-font(16px, 20px);
+	}
+}

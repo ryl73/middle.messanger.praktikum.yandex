@@ -22,7 +22,6 @@ export default defineConfig([
 			parser: tseslint.parser,
 		},
 		rules: {
-			// Disable rule for explicit any
 			'@typescript-eslint/no-explicit-any': 'off',
 		},
 		extends: [tseslint.configs.recommended],

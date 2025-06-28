@@ -1,0 +1,38 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.popover {
+	position: relative;
+	flex: none;
+
+	&__action {
+		width: 38px;
+		height: 38px;
+	}
+
+	&__dialog {
+		position: absolute;
+		z-index: 999;
+		padding: 8px;
+		border: none;
+		border-radius: 12px;
+		box-shadow: 0 0 6px $black02;
+
+		&.top {
+			bottom: 71px;
+		}
+
+		&.bottom {
+			top: 71px;
+		}
+
+		&.left {
+			left: 0;
+		}
+
+		&.right {
+			right: 0;
+			left: auto;
+		}
+	}
+}

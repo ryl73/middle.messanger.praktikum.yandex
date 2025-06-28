@@ -9,7 +9,10 @@
 		"preview": "vite preview",
 		"start": "npm run build && npm run preview",
 		"lint": "eslint",
-		"pretty": "prettier --write ."
+		"lint:fix": "eslint",
+		"lint:style": "stylelint \"**/*.{css,scss}\"",
+		"lint:style:fix": "stylelint \"**/*.{css,scss}\" --fix",
+		"prettier": "prettier --write ."
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.28.0",
@@ -20,6 +23,11 @@
 		"globals": "^16.2.0",
 		"prettier": "^3.5.3",
 		"sass": "^1.89.0",
+		"stylelint": "^16.20.0",
+		"stylelint-config-recess-order": "^6.0.0",
+		"stylelint-config-standard": "^38.0.0",
+		"stylelint-config-standard-scss": "^15.0.1",
+		"stylelint-order": "^6.0.4",
 		"typescript": "~5.8.3",
 		"typescript-eslint": "^8.33.1",
 		"vite": "^6.3.5"

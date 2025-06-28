@@ -1,5 +1,10 @@
-<dialog id="{{id}}" class="modal">
-    <div class="modal__content">
-        {{> @partial-block}}
+<dialog class="modal {{ modifier }}">
+    <div class="modal__container">
+		{{#if title}}
+			<h2 class="fs-h2">{{ title }}</h2>
+		{{/if}}
+		<div class="modal__content">
+			{{{ slot }}}
+		</div>
     </div>
 </dialog>

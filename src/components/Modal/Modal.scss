@@ -3,29 +3,46 @@
 
 .modal {
 	position: fixed;
-	left: 50%;
 	top: 50%;
-	transform: translate(-50%, -50%);
+	left: 50%;
 	z-index: 999;
+	min-width: 340px;
 	border: none;
 	border-radius: 12px;
 	box-shadow: 0 0 6px $black02;
-	min-width: 340px;
+	transform: translate(-50%, -50%);
+
+	h2 {
+		margin-bottom: 48px;
+		text-align: center;
+	}
 
 	&::backdrop {
 		background: #0000001a;
 		backdrop-filter: blur(10px);
 	}
 
+	&__container {
+		padding: 32px;
+	}
+
 	&__content {
 		display: flex;
 		flex-direction: column;
+		gap: 16px;
 		align-items: center;
-		padding: 32px;
-		gap: 64px;
 
 		.button {
 			width: 100%;
 		}
+
+		.input__container {
+			width: 100%;
+			margin-top: 0;
+		}
+	}
+
+	&.small {
+		max-width: 400px;
 	}
 }
