@@ -1,0 +1,18 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.link {
+	color: $blue;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition: opacity $transition-duration $transition-function;
+
+	&.red {
+		color: $red;
+	}
+
+	@include hover {
+		opacity: 0.8;
+	}
+}

@@ -5,33 +5,33 @@
 	display: flex;
 	flex-direction: column;
 	gap: 32px;
-	padding: 32px 0;
 	max-width: 640px;
+	padding: 32px 0;
 	margin: 0 auto;
 
 	&__header {
 		display: flex;
 		flex-direction: column;
+		gap: 16px;
 		align-items: center;
 		width: 100%;
-		gap: 16px;
 	}
 
 	&__content {
-		display: flex;
-		flex-direction: column;
-		gap: 32px;
 		position: absolute;
 		top: 0;
 		left: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
 		width: 100%;
 		opacity: 0;
 		transition: opacity $transition-duration $transition-function;
 
 		&.active {
-			opacity: 1;
-			z-index: 2;
 			position: relative;
+			z-index: 2;
+			opacity: 1;
 		}
 
 		&__container {
@@ -52,12 +52,17 @@
 		display: flex;
 		flex-direction: column;
 
+		&.gapped {
+			gap: 12px;
+		}
+
 		&__control {
 			display: flex;
-			justify-content: space-between;
 			gap: 32px;
-			border-bottom: 1px solid $brightgray;
+			justify-content: space-between;
 			padding: 12px 0;
+			border-bottom: 1px solid $brightgray;
+
 			@include set-font(16px, 20px);
 
 			&:last-child {

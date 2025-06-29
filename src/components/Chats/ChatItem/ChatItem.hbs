@@ -1,0 +1,26 @@
+<a class="chat-item{{#if active }} active{{/if}}">
+	<div class="chat-item__avatar">
+		{{#if avatar }}
+			<img src="{{ avatar }}"  alt="avatar"/>
+		{{else}}
+			<div class="chat-item__avatar--default"></div>
+		{{/if}}
+	</div>
+	<div class="chat-item__content">
+		<div class="chat-item__content__item">
+			<span class="fs-default-bold">{{ title }}</span>
+			<span class="chat-item__info__time">{{ time }}</span>
+		</div>
+		<div class="chat-item__content__item">
+			<div class="chat-item__content__last-message">
+				{{#if lastMessageAuthor }}
+					<span class="chat-item__content__last-message__author">{{ lastMessageAuthor }}:</span>
+				{{/if}}
+				<span>{{ lastMessageContent }}</span>
+			</div>
+			{{#if unreadCount }}
+				<div class="chat-item__info__badge">{{ unreadCount }}</div>
+			{{/if}}
+		</div>
+	</div>
+</a>

@@ -1,75 +1,47 @@
 <div class="page profile-page">
-    {{> Header}}
+    {{{ Header }}}
     <div class="container flex">
         <aside class="profile-page__back-section">
             <a class="link" data-page="main">
-                {{#> Button modifier="round"}}
-                    {{#*inline "icon" }}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    {{/inline}}
-                {{/Button}}
+				{{{ ButtonBack }}}
             </a>
         </aside>
         <main class="container profile-page__main-section">
             <section class="profile">
                 <div class="profile__header">
-                    {{> Avatar
-                            src="/media/images/avatar-default.png"
-                            size="130"
-                            hoverText="Поменять аватар"
-                            modalId="avatar"
-                    }}
+                    {{{ AvatarComponent }}}
                     <h2 class="fs-h2">{{displayName}}</h2>
                 </div>
                 <div class="profile__content__container">
                     <div class="profile__content info active">
                         <div class="profile__content__fields">
-                            {{> InfoField label="Почта" value=email }}
-                            {{> InfoField label="Логин" value=login }}
-                            {{> InfoField label="Имя" value=firstName }}
-                            {{> InfoField label="Фамилия" value=secondName }}
-                            {{> InfoField label="Имя в чате" value=displayName }}
-                            {{> InfoField label="Телефон" value=phone }}
+                            {{{ InfoFieldEmail }}}
+                            {{{ InfoFieldLogin }}}
+                            {{{ InfoFieldFirstName }}}
+                            {{{ InfoFieldSecondName }}}
+                            {{{ InfoFieldDisplayName }}}
+                            {{{ InfoFieldPhone }}}
                         </div>
                         <div class="profile__controls">
                             <div class="profile__controls__control">
-                                <a id="change-data" class="link fs-default-bold">Изменить данные</a>
+                                {{{ LinkChangeInfo }}}
                             </div>
                             <div class="profile__controls__control">
-                                <a id="change-password" class="link fs-default-bold">Изменить пароль</a>
+								{{{ LinkChangePassword }}}
                             </div>
                             <div class="profile__controls__control">
-                                <a class="link fs-default-bold red" data-page="login">Выйти</a>
+								{{{ LinkLogout }}}
                             </div>
                         </div>
                     </div>
 
-                    <form class="profile__content edit">
-                        <div class="profile__content__fields inputs">
-                            {{> Input name="email" label="Почта" value=email}}
-                            {{> Input name="login" label="Логин" value=login}}
-                            {{> Input name="first_name" label="Имя" value=firstName}}
-                            {{> Input name="second_name" label="Фамилия" value=secondName}}
-                            {{> Input name="display_name" label="Имя в чате" value=displayName}}
-                            {{> Input name="phone" label="Телефон" value=phone}}
-                        </div>
-                        <div class="profile__controls">
-                            {{> Button id="save-data" label="Сохранить" type="submit"}}
-                        </div>
-                    </form>
+                    <div class="profile__content edit">
+                        {{{ ProfileEditForm }}}
+                    </div>
 
-                    <form class="profile__content edit-password">
-                        <div class="profile__content__fields inputs">
-                            {{> Input name="oldPassword" type="password" label="Старый пароль"}}
-                            {{> Input name="newPassword" type="password" label="Новый пароль"}}
-                            {{> Input name="newPassword_repeat" type="password" label="Повторите новый пароль"}}
-                        </div>
-                        <div class="profile__controls">
-                            {{> Button id="save-password" label="Сохранить" type="submit"}}
-                        </div>
-                    </form>
+                    <div class="profile__content edit-password">
+						{{{ PasswordEditForm }}}
+                    </div>
                 </div>
             </section>
         </main>

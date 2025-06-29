@@ -5,17 +5,19 @@
 */
 
 // Основные
-$black: #000000;
-$black02: rgba(0, 0, 0, 0.2);
+$black: #000;
+$black02: rgb(0 0 0 / 20%);
 $white: #fff;
 $red: #e0281b;
 $blue: #3369f3;
+$blue02: rgb(51 105 243 / 20%);
 
 // Дополнительные
-$spanishgray: #999999;
+$spanishgray: #999;
 $gainsboro: #d5d9e0;
 $brightgray: #eaeaea;
 $lotion: #fbfbfb;
+$lavender: #e4edfd;
 
 /*
   Fonts
@@ -24,9 +26,7 @@ $lotion: #fbfbfb;
 $fs-base: 16px;
 $lh-base: 20px;
 $font-family-default: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;";
-
 $font-family-primary: 'Golos';
-
 $font-family-primary: $font-family-primary, $font-family-default;
 
 /*
@@ -35,5 +35,4 @@ $font-family-primary: $font-family-primary, $font-family-default;
 
 $transition-duration: 300ms;
 $transition-function: ease-in-out;
-
 $container-width: 1620px;

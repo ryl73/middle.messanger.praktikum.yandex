@@ -1,5 +1,7 @@
 @font-face {
 	font-family: Golos;
+	font-style: normal;
+	font-weight: normal;
 	src: url('/media/fonts/Golos/Regular/GolosText_Regular.eot');
 	src:
 		url('/media/fonts/Golos/Regular/GolosText_Regular.eot?#iefix') format('embedded-opentype'),
@@ -8,14 +10,13 @@
 		url('/media/fonts/Golos/Regular/GolosText-Regular.svg#GolosText-Regular') format('svg'),
 		url('/media/fonts/Golos/Regular/GolosText-Regular.ttf') format('truetype'),
 		url('/media/fonts/Golos/Regular/GolosText-Regular.woff') format('woff');
-
-	font-weight: normal;
-	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
 	font-family: Golos;
+	font-style: normal;
+	font-weight: 500;
 	src: url('/media/fonts/Golos/Medium/GolosText_Medium.eot');
 	src:
 		url('/media/fonts/Golos/Medium/GolosText_Medium.eot?#iefix') format('embedded-opentype'),
@@ -24,14 +25,13 @@
 		url('/media/fonts/Golos/Medium/GolosText-Medium.svg#GolosText-Medium') format('svg'),
 		url('/media/fonts/Golos/Medium/GolosText-Medium.ttf') format('truetype'),
 		url('/media/fonts/Golos/Medium/GolosText-Medium.woff') format('woff');
-
-	font-weight: 500;
-	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
 	font-family: Golos;
+	font-style: normal;
+	font-weight: 600;
 	src: url('/media/fonts/Golos/DemiBold/GolosText_DemiBold.eot');
 	src:
 		url('/media/fonts/Golos/DemiBold/GolosText_DemiBold.eot?#iefix') format('embedded-opentype'),
@@ -40,8 +40,5 @@
 		url('/media/fonts/Golos/DemiBold/GolosText-DemiBold.svg#GolosText-DemiBold') format('svg'),
 		url('/media/fonts/Golos/DemiBold/GolosText-DemiBold.ttf') format('truetype'),
 		url('/media/fonts/Golos/DemiBold/GolosText-DemiBold.woff') format('woff');
-
-	font-weight: 600;
-	font-style: normal;
 	font-display: swap;
 }

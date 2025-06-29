@@ -1,74 +1,84 @@
-import Handlebars from 'handlebars';
-import * as Pages from './pages';
-import initModal from './components/Modal/Modal.ts';
+import LoginPage from '@/pages/login';
+import RegistrationPage from '@/pages/registration';
+import Page500 from '@/pages/500';
+import Page404 from '@/pages/404';
+import ProfilePage from '@/pages/profile';
+import MainPage from '@/pages/main';
+import type { User } from '@/types/user.ts';
 
-import Button from './components/Button/Button.hbs?raw';
-import Avatar from './components/Avatar/Avatar.hbs?raw';
-import Card from './components/Card/Card.hbs?raw';
-import InfoField from './components/InfoField/InfoField.hbs?raw';
-import Input from './components/Input/Input.hbs?raw';
-import FileInput from './components/FileInput/FileInput.hbs?raw';
-import Modal from './components/Modal/Modal.hbs?raw';
-import Header from './components/Header/Header.hbs?raw';
-
-Handlebars.registerPartial('Button', Button);
-Handlebars.registerPartial('Avatar', Avatar);
-Handlebars.registerPartial('Card', Card);
-Handlebars.registerPartial('InfoField', InfoField);
-Handlebars.registerPartial('Input', Input);
-Handlebars.registerPartial('FileInput', FileInput);
-Handlebars.registerPartial('Modal', Modal);
-Handlebars.registerPartial('Header', Header);
+export type AppState = {
+	currentPage: string;
+	userInfo: User;
+};
 
 export default class App {
 	appElement: HTMLDivElement;
-	state: any;
+	state: AppState;
 
 	constructor() {
 		this.state = {
 			currentPage: 'login',
 			userInfo: {
+				id: 1,
 				email: 'pochta@yandex.ru',
 				login: 'ivanivanov',
-				firstName: 'Иван',
-				secondName: 'Иванов',
-				displayName: 'Иван',
-				phone: '+7 (909) 967 30 30',
+				first_name: 'Иван',
+				second_name: 'Иванов',
+				display_name: 'Иван',
+				phone: '+79099673030',
+				avatar: null,
 			},
 		};
 		this.appElement = document.getElementById('app') as HTMLDivElement;
 	}
 
 	render() {
-		let template: HandlebarsTemplateDelegate;
 		if (this.state.currentPage === 'login') {
-			template = Handlebars.compile(Pages.Login);
-			this.appElement.innerHTML = template({});
+			const loginPage = new LoginPage();
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(loginPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(loginPage.getContent());
+			}
 		} else if (this.state.currentPage === 'registration') {
-			template = Handlebars.compile(Pages.Registration);
-			this.appElement.innerHTML = template({});
+			const registrationPage = new RegistrationPage();
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(registrationPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(registrationPage.getContent());
+			}
 		} else if (this.state.currentPage === 'profile') {
-			template = Handlebars.compile(Pages.Profile);
-			this.appElement.innerHTML = template({
-				email: this.state.userInfo.email,
-				login: this.state.userInfo.login,
-				firstName: this.state.userInfo.firstName,
-				secondName: this.state.userInfo.secondName,
-				displayName: this.state.userInfo.displayName,
-				phone: this.state.userInfo.phone,
-			});
+			const loginPage = new ProfilePage(this.state.userInfo);
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(loginPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(loginPage.getContent());
+			}
 		} else if (this.state.currentPage === 'main') {
-			template = Handlebars.compile(Pages.Main);
-			this.appElement.innerHTML = template({});
+			const mainPage = new MainPage();
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(mainPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(mainPage.getContent());
+			}
 		} else if (this.state.currentPage === '500') {
-			template = Handlebars.compile(Pages.NotResponding);
-			this.appElement.innerHTML = template({});
+			const loginPage = new Page500();
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(loginPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(loginPage.getContent());
+			}
 		} else {
-			template = Handlebars.compile(Pages.NotFound);
-			this.appElement.innerHTML = template({});
+			const loginPage = new Page404();
+			if (!this.appElement.firstElementChild) {
+				this.appElement.appendChild(loginPage.getContent());
+			} else {
+				this.appElement.firstElementChild.replaceWith(loginPage.getContent());
+			}
 		}
-
 		this.attachEventListeners();
+
+		return '';
 	}
 
 	attachEventListeners() {
@@ -76,33 +86,12 @@ export default class App {
 		links.forEach((link) => {
 			link.addEventListener('click', (e) => {
 				e.preventDefault();
-				const target = e.target;
+				const target = e.currentTarget;
 				if (target && target instanceof HTMLElement) {
 					this.changePage(target.dataset.page as string);
 				}
 			});
 		});
-
-		const profileContent = document.querySelectorAll('.profile__content');
-
-		const changeDataButton = document.getElementById('change-data');
-		const changePasswordButton = document.getElementById('change-password');
-		const saveDataButton = document.getElementById('save-data');
-		const savePasswordButton = document.getElementById('save-password');
-
-		changeDataButton?.addEventListener('click', () => this.setActiveFrame(profileContent, 1));
-		changePasswordButton?.addEventListener('click', () =>
-			this.setActiveFrame(profileContent, 2)
-		);
-		saveDataButton?.addEventListener('click', () => this.setActiveFrame(profileContent, 0));
-		savePasswordButton?.addEventListener('click', () => this.setActiveFrame(profileContent, 0));
-
-		initModal();
-	}
-
-	setActiveFrame(elements: NodeListOf<Element>, index: number) {
-		elements.forEach((elem) => elem.classList.remove('active'));
-		elements[index].classList.add('active');
 	}
 
 	changePage(page: string) {
