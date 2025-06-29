@@ -9,7 +9,7 @@ type PopoverProps = {
 	onClose?: () => void;
 };
 
-export default class Popover extends Block {
+export default class Popover extends Block<PopoverProps> {
 	dialog: HTMLDialogElement | null = null;
 	action?: Element | null = null;
 	private readonly boundHandleModalClick: EventListener;

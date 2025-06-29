@@ -9,7 +9,7 @@ export type ModalProps = {
 	onClose?: (e: Event) => void;
 };
 
-export class Modal extends Block {
+export class Modal extends Block<ModalProps> {
 	constructor(props: ModalProps) {
 		super({
 			...props,

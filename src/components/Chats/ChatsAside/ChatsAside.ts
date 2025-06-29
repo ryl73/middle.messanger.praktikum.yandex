@@ -14,10 +14,15 @@ type MainAsideProps = {
 	avatarSrc: string | null;
 	chatList: ChatListItem[];
 	main: ChatsMain;
+	ChatList: ChatItem[];
+	Avatar: Avatar;
+	SearchInput: Input;
+	ButtonChatAdd: Button;
+	ChatAddModal: Modal;
 };
 
-export default class ChatsAside extends Block {
-	constructor(props: MainAsideProps) {
+export default class ChatsAside extends Block<MainAsideProps> {
+	constructor(props: Partial<MainAsideProps>) {
 		const ChatList: ChatItem[] = [];
 
 		function getLastMessageContent(lastMessage: LastMessage): string {
@@ -32,7 +37,7 @@ export default class ChatsAside extends Block {
 			return lastMessage.content;
 		}
 
-		props.chatList.forEach((chat) => {
+		props.chatList?.forEach((chat) => {
 			const Chat = new ChatItem({
 				avatar: chat.avatar,
 				title: chat.title,
@@ -46,7 +51,7 @@ export default class ChatsAside extends Block {
 							active: false,
 						});
 					});
-					props.main.setProps({
+					props.main?.setProps({
 						selectedChat: chat.id,
 					});
 				},
@@ -99,7 +104,7 @@ export default class ChatsAside extends Block {
 			avatarSrc: props.avatarSrc,
 			ChatList,
 			Avatar: new Avatar({
-				src: props.avatarSrc,
+				src: props.avatarSrc!,
 				onClick: (e) => {
 					console.log(e);
 				},

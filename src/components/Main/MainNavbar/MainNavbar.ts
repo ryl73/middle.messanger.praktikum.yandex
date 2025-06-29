@@ -11,10 +11,14 @@ import { Link } from '@/components/Link/Link.ts';
 type MainNavbarProps = {
 	avatar: string | null;
 	title: string;
+	ChatSettingsPopover: Popover;
+	ChatRemoveModal: Modal;
+	ChatUserRemoveModal: Modal;
+	ChatUserAddModal: Modal;
 };
 
-export default class MainNavbar extends Block {
-	constructor(props: MainNavbarProps) {
+export default class MainNavbar extends Block<MainNavbarProps> {
+	constructor(props: Partial<MainNavbarProps>) {
 		const settingsListItems: ListItemProps[] = [
 			{
 				icon: `
