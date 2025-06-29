@@ -1,12 +1,12 @@
 import Block from '@/services/Block.ts';
 import FormTemplate from './Form.hbs?raw';
-import type { Input } from '@/components/Input/Input.ts';
+import { Input } from '@/components/Input/Input.ts';
 import { Link, type LinkProps } from '@/components/Link/Link.ts';
 import { Button, type ButtonProps } from '@/components/Button/Button.ts';
 import type { FileInput } from '@/components/FileInput/FileInput.ts';
 import Validation from '@/services/Validation.ts';
 
-type FromProps = {
+type FormProps = {
 	InputList: (Input | FileInput)[];
 	cancelProps?: Partial<LinkProps>;
 	submitProps?: Partial<ButtonProps>;
@@ -14,14 +14,16 @@ type FromProps = {
 	initialValues?: string | Record<string, string>;
 	removeList?: string[];
 	noCancel?: boolean;
+	LinkCancel: Link;
+	ButtonSubmit: Button;
 	onCancel?: () => void;
 	onSubmit?: () => void;
 };
 
-export default class Form extends Block {
+export default class Form extends Block<FormProps> {
 	public buttonSubmitEl: Button;
 
-	constructor({ initialValues = '', removeList = [], ...props }: FromProps) {
+	constructor({ initialValues = '', removeList = [], ...props }: Partial<FormProps>) {
 		const ButtonSubmit = new Button({
 			label: props.submitProps?.label || 'Сохранить',
 			type: 'submit',
@@ -36,14 +38,16 @@ export default class Form extends Block {
 						font: 'fs-p-bold',
 						...props.cancelProps,
 						onClick: () => {
-							props.InputList.forEach((input) => {
-								input.setProps({
-									value:
-										typeof initialValues === 'object'
-											? initialValues[input.name]
-											: initialValues,
-									isError: false,
-								});
+							props.InputList?.forEach((input) => {
+								if (input instanceof Input) {
+									input.setProps({
+										value:
+											typeof initialValues === 'object'
+												? initialValues[input.name]
+												: initialValues,
+										isError: false,
+									});
+								}
 							});
 							props.onCancel?.();
 						},
@@ -51,9 +55,11 @@ export default class Form extends Block {
 			ButtonSubmit,
 			events: {
 				root: {
-					submit: (e: SubmitEvent) => {
+					submit: (e: Event) => {
 						e.preventDefault();
-						const isFormValid = Validation.validateForm(...props.InputList);
+						const isFormValid = Validation.validateForm(
+							...(props.InputList as Input[])
+						);
 						if (!isFormValid) return;
 
 						const target = e.target;

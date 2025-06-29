@@ -12,7 +12,7 @@ export type ChatItemProps = {
 	onClick?: (e: Event) => void;
 };
 
-export default class ChatItem extends Block {
+export default class ChatItem extends Block<ChatItemProps> {
 	constructor({ active = false, ...props }: ChatItemProps) {
 		super({
 			...props,

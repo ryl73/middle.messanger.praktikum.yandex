@@ -1,5 +1,4 @@
 import type { Input } from '@/components/Input/Input.ts';
-import type { FileInput } from '@/components/FileInput/FileInput.ts';
 
 export default class Validation {
 	static REGEX: Record<string, RegExp> = {
@@ -60,11 +59,11 @@ export default class Validation {
 		return true;
 	}
 
-	static validateInput(input: Input | FileInput): boolean {
+	static validateInput(input: Input): boolean {
 		const validator = new Validation(input.value, input.name);
 		return validator.validate(input);
 	}
-	static validateForm(...inputs: (Input | FileInput)[]): boolean {
+	static validateForm(...inputs: Input[]): boolean {
 		let isFormValid = true;
 
 		inputs.forEach((input) => {

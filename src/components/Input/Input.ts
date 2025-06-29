@@ -16,7 +16,7 @@ export type InputProps = {
 	onInput?: (value: string) => void;
 };
 
-export class Input extends Block {
+export class Input extends Block<InputProps> {
 	constructor({ value = '', ...props }: InputProps) {
 		super({
 			...props,

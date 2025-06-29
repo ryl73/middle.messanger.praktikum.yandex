@@ -10,7 +10,7 @@ export type FileInputProps = {
 	onChange?: (e: FileList | null) => void;
 };
 
-export class FileInput extends Block {
+export class FileInput extends Block<FileInputProps> {
 	constructor(props: FileInputProps) {
 		super({
 			...props,

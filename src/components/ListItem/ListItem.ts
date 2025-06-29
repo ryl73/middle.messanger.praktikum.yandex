@@ -8,7 +8,7 @@ export type ListItemProps = {
 	onClick?: (e: Event) => void;
 };
 
-export default class ListItem extends Block {
+export default class ListItem extends Block<ListItemProps> {
 	constructor(props: ListItemProps) {
 		super({
 			...props,

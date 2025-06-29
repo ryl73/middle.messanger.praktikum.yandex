@@ -94,7 +94,7 @@ export default class MainSearchbar extends Block {
 			ButtonSendMessage,
 			events: {
 				root: {
-					submit: (e: SubmitEvent) => {
+					submit: (e: Event) => {
 						e.preventDefault();
 
 						const target = e.target;

@@ -9,7 +9,7 @@ type ChatMessageProps = {
 	image?: boolean;
 };
 
-export default class ChatMessage extends Block {
+export default class ChatMessage extends Block<ChatMessageProps> {
 	constructor(props: ChatMessageProps) {
 		super({
 			...props,

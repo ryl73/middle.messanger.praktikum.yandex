@@ -8,10 +8,13 @@ type ChatsMainProps = {
 	avatar: string | null;
 	title: string;
 	selectedChat?: number | null;
+	ChatMessageGroupList: ChatMessageGroup[];
+	MainNavbar: MainNavbar;
+	MainSearchbar: MainSearchbar;
 };
 
-export default class ChatsMain extends Block {
-	constructor(props: ChatsMainProps) {
+export default class ChatsMain extends Block<ChatsMainProps> {
+	constructor(props: Partial<ChatsMainProps>) {
 		const ChatMessageGroupList = [
 			new ChatMessageGroup({
 				group: {
@@ -50,8 +53,8 @@ export default class ChatsMain extends Block {
 			...props,
 			ChatMessageGroupList,
 			MainNavbar: new MainNavbar({
-				avatar: props.avatar,
-				title: props.title,
+				avatar: props.avatar!,
+				title: props.title!,
 			}),
 			MainSearchbar: new MainSearchbar(),
 		});

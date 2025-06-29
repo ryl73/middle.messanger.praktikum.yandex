@@ -9,7 +9,7 @@ export type AvatarProps = {
 	onClick?: (e: Event) => void;
 };
 
-export class Avatar extends Block {
+export class Avatar extends Block<AvatarProps> {
 	static defaultAvatar = '/media/images/avatar-default.png';
 
 	constructor(props: AvatarProps) {
@@ -37,9 +37,5 @@ export class Avatar extends Block {
 				src: Avatar.defaultAvatar,
 			});
 		}
-	}
-
-	get modal(): Modal {
-		return this.props.Modal;
 	}
 }

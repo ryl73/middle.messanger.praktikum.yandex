@@ -2,39 +2,42 @@ import EventBus, { type EventCallback } from '../utils/event-bus.ts';
 import Handlebars from 'handlebars';
 import isEqual from '@/utils/isEqual.ts';
 
-// Пропсы могут иметь любое значение
-type BlockProps = Record<string, any>;
+export type BlockEvents = Record<string, Record<string, EventListener>>;
 
-type BlockLists = Record<string, (Block | string)[]>;
+export type CommonBlockProps = {
+	attr?: Record<string, string>;
+	events?: BlockEvents;
+};
 
-export default class Block {
+export type BlockLists = Record<string, (Block<any> | string)[]>;
+
+export default abstract class Block<
+	Props extends Record<string, unknown> = Record<string, unknown>,
+> {
 	static EVENTS = {
 		INIT: 'init',
 		FLOW_CBM: 'flow:component-before-mount',
 		FLOW_CDM: 'flow:component-did-mount',
 		FLOW_CDU: 'flow:component-did-update',
 		FLOW_RENDER: 'flow:render',
-	};
+	} as const;
 
 	protected _element: HTMLElement | null = null;
-
 	protected _id: number = Math.floor(100000 + Math.random() * 900000);
 
-	protected props: BlockProps;
-
+	protected props: Props & CommonBlockProps;
 	protected children: Record<string, Block>;
-
 	protected lists: BlockLists;
-
 	protected eventBus: () => EventBus;
 
 	private _pendingPropsUpdate = false;
-	private _oldPropsSnapshot: BlockProps | null = null;
+	private _oldPropsSnapshot: (Props & CommonBlockProps) | null = null;
 
-	constructor(propsWithChildren: BlockProps = {}) {
+	protected constructor(propsWithChildren: Partial<Props & CommonBlockProps> = {}) {
 		const eventBus = new EventBus();
 		const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
-		this.props = this._makePropsProxy({ ...props });
+
+		this.props = this._makePropsProxy({ ...props }) as Props & CommonBlockProps;
 		this.children = children;
 		this.lists = this._makePropsProxy({ ...lists });
 		this.eventBus = () => eventBus;
@@ -43,25 +46,43 @@ export default class Block {
 	}
 
 	private _addEvents(): void {
-		const { events = {} } = this.props;
-		Object.keys(events).forEach((target) => {
+		const { events } = this.props;
+		if (!events) return;
+
+		for (const target in events) {
+			const eventMap = events[target];
 			if (target === 'root') {
-				Object.keys(events.root).forEach((eventName) => {
-					if (this._element) {
-						this._element.addEventListener(eventName, events.root[eventName]);
-					}
-				});
+				for (const eventName in eventMap) {
+					this._element?.addEventListener(eventName, eventMap[eventName]);
+				}
 			} else {
-				Object.keys(events[target]).forEach((eventName) => {
-					if (this._element) {
-						const targetEl = this._element.querySelector(target);
-						if (targetEl) {
-							targetEl.addEventListener(eventName, events[target][eventName]);
-						}
-					}
-				});
+				const targetEl = this._element?.querySelector(target);
+				if (!targetEl) continue;
+				for (const eventName in eventMap) {
+					targetEl.addEventListener(eventName, eventMap[eventName]);
+				}
 			}
-		});
+		}
+	}
+
+	private _removeEvents(): void {
+		const { events } = this.props;
+		if (!events) return;
+
+		for (const target in events) {
+			const eventMap = events[target];
+			if (target === 'root') {
+				for (const eventName in eventMap) {
+					this._element?.removeEventListener(eventName, eventMap[eventName]);
+				}
+			} else {
+				const targetEl = this._element?.querySelector(target);
+				if (!targetEl) continue;
+				for (const eventName in eventMap) {
+					targetEl.removeEventListener(eventName, eventMap[eventName]);
+				}
+			}
+		}
 	}
 
 	private _registerEvents(eventBus: EventBus): void {
@@ -98,15 +119,16 @@ export default class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_CBM);
 	}
 
-	private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): void {
+	private _componentDidUpdate(
+		oldProps: Props & CommonBlockProps,
+		newProps: Props & CommonBlockProps
+	): void {
 		const response = this.componentDidUpdate(oldProps, newProps);
-		if (!response) {
-			return;
-		}
+		if (!response) return;
 		this._render();
 	}
 
-	private _queuePropsUpdate(oldProps: BlockProps) {
+	private _queuePropsUpdate(oldProps: Props & CommonBlockProps): void {
 		if (!this._pendingPropsUpdate) {
 			this._pendingPropsUpdate = true;
 			this._oldPropsSnapshot = oldProps;
@@ -120,17 +142,20 @@ export default class Block {
 		}
 	}
 
-	protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
+	protected componentDidUpdate(
+		oldProps: Props & CommonBlockProps,
+		newProps: Props & CommonBlockProps
+	): boolean {
 		return !isEqual(oldProps, newProps);
 	}
 
-	private _getChildrenPropsAndProps(propsAndChildren: BlockProps): {
+	private _getChildrenPropsAndProps(propsAndChildren: Partial<Props & CommonBlockProps>): {
 		children: Record<string, Block>;
-		props: BlockProps;
+		props: Partial<Props & CommonBlockProps>;
 		lists: BlockLists;
 	} {
 		const children: Record<string, Block> = {};
-		const props: BlockProps = {};
+		const props: Partial<Props & CommonBlockProps> = {};
 		const lists: BlockLists = {};
 
 		Object.entries(propsAndChildren).forEach(([key, value]) => {
@@ -139,7 +164,7 @@ export default class Block {
 			} else if (Array.isArray(value)) {
 				lists[key] = value;
 			} else {
-				props[key] = value;
+				props[key as keyof (Props & CommonBlockProps)] = value;
 			}
 		});
 
@@ -147,37 +172,28 @@ export default class Block {
 	}
 
 	protected addAttributes(): void {
-		const { attr = {} } = this.props;
+		const { attr } = this.props;
+		if (!attr) return;
 
 		Object.entries(attr).forEach(([key, value]) => {
-			if (this._element) {
-				this._element.setAttribute(key, value as string);
-			}
+			this._element?.setAttribute(key, value);
 		});
 	}
 
 	protected setAttributes(attr: Record<string, string>): void {
 		Object.entries(attr).forEach(([key, value]) => {
-			if (this._element) {
-				this._element.setAttribute(key, value);
-			}
+			this._element?.setAttribute(key, value);
 		});
 	}
 
-	public setProps = (nextProps: BlockProps): void => {
-		if (!nextProps) {
-			return;
-		}
-
+	public setProps = (nextProps: Partial<Props>): void => {
+		if (!nextProps) return;
 		Object.assign(this.props, nextProps);
 	};
 
-	public setLists = (nextList: BlockLists): void => {
-		if (!nextList) {
-			return;
-		}
-
-		Object.assign(this.lists, nextList);
+	public setLists = (nextLists: Partial<BlockLists>): void => {
+		if (!nextLists) return;
+		Object.assign(this.lists, nextLists);
 	};
 
 	get element(): HTMLElement | null {
@@ -186,14 +202,17 @@ export default class Block {
 
 	protected _render(): void {
 		console.log('Render');
+		this._removeEvents();
+
 		const propsAndStubs = { ...this.props };
 		const tmpId = Math.floor(100000 + Math.random() * 900000);
+
 		Object.entries(this.children).forEach(([key, child]) => {
-			propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
+			propsAndStubs[key as keyof Props] = `<div data-id="${child._id}"></div>` as any;
 		});
 
 		Object.entries(this.lists).forEach(([key]) => {
-			propsAndStubs[key] = `<div data-id="__l_${tmpId}"></div>`;
+			propsAndStubs[key as keyof Props] = `<div data-id="__l_${tmpId}"></div>` as any;
 		});
 
 		const fragment = this._createDocumentElement('template');
@@ -201,9 +220,7 @@ export default class Block {
 
 		Object.values(this.children).forEach((child) => {
 			const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
-			if (stub) {
-				stub.replaceWith(child.getContent());
-			}
+			if (stub) stub.replaceWith(child.getContent());
 		});
 
 		Object.entries(this.lists).forEach(([, child]) => {
@@ -216,9 +233,7 @@ export default class Block {
 				}
 			});
 			const stub = fragment.content.querySelector(`[data-id="__l_${tmpId}"]`);
-			if (stub) {
-				stub.replaceWith(listCont.content);
-			}
+			if (stub) stub.replaceWith(listCont.content);
 		});
 
 		const newElement = fragment.content.firstElementChild as HTMLElement;
@@ -230,7 +245,6 @@ export default class Block {
 		this.addAttributes();
 	}
 
-	// Переопределяется пользователем. Необходимо вернуть разметку
 	public render(): string {
 		return '';
 	}
@@ -242,20 +256,18 @@ export default class Block {
 		return this._element;
 	}
 
-	private _makePropsProxy(props: BlockProps): BlockProps {
+	private _makePropsProxy<T extends object>(props: T): T {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const self = this;
-
 		return new Proxy(props, {
-			get(target: BlockProps, prop: string) {
-				const value = target[prop];
+			get(target, prop: string) {
+				const value = target[prop as keyof T];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target: BlockProps, prop: string, value: unknown) {
+			set(target, prop: string, value: any) {
 				const oldProps = { ...target };
-				target[prop] = value;
-
-				self._queuePropsUpdate(oldProps);
+				target[prop as keyof T] = value;
+				self._queuePropsUpdate(oldProps as unknown as Props & CommonBlockProps);
 				return true;
 			},
 			deleteProperty() {
