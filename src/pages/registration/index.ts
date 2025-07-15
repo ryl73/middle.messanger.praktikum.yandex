@@ -1,8 +1,10 @@
 import Block from '@/services/Block.ts';
 import Registration from './registration.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
-import { Header } from '@/components/Header/Header.ts';
 import Form from '@/components/Form/Form.ts';
+import router from '@/router/router.ts';
+import AuthController from '@/controllers/AuthController.ts';
+import type { SignupRequestData } from '@/api/AuthAPI.ts';
 
 export default class RegistrationPage extends Block {
 	constructor() {
@@ -50,7 +52,7 @@ export default class RegistrationPage extends Block {
 			errorMessage: 'Пароли не совпадают',
 		});
 
-		const RegistrationForm = new Form({
+		const RegistrationForm = new Form<SignupRequestData>({
 			InputList: [
 				EmailInput,
 				LoginInput,
@@ -67,12 +69,16 @@ export default class RegistrationPage extends Block {
 				label: 'Войти',
 			},
 			removeList: ['password_repeat'],
-			onCancel: () => {},
-			onSubmit: () => {},
+			onCancel: () => {
+				router.go('/');
+			},
+			onSubmit: async (data) => {
+				const controller = new AuthController();
+				await controller.signUp(data);
+			},
 		});
 
 		super({
-			Header: new Header(),
 			EmailInput,
 			LoginInput,
 			FirstNameInput,

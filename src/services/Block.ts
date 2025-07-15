@@ -1,4 +1,4 @@
-import EventBus, { type EventCallback } from '../utils/event-bus.ts';
+import EventBus, { type EventCallback } from '../utils/eventBus.ts';
 import Handlebars from 'handlebars';
 import isEqual from '@/utils/isEqual.ts';
 
@@ -201,7 +201,6 @@ export default abstract class Block<
 	}
 
 	protected _render(): void {
-		console.log('Render');
 		this._removeEvents();
 
 		const propsAndStubs = { ...this.props };
@@ -267,7 +266,8 @@ export default abstract class Block<
 			set(target, prop: string, value: any) {
 				const oldProps = { ...target };
 				target[prop as keyof T] = value;
-				self._queuePropsUpdate(oldProps as unknown as Props & CommonBlockProps);
+				// self._queuePropsUpdate(oldProps as unknown as Props & CommonBlockProps);
+				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, target);
 				return true;
 			},
 			deleteProperty() {

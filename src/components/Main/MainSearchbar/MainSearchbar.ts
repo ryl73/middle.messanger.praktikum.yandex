@@ -4,6 +4,7 @@ import Popover from '@/components/Popover/Popover.ts';
 import ListItem, { type ListItemProps } from '@/components/ListItem/ListItem.ts';
 import { Input } from '@/components/Input/Input.ts';
 import { Button } from '@/components/Button/Button.ts';
+import ChatController from '@/controllers/ChatController.ts';
 
 export default class MainSearchbar extends Block {
 	constructor() {
@@ -94,14 +95,19 @@ export default class MainSearchbar extends Block {
 			ButtonSendMessage,
 			events: {
 				root: {
-					submit: (e: Event) => {
+					submit: async (e: Event) => {
 						e.preventDefault();
 
 						const target = e.target;
 						if (target instanceof HTMLFormElement) {
 							const formData = new FormData(target);
 
-							console.log(Object.fromEntries(formData.entries()));
+							const data = Object.fromEntries(formData.entries()) as {
+								message: string;
+							};
+
+							const controller = new ChatController();
+							await controller.sendMessage(data);
 
 							MessageInput.setProps({
 								value: '',

@@ -7,6 +7,7 @@ import { Modal } from '@/components/Modal/Modal.ts';
 import { Input } from '@/components/Input/Input.ts';
 import { Button } from '@/components/Button/Button.ts';
 import { Link } from '@/components/Link/Link.ts';
+import ChatController from '@/controllers/ChatController.ts';
 
 type MainNavbarProps = {
 	avatar: string | null;
@@ -104,14 +105,16 @@ export default class MainNavbar extends Block<MainNavbarProps> {
 			},
 		});
 
-		const ChatUserAddForm = new Form({
+		const ChatUserAddForm = new Form<{ login: string }>({
 			InputList: [ChatUserAddLoginInput],
 			noCancel: true,
 			submitProps: {
 				label: 'Добавить',
 				disabled: true,
 			},
-			onSubmit: () => {
+			onSubmit: async (data) => {
+				const controller = new ChatController();
+				await controller.addUser([+data.login]);
 				ChatUserAddModal.close();
 			},
 		});
@@ -173,7 +176,9 @@ export default class MainNavbar extends Block<MainNavbarProps> {
 		const ChatRemoveButton = new Button({
 			label: 'Удалить',
 			modifier: 'red',
-			onClick: () => {
+			onClick: async () => {
+				const controller = new ChatController();
+				await controller.delete();
 				ChatRemoveModal.close();
 			},
 		});
@@ -190,11 +195,6 @@ export default class MainNavbar extends Block<MainNavbarProps> {
 			title: 'Вы действительно хотите удалить данный чат?',
 			modifier: 'small',
 			slot: [ChatRemoveButton, ChatRemoveCancelLink],
-			onClose: () => {
-				ChatUserRemoveLoginInput.setProps({
-					value: '',
-				});
-			},
 		});
 
 		super({

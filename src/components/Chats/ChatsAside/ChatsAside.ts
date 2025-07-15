@@ -1,64 +1,36 @@
 import Block from '@/services/Block.ts';
 import ChatsAsideTemplate from './ChatsAside.hbs?raw';
 import ChatItem from '@/components/Chats/ChatItem/ChatItem.ts';
-import { Avatar } from '@/components/Avatar/Avatar.ts';
 import { Input } from '@/components/Input/Input.ts';
-import type { ChatListItem, LastMessage } from '@/types/chat.ts';
 import { Button } from '@/components/Button/Button.ts';
 import { Modal } from '@/components/Modal/Modal.ts';
 import { getTime } from '@/utils/getTime.ts';
 import Form from '@/components/Form/Form.ts';
-import type ChatsMain from '@/components/Chats/ChatsMain/ChatsMain.ts';
+import type { ChatCreateRequestData, ChatGetListResponseData, LastMessage } from '@/api/ChatAPI.ts';
+import ChatController from '@/controllers/ChatController.ts';
+import isEqual from '@/utils/isEqual.ts';
+import ChatsAsideNavbar from '@/components/Chats/ChatsAside/ChatsAsideNavbar/ChatsAsideNavbar.ts';
+import withChats from '@/store/connect/withChats.ts';
 
 type MainAsideProps = {
-	avatarSrc: string | null;
-	chatList: ChatListItem[];
-	main: ChatsMain;
-	ChatList: ChatItem[];
-	Avatar: Avatar;
-	SearchInput: Input;
-	ButtonChatAdd: Button;
-	ChatAddModal: Modal;
+	avatar?: string;
+	chats?: ChatGetListResponseData[];
 };
 
-export default class ChatsAside extends Block<MainAsideProps> {
-	constructor(props: Partial<MainAsideProps>) {
-		const ChatList: ChatItem[] = [];
+function getLastMessageContent(lastMessage: LastMessage): string {
+	if (
+		lastMessage.content.includes('.jpg') ||
+		lastMessage.content.includes('.png') ||
+		lastMessage.content.includes('.svg')
+	) {
+		return 'Изображение';
+	}
 
-		function getLastMessageContent(lastMessage: LastMessage): string {
-			if (
-				lastMessage.content.includes('.jpg') ||
-				lastMessage.content.includes('.png') ||
-				lastMessage.content.includes('.svg')
-			) {
-				return 'Изображение';
-			}
+	return lastMessage.content;
+}
 
-			return lastMessage.content;
-		}
-
-		props.chatList?.forEach((chat) => {
-			const Chat = new ChatItem({
-				avatar: chat.avatar,
-				title: chat.title,
-				unreadCount: chat.unread_count > 0 ? chat.unread_count : undefined,
-				lastMessageContent: getLastMessageContent(chat.last_message),
-				lastMessageAuthor: undefined,
-				time: getTime(chat.last_message.time),
-				onClick: () => {
-					ChatList.forEach((chat) => {
-						chat.setProps({
-							active: false,
-						});
-					});
-					props.main?.setProps({
-						selectedChat: chat.id,
-					});
-				},
-			});
-			ChatList.push(Chat);
-		});
-
+class ChatsAside extends Block {
+	constructor({ chats }: Partial<MainAsideProps>) {
 		const ChatNameInput = new Input({
 			label: 'Название',
 			name: 'title',
@@ -75,14 +47,16 @@ export default class ChatsAside extends Block<MainAsideProps> {
 			},
 		});
 
-		const ChatAddForm = new Form({
+		const ChatAddForm = new Form<ChatCreateRequestData>({
 			InputList: [ChatNameInput],
 			noCancel: true,
 			submitProps: {
 				label: 'Добавить',
 				disabled: true,
 			},
-			onSubmit: () => {
+			onSubmit: async (data) => {
+				const controller = new ChatController();
+				await controller.create(data);
 				ChatAddModal.close();
 			},
 		});
@@ -101,19 +75,7 @@ export default class ChatsAside extends Block<MainAsideProps> {
 		});
 
 		super({
-			avatarSrc: props.avatarSrc,
-			ChatList,
-			Avatar: new Avatar({
-				src: props.avatarSrc!,
-				onClick: (e) => {
-					console.log(e);
-				},
-			}),
-			SearchInput: new Input({
-				name: 'search',
-				placeholder: 'Поиск',
-				search: true,
-			}),
+			Navbar: new ChatsAsideNavbar({}),
 			ButtonChatAdd: new Button({
 				icon: `
 					<svg viewBox="0 0 24 24" fill="none">
@@ -127,9 +89,42 @@ export default class ChatsAside extends Block<MainAsideProps> {
 			}),
 			ChatAddModal,
 		});
+
+		this.setChatList(chats || []);
 	}
 
 	override render(): string {
 		return ChatsAsideTemplate;
 	}
+
+	override componentDidUpdate(oldProps: MainAsideProps, newProps: MainAsideProps): boolean {
+		if (!isEqual(oldProps.chats!, newProps.chats!) && newProps.chats) {
+			this.setChatList(newProps.chats);
+			return true;
+		}
+
+		return false;
+	}
+
+	setChatList(chats: ChatGetListResponseData[]) {
+		const chatList = chats.map((chat) => {
+			return new ChatItem({
+				id: chat.id,
+				avatar: chat.avatar,
+				title: chat.title,
+				unreadCount: chat.unread_count > 0 ? chat.unread_count : undefined,
+				lastMessageContent: chat.last_message
+					? getLastMessageContent(chat.last_message)
+					: '',
+				time: chat.last_message ? getTime(chat.last_message.time) : '',
+				onClick: async () => {
+					const controller = new ChatController();
+					await controller.connect();
+				},
+			});
+		});
+		this.setLists({ ChatList: chatList });
+	}
 }
+
+export default withChats(ChatsAside);

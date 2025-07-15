@@ -3,7 +3,7 @@ import FormTemplate from './Form.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
 import { Link, type LinkProps } from '@/components/Link/Link.ts';
 import { Button, type ButtonProps } from '@/components/Button/Button.ts';
-import type { FileInput } from '@/components/FileInput/FileInput.ts';
+import { FileInput } from '@/components/FileInput/FileInput.ts';
 import Validation from '@/services/Validation.ts';
 
 type FormProps = {
@@ -11,19 +11,21 @@ type FormProps = {
 	cancelProps?: Partial<LinkProps>;
 	submitProps?: Partial<ButtonProps>;
 	modifier?: string;
-	initialValues?: string | Record<string, string>;
+	initialValues?: string | Record<string, string | null>;
 	removeList?: string[];
 	noCancel?: boolean;
 	LinkCancel: Link;
 	ButtonSubmit: Button;
 	onCancel?: () => void;
-	onSubmit?: () => void;
 };
 
-export default class Form extends Block<FormProps> {
+export default class Form<Data> extends Block<FormProps> {
 	public buttonSubmitEl: Button;
 
-	constructor({ initialValues = '', removeList = [], ...props }: Partial<FormProps>) {
+	constructor({
+		removeList = [],
+		...props
+	}: Partial<FormProps & { onSubmit: (data: Data) => void }>) {
 		const ButtonSubmit = new Button({
 			label: props.submitProps?.label || 'Сохранить',
 			type: 'submit',
@@ -38,17 +40,23 @@ export default class Form extends Block<FormProps> {
 						font: 'fs-p-bold',
 						...props.cancelProps,
 						onClick: () => {
-							props.InputList?.forEach((input) => {
-								if (input instanceof Input) {
-									input.setProps({
-										value:
-											typeof initialValues === 'object'
-												? initialValues[input.name]
-												: initialValues,
-										isError: false,
-									});
-								}
-							});
+							if (props.initialValues) {
+								props.InputList?.forEach((input) => {
+									if (input instanceof Input) {
+										input.setProps({
+											value:
+												typeof props.initialValues === 'object'
+													? props.initialValues[input.name]!
+													: props.initialValues,
+										});
+										if (input.isError) {
+											input.setProps({
+												isError: false,
+											});
+										}
+									}
+								});
+							}
 							props.onCancel?.();
 						},
 					}),
@@ -64,21 +72,32 @@ export default class Form extends Block<FormProps> {
 
 						const target = e.target;
 						if (target instanceof HTMLFormElement) {
-							const formData = new FormData(target);
-							removeList.forEach((name) => {
-								formData.delete(name);
+							const formData = new FormData();
+							props.InputList?.forEach((input) => {
+								if (!removeList.includes(input.name)) {
+									formData.append(input.name, input.value!);
+								}
 							});
 
-							console.log(Object.fromEntries(formData.entries()));
+							props.onSubmit?.(Object.fromEntries(formData.entries()) as Data);
 						}
-
-						props.onSubmit?.();
 					},
 				},
 			},
 		});
 
 		this.buttonSubmitEl = ButtonSubmit;
+	}
+
+	public setValues(values: Record<string, any>) {
+		this.lists.InputList?.forEach((input) => {
+			if (input instanceof Input || input instanceof FileInput) {
+				const name = input.name;
+				if (name && values[name] !== undefined) {
+					input.setProps({ value: values[name] });
+				}
+			}
+		});
 	}
 
 	override render(): string {

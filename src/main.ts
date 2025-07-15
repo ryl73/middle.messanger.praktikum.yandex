@@ -1,7 +1,8 @@
-import App from './App';
 import './styles/main.scss';
+import '@/router/router.ts';
+import App from '@/App.ts';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 	const app = new App();
-	app.render();
+	await app.createApp();
 });

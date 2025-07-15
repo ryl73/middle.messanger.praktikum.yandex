@@ -1,5 +1,4 @@
-<div class="page profile-page">
-    {{{ Header }}}
+<main class="page profile-page">
     <div class="container flex">
         <aside class="profile-page__back-section">
             <a class="link" data-page="main">
@@ -7,43 +6,7 @@
             </a>
         </aside>
         <main class="container profile-page__main-section">
-            <section class="profile">
-                <div class="profile__header">
-                    {{{ AvatarComponent }}}
-                    <h2 class="fs-h2">{{displayName}}</h2>
-                </div>
-                <div class="profile__content__container">
-                    <div class="profile__content info active">
-                        <div class="profile__content__fields">
-                            {{{ InfoFieldEmail }}}
-                            {{{ InfoFieldLogin }}}
-                            {{{ InfoFieldFirstName }}}
-                            {{{ InfoFieldSecondName }}}
-                            {{{ InfoFieldDisplayName }}}
-                            {{{ InfoFieldPhone }}}
-                        </div>
-                        <div class="profile__controls">
-                            <div class="profile__controls__control">
-                                {{{ LinkChangeInfo }}}
-                            </div>
-                            <div class="profile__controls__control">
-								{{{ LinkChangePassword }}}
-                            </div>
-                            <div class="profile__controls__control">
-								{{{ LinkLogout }}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="profile__content edit">
-                        {{{ ProfileEditForm }}}
-                    </div>
-
-                    <div class="profile__content edit-password">
-						{{{ PasswordEditForm }}}
-                    </div>
-                </div>
-            </section>
+            {{{ ProfileSection }}}
         </main>
     </div>
-</div>
+</main>

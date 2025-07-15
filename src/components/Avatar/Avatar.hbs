@@ -1,6 +1,10 @@
 <div>
 	<div class="avatar" data-modal="{{modalId}}">
-		<img alt="avatar" src="{{src}}">
+		{{# if src}}
+			<img alt="avatar" src="https://ya-praktikum.tech/api/v2/resources{{src}}">
+			{{else}}
+			<img alt="avatar" src="/media/images/avatar-default.png">
+		{{/if}}
 		<span>{{hoverText}}</span>
 	</div>
 	{{{ AvatarModal }}}

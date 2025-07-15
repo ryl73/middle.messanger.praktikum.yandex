@@ -3,64 +3,72 @@ import ChatsMainTemplate from './ChatsMain.hbs?raw';
 import ChatMessageGroup from '@/components/Chats/ChatMessageGroup/ChatMessageGroup.ts';
 import MainNavbar from '@/components/Main/MainNavbar/MainNavbar.ts';
 import MainSearchbar from '@/components/Main/MainSearchbar/MainSearchbar.ts';
+import connect from '@/store/connect';
+import store from '@/store/store.ts';
+import type { WSMessage } from '@/services/WebSocketService.ts';
+import cloneDeep from '@/utils/cloneDeep.ts';
 
 type ChatsMainProps = {
-	avatar: string | null;
-	title: string;
-	selectedChat?: number | null;
+	messages?: WSMessage[];
+	selectedChatId?: number | null;
 	ChatMessageGroupList: ChatMessageGroup[];
 	MainNavbar: MainNavbar;
 	MainSearchbar: MainSearchbar;
 };
 
-export default class ChatsMain extends Block<ChatsMainProps> {
+class ChatsMain extends Block<ChatsMainProps> {
 	constructor(props: Partial<ChatsMainProps>) {
-		const ChatMessageGroupList = [
-			new ChatMessageGroup({
-				group: {
-					'27 июня': [
-						{
-							id: 1,
-							content: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории —
-							НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для
-							полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью
-							500 EL — и к слову говоря, все тушки этих камер все еще находятся на
-							поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
-							<br><br>
-							Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету
-							они так никогда и не попали. Всего их было произведено 25 штук, одну из них
-							недавно продали на аукционе за 45000 евро.`,
-							time: '2025-06-27T14:22:22.000Z',
-						},
-						{
-							id: 2,
-							content: '/media/images/image.jpg',
-							time: '2025-06-27T14:22:54.000Z',
-						},
-						{
-							id: 3,
-							content: `Привет! Понятно`,
-							time: '2025-06-27T14:25:24.000Z',
-							outcome: true,
-							read: true,
-						},
-					],
-				},
-			}),
-		];
+		const selectedChat = store
+			.getState()
+			?.chats?.find((chat) => chat.id === props.selectedChatId);
 
 		super({
 			...props,
-			ChatMessageGroupList,
+			ChatMessageGroupList: [],
 			MainNavbar: new MainNavbar({
-				avatar: props.avatar!,
-				title: props.title!,
+				avatar: selectedChat?.avatar,
+				title: selectedChat?.title,
 			}),
 			MainSearchbar: new MainSearchbar(),
 		});
 	}
 
 	override render(): string {
+		const selectedChat = store
+			.getState()
+			?.chats?.find((chat) => chat.id === this.props.selectedChatId);
+		if (selectedChat) {
+			this.children.MainNavbar.setProps({
+				avatar: selectedChat.avatar,
+				title: selectedChat.title,
+			});
+		}
 		return ChatsMainTemplate;
 	}
+
+	override componentDidUpdate(oldProps: ChatsMainProps, newProps: ChatsMainProps): boolean {
+		if (newProps.messages) {
+			this.setChatList(newProps.messages);
+		}
+
+		return true;
+	}
+
+	setChatList(messages: WSMessage[]) {
+		const chatMessageGroupList = [
+			new ChatMessageGroup({
+				group: {
+					'10 июля': messages,
+				},
+			}),
+		];
+		this.setLists({ ChatMessageGroupList: chatMessageGroupList });
+	}
 }
+
+const withState = connect((state) => ({
+	selectedChatId: state.selectedChatId,
+	messages: cloneDeep(state.messages),
+}));
+
+export default withState(ChatsMain);
