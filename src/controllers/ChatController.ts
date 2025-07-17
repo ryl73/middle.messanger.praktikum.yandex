@@ -2,7 +2,6 @@ import store from '@/store/store.ts';
 import ChatAPI, {
 	type ChatCreateRequestData,
 	type ChatGetListRequestData,
-	type ChatGetListResponseData,
 	type ChatGetUsersRequestData,
 } from '@/api/ChatAPI.ts';
 import { WSMessageType } from '@/services/WebSocketService.ts';
@@ -14,11 +13,6 @@ export default class ChatController {
 	public async getList({ offset, title, limit = 12 }: ChatGetListRequestData) {
 		try {
 			const chats = await api.getList({ data: { title, limit, offset } });
-			const oldChats = store.getState().chats;
-			if (!oldChats && oldChats.length > 0) {
-				store.set('chats', chats);
-				chats.forEach((chat) => this.connectChat(chat.id));
-			}
 			store.set('chats', chats);
 		} catch (e) {
 			console.log(e);
