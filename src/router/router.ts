@@ -1,8 +1,8 @@
 import Router from '@/services/Router.ts';
 import LoginPage from '@/pages/login';
-import RegistrationPage from '@/pages/registration';
-import ProfilePage from '@/pages/profile';
-import MainPage from '@/pages/main';
+import RegistrationPage from '@/pages/signup';
+import ProfilePage from '@/pages/settings';
+import MainPage from '@/pages/messenger';
 
 const router = new Router('#app');
 

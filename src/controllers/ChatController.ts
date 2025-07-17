@@ -1,5 +1,10 @@
 import store from '@/store/store.ts';
-import ChatAPI, { type ChatCreateRequestData, type ChatGetListRequestData } from '@/api/ChatAPI.ts';
+import ChatAPI, {
+	type ChatCreateRequestData,
+	type ChatGetListRequestData,
+	type ChatGetListResponseData,
+	type ChatGetUsersRequestData,
+} from '@/api/ChatAPI.ts';
 import { WSMessageType } from '@/services/WebSocketService.ts';
 import { ChatWebSocket } from '@/utils/ChatWebSocket.ts';
 
@@ -9,6 +14,11 @@ export default class ChatController {
 	public async getList({ offset, title, limit = 12 }: ChatGetListRequestData) {
 		try {
 			const chats = await api.getList({ data: { title, limit, offset } });
+			const oldChats = store.getState().chats;
+			if (!oldChats && oldChats.length > 0) {
+				store.set('chats', chats);
+				chats.forEach((chat) => this.connectChat(chat.id));
+			}
 			store.set('chats', chats);
 		} catch (e) {
 			console.log(e);
@@ -36,6 +46,28 @@ export default class ChatController {
 		} catch (e) {
 			console.log(e);
 		}
+	}
+
+	public async connectChat(chatId: number) {
+		const { token } = await api.getToken(chatId);
+		const ws = new ChatWebSocket(chatId, token);
+
+		ws.onMessage = (messages) => {
+			if (messages.type === WSMessageType.USER_CONNECTED) {
+				ws.send(WSMessageType.GET_OLD, '0');
+				store.set('messages', undefined);
+				return;
+			}
+			const oldMessages = store.getState().messages;
+			if (oldMessages && oldMessages.length > 0) {
+				store.set('messages', [messages, ...oldMessages]);
+				this.getList({});
+			} else {
+				store.set('messages', messages);
+			}
+		};
+
+		ws.connect();
 	}
 
 	public async connect() {
@@ -88,6 +120,29 @@ export default class ChatController {
 				chatId,
 			};
 			await api.addUser({ data });
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	public async deleteUser(users: number[]) {
+		try {
+			const chatId: number = store.getState().selectedChatId;
+			const data = {
+				users,
+				chatId,
+			};
+			await api.deleteUser({ data });
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	public async getUsers({ name, email, offset, limit = 12 }: ChatGetUsersRequestData) {
+		try {
+			const chatId = store.getState().selectedChatId;
+			const users = await api.getUsers(chatId, { data: { limit, offset, name, email } });
+			store.set('userSearchList', users);
 		} catch (e) {
 			console.log(e);
 		}

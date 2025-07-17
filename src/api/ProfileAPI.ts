@@ -19,7 +19,7 @@ export type ProfileResponseData = ProfileRequestData & ProfileResponseDataPartia
 
 export default class ProfileAPI extends API {
 	constructor() {
-		super('/user/profile');
+		super('/user/settings');
 	}
 
 	public set(options: OptionsWithoutMethod<ProfileRequestData>) {

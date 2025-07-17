@@ -1,0 +1,13 @@
+<div class="chats-main">
+	{{#if selectedChatId}}
+		{{{ Navbar }}}
+		<div class="chats-main__content">
+			{{{ MessageGroupList }}}
+		</div>
+		{{{ Searchbar }}}
+	{{else}}
+		<div class="chats-main__no-selected-chat">
+			Выберите чат чтобы отправить сообщение
+		</div>
+	{{/if}}
+</div>

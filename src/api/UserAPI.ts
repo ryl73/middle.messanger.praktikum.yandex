@@ -6,6 +6,19 @@ export type ChangePasswordRequestData = {
 	newPassword: string;
 };
 
+export type SearchRequestData = {
+	login: string;
+};
+
+export type SearchResponseData = {
+	id: number;
+	first_name: string;
+	second_name: string;
+	display_name: string;
+	login: string;
+	avatar: string;
+};
+
 export default class UserAPI extends API {
 	constructor() {
 		super('/user');
@@ -13,5 +26,9 @@ export default class UserAPI extends API {
 
 	public changePassword(options: OptionsWithoutMethod<ChangePasswordRequestData>) {
 		return this.http().put<ChangePasswordRequestData, null>('/password', options);
+	}
+
+	public search(options: OptionsWithoutMethod<SearchRequestData>) {
+		return this.http().post<SearchRequestData, SearchResponseData[]>('/search', options);
 	}
 }

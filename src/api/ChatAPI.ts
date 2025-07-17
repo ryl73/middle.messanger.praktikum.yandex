@@ -44,6 +44,23 @@ export type ChatAddUserRequestData = {
 	chatId: number;
 };
 
+export type ChatGetUsersRequestData = {
+	offset?: number;
+	limit?: number;
+	name?: string;
+	email?: string;
+};
+
+export type ChatGetUsersResponseData = {
+	id: number;
+	first_name: string;
+	second_name: string;
+	display_name: string;
+	login: string;
+	avatar: string;
+	role: string;
+};
+
 export default class ChatAPI extends API {
 	constructor() {
 		super('/chats');
@@ -67,5 +84,16 @@ export default class ChatAPI extends API {
 
 	public addUser(options: OptionsWithoutMethod<ChatAddUserRequestData>) {
 		return this.http().put<ChatAddUserRequestData, null>('/users', options);
+	}
+
+	public deleteUser(options: OptionsWithoutMethod<ChatAddUserRequestData>) {
+		return this.http().delete<ChatAddUserRequestData, null>('/users', options);
+	}
+
+	public getUsers(id: number, options: OptionsWithoutMethod<ChatGetUsersRequestData>) {
+		return this.http().get<ChatGetUsersRequestData, ChatGetUsersResponseData[]>(
+			`/${id}/users`,
+			options
+		);
 	}
 }
