@@ -7,7 +7,7 @@ import { FileInput } from '@/components/FileInput/FileInput.ts';
 import Validation from '@/services/Validation.ts';
 
 type FormProps = {
-	InputList: (Input | FileInput)[];
+	InputList: (Input | FileInput | Block)[];
 	cancelProps?: Partial<LinkProps>;
 	submitProps?: Partial<ButtonProps>;
 	modifier?: string;
@@ -74,8 +74,10 @@ export default class Form<Data> extends Block<FormProps> {
 						if (target instanceof HTMLFormElement) {
 							const formData = new FormData();
 							props.InputList?.forEach((input) => {
-								if (!removeList.includes(input.name)) {
-									formData.append(input.name, input.value!);
+								if (input instanceof FileInput || input instanceof Input) {
+									if (!removeList.includes(input.name)) {
+										formData.append(input.name, input.value!);
+									}
 								}
 							});
 

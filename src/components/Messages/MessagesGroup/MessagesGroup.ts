@@ -18,12 +18,6 @@ export default class MessagesGroup extends Block<ChatMessageGroupProps> {
 		const userId = store.getState().user?.id;
 
 		groupMessages.forEach((message) => {
-			function isImage(content: string): boolean {
-				return (
-					content.includes('.jpg') || content.includes('.png') || content.includes('.svg')
-				);
-			}
-
 			const ChatMessageItem = new MessagesItem({
 				content: message.content,
 				image: false,

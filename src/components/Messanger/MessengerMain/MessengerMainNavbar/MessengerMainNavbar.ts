@@ -10,9 +10,7 @@ import { Link } from '@/components/Link/Link.ts';
 import ChatController from '@/controllers/ChatController.ts';
 import UserList from '@/components/User/UserList/UserList.ts';
 import UserController from '@/controllers/UserController.ts';
-import type { SearchResponseData } from '@/api/UserAPI.ts';
 import store from '@/store/store.ts';
-import set from '@/utils/set.ts';
 
 type MainNavbarProps = {
 	avatar: string | null;

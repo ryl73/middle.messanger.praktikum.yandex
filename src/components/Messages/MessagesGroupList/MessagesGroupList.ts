@@ -18,7 +18,7 @@ const setMessagesGroupList = (messages: WSMessage[]) => {
 };
 
 type MessagesGroupListProps = {
-	messages: WSMessage[];
+	messages?: WSMessage[];
 };
 
 class MessagesGroupList extends Block {
@@ -45,8 +45,9 @@ class MessagesGroupList extends Block {
 	}
 }
 
-const withState = connect((state) => ({
-	messages: cloneDeep(state.messages),
-}));
+const withState = connect((state) => {
+	const messages = cloneDeep(state.messages);
+	return messages ? { messages } : {};
+});
 
 export default withState(MessagesGroupList);

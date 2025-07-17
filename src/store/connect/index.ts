@@ -3,8 +3,10 @@ import store, { StoreEvents } from '@/store/store.ts';
 import type { Indexed } from '@/types/store.ts';
 import isEqual from '@/utils/isEqual.ts';
 
-function connect<Props>(mapStateToProps: (state: Indexed) => Indexed) {
-	return function (Component: typeof Block) {
+function connect<Props extends Record<string, unknown>>(
+	mapStateToProps: (state: Indexed) => Indexed
+) {
+	return function (Component: typeof Block<Props>) {
 		return class extends Component {
 			constructor(props: Props) {
 				// сохраняем начальное состояние
@@ -19,7 +21,7 @@ function connect<Props>(mapStateToProps: (state: Indexed) => Indexed) {
 
 					// если что-то из используемых данных поменялось, обновляем компонент
 					if (!isEqual(state, newState)) {
-						this.setProps({ ...newState });
+						this.setProps({ ...newState } as Props);
 					}
 
 					// не забываем сохранить новое состояние

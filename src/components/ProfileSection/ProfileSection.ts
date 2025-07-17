@@ -1,4 +1,4 @@
-import Block, { type CommonBlockProps } from '@/services/Block.ts';
+import Block from '@/services/Block.ts';
 import ProfileSectionTemplate from './ProfileSection.hbs?raw';
 import type { AuthUserData } from '@/api/AuthAPI.ts';
 import { Input } from '@/components/Input/Input.ts';
@@ -8,7 +8,6 @@ import { Modal } from '@/components/Modal/Modal.ts';
 import { Avatar } from '@/components/Avatar/Avatar.ts';
 import { Link } from '@/components/Link/Link.ts';
 import { InfoField } from '@/components/InfoField/InfoField.ts';
-import isEqual from '@/utils/isEqual.ts';
 import ProfileController from '@/controllers/ProfileController.ts';
 import type { ProfileRequestData } from '@/api/ProfileAPI.ts';
 import UserController from '@/controllers/UserController.ts';

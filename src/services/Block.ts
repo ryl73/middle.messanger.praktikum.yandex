@@ -30,9 +30,6 @@ export default abstract class Block<
 	protected lists: BlockLists;
 	protected eventBus: () => EventBus;
 
-	private _pendingPropsUpdate = false;
-	private _oldPropsSnapshot: (Props & CommonBlockProps) | null = null;
-
 	protected constructor(propsWithChildren: Partial<Props & CommonBlockProps> = {}) {
 		const eventBus = new EventBus();
 		const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
@@ -126,20 +123,6 @@ export default abstract class Block<
 		const response = this.componentDidUpdate(oldProps, newProps);
 		if (!response) return;
 		this._render();
-	}
-
-	private _queuePropsUpdate(oldProps: Props & CommonBlockProps): void {
-		if (!this._pendingPropsUpdate) {
-			this._pendingPropsUpdate = true;
-			this._oldPropsSnapshot = oldProps;
-
-			queueMicrotask(() => {
-				this._pendingPropsUpdate = false;
-				const latestProps = { ...this.props };
-				this.eventBus().emit(Block.EVENTS.FLOW_CDU, this._oldPropsSnapshot!, latestProps);
-				this._oldPropsSnapshot = null;
-			});
-		}
 	}
 
 	protected componentDidUpdate(

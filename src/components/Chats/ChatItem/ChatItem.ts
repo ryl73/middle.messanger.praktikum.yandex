@@ -17,7 +17,7 @@ export type ChatItemProps = {
 	onClick?: (e: Event) => void;
 };
 
-class ChatItem extends Block<ChatItemProps> {
+class ChatItem extends Block {
 	constructor({ selectedChatId, ...props }: ChatItemProps) {
 		const active = selectedChatId === props.id;
 
