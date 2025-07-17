@@ -1,5 +1,6 @@
 import ProfileAPI, { type ProfileRequestData } from '@/api/ProfileAPI.ts';
 import store from '@/store/store.ts';
+import ErrorHandler from '@/services/ErrorHandler.ts';
 
 const api = new ProfileAPI();
 
@@ -9,7 +10,7 @@ export default class ProfileController {
 			const userData = await api.set({ data });
 			store.set('user', userData);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 	public async setAvatar(data: { avatar: File }) {
@@ -19,7 +20,7 @@ export default class ProfileController {
 			const userData = await api.setAvatar({ data: formData });
 			store.set('user', userData);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 }

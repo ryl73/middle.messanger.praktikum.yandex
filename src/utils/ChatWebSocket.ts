@@ -14,7 +14,7 @@ export class ChatWebSocket extends WebSocketService {
 	public onMessage?: (data: WSMessage) => void;
 
 	constructor(chatId: number, token: string) {
-		const userId = store.getState().user.id;
+		const userId = store.getState().user?.id;
 		const url = `${ChatWebSocket.BASE_URL}/${userId}/${chatId}/${token}`;
 
 		super(url);

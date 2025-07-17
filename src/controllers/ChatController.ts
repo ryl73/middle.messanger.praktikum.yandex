@@ -6,6 +6,7 @@ import ChatAPI, {
 } from '@/api/ChatAPI.ts';
 import { WSMessageType } from '@/services/WebSocketService.ts';
 import { ChatWebSocket } from '@/utils/ChatWebSocket.ts';
+import ErrorHandler from '@/services/ErrorHandler.ts';
 
 const api = new ChatAPI();
 
@@ -15,7 +16,7 @@ export default class ChatController {
 			const chats = await api.getList({ data: { title, limit, offset } });
 			store.set('chats', chats);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
@@ -25,7 +26,7 @@ export default class ChatController {
 			await this.getList({});
 			store.set('selectedChatId', id);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
@@ -38,31 +39,31 @@ export default class ChatController {
 				store.set('selectedChatId', undefined);
 			}
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
-	public async connectChat(chatId: number) {
-		const { token } = await api.getToken(chatId);
-		const ws = new ChatWebSocket(chatId, token);
-
-		ws.onMessage = (messages) => {
-			if (messages.type === WSMessageType.USER_CONNECTED) {
-				ws.send(WSMessageType.GET_OLD, '0');
-				store.set('messages', undefined);
-				return;
-			}
-			const oldMessages = store.getState().messages;
-			if (oldMessages && oldMessages.length > 0) {
-				store.set('messages', [messages, ...oldMessages]);
-				this.getList({});
-			} else {
-				store.set('messages', messages);
-			}
-		};
-
-		ws.connect();
-	}
+	// public async connectChat(chatId: number) {
+	// 	const { token } = await api.getToken(chatId);
+	// 	const ws = new ChatWebSocket(chatId, token);
+	//
+	// 	ws.onMessage = (messages) => {
+	// 		if (messages.type === WSMessageType.USER_CONNECTED) {
+	// 			ws.send(WSMessageType.GET_OLD, '0');
+	// 			store.set('messages', undefined);
+	// 			return;
+	// 		}
+	// 		const oldMessages = store.getState().messages;
+	// 		if (oldMessages && oldMessages.length > 0) {
+	// 			store.set('messages', [messages, ...oldMessages]);
+	// 			this.getList({});
+	// 		} else {
+	// 			store.set('messages', messages);
+	// 		}
+	// 	};
+	//
+	// 	ws.connect();
+	// }
 
 	public async connect() {
 		try {
@@ -73,7 +74,7 @@ export default class ChatController {
 
 			const chatId = store.getState().selectedChatId;
 			const { token } = await api.getToken(chatId);
-			const ws = new ChatWebSocket(chatId, token);
+			const ws = new ChatWebSocket(chatId!, token);
 
 			ws.onMessage = (messages) => {
 				if (messages.type === WSMessageType.USER_CONNECTED) {
@@ -93,7 +94,7 @@ export default class ChatController {
 			ws.connect();
 			store.set('ws', ws);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
@@ -102,7 +103,7 @@ export default class ChatController {
 			const ws = store.getState().ws as ChatWebSocket;
 			ws.send(WSMessageType.MESSAGE, data.message);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
@@ -115,7 +116,7 @@ export default class ChatController {
 			};
 			await api.addUser({ data });
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
@@ -128,7 +129,7 @@ export default class ChatController {
 			};
 			await api.deleteUser({ data });
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 
@@ -138,7 +139,7 @@ export default class ChatController {
 			const users = await api.getUsers(chatId, { data: { limit, offset, name, email } });
 			store.set('userSearchList', users);
 		} catch (e) {
-			console.log(e);
+			ErrorHandler.handle(e);
 		}
 	}
 }

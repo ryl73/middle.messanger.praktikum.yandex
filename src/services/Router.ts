@@ -6,7 +6,7 @@ import Page404 from '@/pages/404';
 export default class Router {
 	protected routes: Route[] = [];
 	protected history: History = window.history;
-	private _beforeEach?: (from: string, to: string) => void;
+	private _beforeEach?: (from: string, to: string, next: () => void) => void;
 	private readonly _rootQuery: string = '';
 	static __instance: Router;
 
@@ -35,18 +35,26 @@ export default class Router {
 	}
 
 	private _onRoute(pathname: string): void {
-		if (this._beforeEach) {
-			this._beforeEach(window.location.pathname, pathname);
-		}
+		const from = window.location.pathname;
+		const to = pathname;
 
-		const route = this.getRoute(pathname);
+		const route = this.getRoute(to);
+
 		if (!route) {
 			const page404 = new Page404();
 			render(this._rootQuery, page404);
 			return;
 		}
 
-		route.navigate(pathname);
+		const proceed = () => {
+			route.navigate(to);
+		};
+
+		if (this._beforeEach) {
+			this._beforeEach(from, to, proceed);
+		} else {
+			proceed();
+		}
 	}
 
 	go(pathname: string): void {
@@ -69,7 +77,7 @@ export default class Router {
 		return this.routes.find((route) => route.match(pathname));
 	}
 
-	public beforeEach(callback: (from: string, to: string) => void): void {
+	public beforeEach(callback: (from: string, to: string, next: () => void) => void): void {
 		this._beforeEach = callback;
 	}
 }

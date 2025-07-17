@@ -25,7 +25,7 @@ function getLastMessageContent(lastMessage: LastMessage): string {
 }
 
 function getLastMessageAuthor(lastMessage: LastMessage): string | undefined {
-	const userLogin = store.getState().user.login;
+	const userLogin = store.getState().user?.login;
 	if (lastMessage.user.login === userLogin) {
 		return 'Вы';
 	}

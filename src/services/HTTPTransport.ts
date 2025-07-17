@@ -1,3 +1,5 @@
+import APIError from '@/api/APIError.ts';
+
 const METHODS = {
 	GET: 'GET',
 	POST: 'POST',
@@ -78,7 +80,7 @@ export default class HTTPTransport {
 				if (xhr.status >= 200 && xhr.status < 300) {
 					resolve(xhr.response as TResponse);
 				} else {
-					reject(new Error(`Request failed with status ${xhr.status}`));
+					reject(new APIError('API Error', xhr.status, xhr.response));
 				}
 			};
 
