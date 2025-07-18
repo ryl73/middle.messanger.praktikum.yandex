@@ -4,6 +4,7 @@ import { Avatar } from '@/components/Avatar/Avatar.ts';
 import router from '@/router/router.ts';
 import { Input } from '@/components/Input/Input.ts';
 import connect from '@/store/connect';
+import ChatController from '@/controllers/ChatController.ts';
 
 type ChatsAsideNavbarProps = {
 	avatar: string;
@@ -22,6 +23,12 @@ class MessengerAsideNavbar extends Block {
 				name: 'search',
 				placeholder: 'Поиск',
 				search: true,
+				onInput: (value) => {
+					const controller = new ChatController();
+					setTimeout(async () => {
+						await controller.getList({ title: value });
+					}, 300);
+				},
 			}),
 		});
 	}

@@ -9,6 +9,9 @@ export default class MainPage extends Block {
 	constructor() {
 		const controller = new ChatController();
 		controller.getList({});
+		setInterval(async () => {
+			await controller.getList({});
+		}, 5000);
 		const ChatsMainComponent = new ChatsMain({
 			avatar: null,
 			title: 'Андрей',

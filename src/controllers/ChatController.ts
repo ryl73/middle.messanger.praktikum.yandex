@@ -43,28 +43,6 @@ export default class ChatController {
 		}
 	}
 
-	// public async connectChat(chatId: number) {
-	// 	const { token } = await api.getToken(chatId);
-	// 	const ws = new ChatWebSocket(chatId, token);
-	//
-	// 	ws.onMessage = (messages) => {
-	// 		if (messages.type === WSMessageType.USER_CONNECTED) {
-	// 			ws.send(WSMessageType.GET_OLD, '0');
-	// 			store.set('messages', undefined);
-	// 			return;
-	// 		}
-	// 		const oldMessages = store.getState().messages;
-	// 		if (oldMessages && oldMessages.length > 0) {
-	// 			store.set('messages', [messages, ...oldMessages]);
-	// 			this.getList({});
-	// 		} else {
-	// 			store.set('messages', messages);
-	// 		}
-	// 	};
-	//
-	// 	ws.connect();
-	// }
-
 	public async connect() {
 		try {
 			store.set('messages', undefined);
@@ -85,9 +63,12 @@ export default class ChatController {
 				const oldMessages = store.getState().messages;
 				if (oldMessages && oldMessages.length > 0) {
 					store.set('messages', [messages, ...oldMessages]);
-					this.getList({});
 				} else {
 					store.set('messages', messages);
+				}
+				const scrollContainer = document.querySelector('.chats-main__content');
+				if (scrollContainer instanceof HTMLElement) {
+					scrollContainer.scrollTop = scrollContainer.scrollHeight;
 				}
 			};
 
