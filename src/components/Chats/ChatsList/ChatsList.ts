@@ -12,7 +12,11 @@ type ChatsListProps = {
 	chats?: ChatGetListResponseData[];
 };
 
-function getLastMessageContent(lastMessage: LastMessage): string {
+function getLastMessageContent(lastMessage: LastMessage | null): string {
+	if (!lastMessage) {
+		return '';
+	}
+
 	if (
 		lastMessage.content.includes('.jpg') ||
 		lastMessage.content.includes('.png') ||
@@ -24,7 +28,10 @@ function getLastMessageContent(lastMessage: LastMessage): string {
 	return lastMessage.content;
 }
 
-function getLastMessageAuthor(lastMessage: LastMessage): string | undefined {
+function getLastMessageAuthor(lastMessage: LastMessage | null): string | undefined {
+	if (!lastMessage) {
+		return '';
+	}
 	const userLogin = store.getState().user?.login;
 	if (lastMessage.user.login === userLogin) {
 		return 'Вы';
@@ -40,7 +47,7 @@ const setChatList = (chats: ChatGetListResponseData[]) => {
 			avatar: chat.avatar,
 			title: chat.title,
 			unreadCount: chat.unread_count > 0 ? chat.unread_count : undefined,
-			lastMessageContent: chat.last_message ? getLastMessageContent(chat.last_message) : '',
+			lastMessageContent: getLastMessageContent(chat.last_message),
 			lastMessageAuthor: getLastMessageAuthor(chat.last_message!),
 			time: chat.last_message ? getTime(chat.last_message.time) : '',
 			onClick: async () => {

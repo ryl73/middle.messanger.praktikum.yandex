@@ -11,7 +11,7 @@ export class ChatWebSocket extends WebSocketService {
 	public onOpen?: () => void;
 	public onClose?: () => void;
 	public onError?: (e: Event) => void;
-	public onMessage?: (data: WSMessage) => void;
+	public onMessage?: (data: WSMessage | WSMessage[]) => void;
 
 	constructor(chatId: number, token: string) {
 		const userId = store.getState().user?.id;
@@ -44,7 +44,7 @@ export class ChatWebSocket extends WebSocketService {
 		this.onClose?.();
 	}
 
-	private _onMessage(data: WSMessage) {
+	private _onMessage(data: WSMessage | WSMessage[]) {
 		this.onMessage?.(data);
 	}
 

@@ -55,17 +55,18 @@ export default class ChatController {
 			const ws = new ChatWebSocket(chatId!, token);
 
 			ws.onMessage = (messages) => {
-				if (messages.type === WSMessageType.USER_CONNECTED) {
-					ws.send(WSMessageType.GET_OLD, '0');
-					store.set('messages', undefined);
-					return;
-				}
-				const oldMessages = store.getState().messages;
-				if (oldMessages && oldMessages.length > 0) {
+				if (!Array.isArray(messages)) {
+					if (messages.type === WSMessageType.USER_CONNECTED) {
+						ws.send(WSMessageType.GET_OLD, '0');
+						store.set('messages', undefined);
+						return;
+					}
+					const oldMessages = store.getState().messages;
 					store.set('messages', [messages, ...oldMessages]);
 				} else {
 					store.set('messages', messages);
 				}
+
 				const scrollContainer = document.querySelector('.chats-main__content');
 				if (scrollContainer instanceof HTMLElement) {
 					scrollContainer.scrollTop = scrollContainer.scrollHeight;
