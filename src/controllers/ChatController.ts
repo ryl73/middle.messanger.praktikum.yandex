@@ -7,6 +7,7 @@ import ChatAPI, {
 import { WSMessageType } from '@/services/WebSocketService.ts';
 import { ChatWebSocket } from '@/utils/ChatWebSocket.ts';
 import ErrorHandler from '@/services/ErrorHandler.ts';
+import ResourcesController from '@/controllers/ResourcesController.ts';
 
 const api = new ChatAPI();
 
@@ -141,10 +142,26 @@ export default class ChatController {
 		}
 	}
 
-	public async sendMessage(data: { message: string }) {
+	public async sendMessage(
+		data: { message: string },
+		type: WSMessageType = WSMessageType.MESSAGE
+	) {
 		try {
 			const ws = store.getState().ws as ChatWebSocket;
-			ws.send(WSMessageType.MESSAGE, data.message);
+			const attachedFiles: File[] = store.getState().attachedFiles;
+			if (attachedFiles && attachedFiles.length > 0) {
+				const resourceController = new ResourcesController();
+				for (const file of attachedFiles) {
+					const fileInfo = await resourceController.set(file);
+					if (fileInfo) {
+						ws.send(WSMessageType.FILE, fileInfo.id);
+					}
+				}
+				store.set('attachedFiles', []);
+			}
+			if (data.message.length > 0) {
+				ws.send(type, data.message);
+			}
 		} catch (e) {
 			ErrorHandler.handle(e);
 		}

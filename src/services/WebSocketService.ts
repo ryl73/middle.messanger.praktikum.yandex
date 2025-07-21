@@ -1,9 +1,10 @@
 import EventBus from '@/utils/eventBus.ts';
+import type { ResourcesResponseData } from '@/api/ResourcesApi.ts';
 
 export type WSMessage = {
 	chat_id: number;
 	content: string;
-	file: null;
+	file: ResourcesResponseData | null;
 	id: number;
 	is_read: boolean;
 	time: string;
@@ -21,7 +22,7 @@ export const WSMessageType = {
 	USER_CONNECTED: 'user connected',
 } as const;
 
-type WSMessageType = (typeof WSMessageType)[keyof typeof WSMessageType];
+export type WSMessageType = (typeof WSMessageType)[keyof typeof WSMessageType];
 
 export const WSEvents = {
 	OPEN: 'open',
@@ -29,8 +30,6 @@ export const WSEvents = {
 	MESSAGE: 'message',
 	ERROR: 'error',
 } as const;
-
-type WSEvents = (typeof WSEvents)[keyof typeof WSEvents];
 
 export default class WebSocketService extends EventBus {
 	private socket: WebSocket | null = null;

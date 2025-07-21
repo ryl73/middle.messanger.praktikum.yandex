@@ -5,6 +5,8 @@ import ListItem, { type ListItemProps } from '@/components/ListItem/ListItem.ts'
 import { Input } from '@/components/Input/Input.ts';
 import { Button } from '@/components/Button/Button.ts';
 import ChatController from '@/controllers/ChatController.ts';
+import store from '@/store/store.ts';
+import AttachmentList from '@/components/Attachments/AttachmentList/AttachmentList.ts';
 
 export default class MessengerMainSearchbar extends Block {
 	constructor() {
@@ -16,6 +18,34 @@ export default class MessengerMainSearchbar extends Block {
 					</svg>
 				`,
 				label: 'Фото или видео',
+				onClick: () => {
+					const input = document.createElement('input');
+					input.type = 'file';
+					input.accept = 'image/*';
+					input.multiple = true;
+					input.style.display = 'none';
+					document.body.appendChild(input);
+					input.click();
+					input.addEventListener('change', (e) => {
+						const target = e.target;
+						if (target instanceof HTMLInputElement) {
+							const files = target.files;
+							if (files && files.length > 0) {
+								const oldFiles: string[] = store.getState().attachedFiles;
+								if (oldFiles && oldFiles.length > 0) {
+									store.set('attachedFiles', [...oldFiles, ...[...files]]);
+								} else {
+									store.set('attachedFiles', [...files]);
+								}
+
+								ButtonSendMessage.setProps({
+									disabled: false,
+								});
+								document.body.removeChild(input);
+							}
+						}
+					});
+				},
 			},
 			{
 				icon: `
@@ -58,6 +88,7 @@ export default class MessengerMainSearchbar extends Block {
 				icon: item.icon,
 				label: item.label,
 				class: item.class,
+				onClick: item.onClick,
 			});
 			AttachFileDialogSlot.push(Item);
 		});
@@ -93,6 +124,7 @@ export default class MessengerMainSearchbar extends Block {
 			AttachFilePopover,
 			MessageInput,
 			ButtonSendMessage,
+			AttachmentList: new AttachmentList({}),
 			events: {
 				root: {
 					submit: async (e: Event) => {

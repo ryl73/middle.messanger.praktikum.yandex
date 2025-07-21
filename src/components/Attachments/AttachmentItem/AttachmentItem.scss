@@ -1,0 +1,45 @@
+@use "../../../styles/utils/mixins" as *;
+@use "../../../styles/utils/variables" as *;
+
+.attachment-item {
+	position: relative;
+	display: flex;
+	width: 100px;
+	min-width: 100px;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 8px;
+
+
+	&__remove {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		z-index: 999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		cursor: pointer;
+		background-color: $lotion;
+		border-radius: 50%;
+		transition: all $transition-duration $transition-function;
+
+		@include hover {
+			color: $white;
+			background-color: $blue;
+		}
+
+		svg {
+			width: 18px;
+			height: 18px;
+		}
+	}
+
+	img {
+		width: 100%;
+		object-fit: cover;
+		object-position: center center;
+	}
+}

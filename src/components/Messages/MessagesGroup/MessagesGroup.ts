@@ -19,8 +19,8 @@ export default class MessagesGroup extends Block<ChatMessageGroupProps> {
 
 		groupMessages.forEach((message) => {
 			const ChatMessageItem = new MessagesItem({
-				content: message.content,
-				image: false,
+				content: message.file !== null ? message.file.path : message.content,
+				image: message.file !== null && message.file.content_type.includes('image'),
 				time: getTimeStringFromUTC(message.time),
 				read: message.is_read,
 				outcome: message.user_id === userId,

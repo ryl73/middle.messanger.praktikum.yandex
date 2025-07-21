@@ -2,6 +2,7 @@
 @use '../../../../styles/utils/mixins' as *;
 
 .main-searchbar {
+	position: relative;
 	display: flex;
 	gap: 16px;
 	padding: 16px 0;
@@ -27,6 +28,21 @@
 
 		&.active {
 			color: $blue;
+		}
+	}
+
+	&__attachment-list {
+		position: absolute;
+		top: -101px;
+		left: 0;
+		display: none;
+		width: 100%;
+		background-color: $lotion;
+		border-radius: 8px 8px 0 0;
+		box-shadow:  0 -2px 4px 0 $black02;
+
+		&.active {
+			display: block;
 		}
 	}
 }
