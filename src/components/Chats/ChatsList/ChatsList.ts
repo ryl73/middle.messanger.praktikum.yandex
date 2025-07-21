@@ -1,15 +1,17 @@
 import Block from '@/services/Block.ts';
 import ChatsListTemplate from './ChatsList.hbs?raw';
 import type { ChatGetListResponseData, LastMessage } from '@/api/ChatAPI.ts';
-import withChats from '@/store/connect/withChats.ts';
 import isEqual from '@/utils/isEqual.ts';
 import ChatItem from '@/components/Chats/ChatItem/ChatItem.ts';
 import { getTime } from '@/utils/getTime.ts';
 import ChatController from '@/controllers/ChatController.ts';
 import store from '@/store/store.ts';
+import connect from '@/store/connect';
+import cloneDeep from '@/utils/cloneDeep.ts';
 
 type ChatsListProps = {
 	chats?: ChatGetListResponseData[];
+	chatTitleSearch?: string;
 };
 
 function getLastMessageContent(lastMessage: LastMessage | null): string {
@@ -59,10 +61,18 @@ const setChatList = (chats: ChatGetListResponseData[]) => {
 };
 
 class ChatsList extends Block {
+	private interval: NodeJS.Timeout | null = null;
+
 	constructor({ chats }: ChatsListProps) {
 		super({
 			ChatList: setChatList(chats || []),
 		});
+
+		const controller = new ChatController();
+		controller.getList({});
+		this.interval = setInterval(async () => {
+			await controller.getList({});
+		}, 5000);
 	}
 
 	override render(): string {
@@ -74,9 +84,24 @@ class ChatsList extends Block {
 			this.setLists({ ChatList: setChatList(newProps.chats) });
 			return true;
 		}
+		if (oldProps.chatTitleSearch !== newProps.chatTitleSearch && newProps.chatTitleSearch) {
+			if (this.interval) {
+				clearInterval(this.interval);
+				this.interval = null;
+				this.interval = setInterval(async () => {
+					const controller = new ChatController();
+					await controller.getList({ title: newProps.chatTitleSearch });
+				}, 5000);
+			}
+		}
 
 		return false;
 	}
 }
+
+const withChats = connect((state) => ({
+	chats: cloneDeep(state.chats),
+	chatTitleSearch: state.chatTitleSearch,
+}));
 
 export default withChats(ChatsList);

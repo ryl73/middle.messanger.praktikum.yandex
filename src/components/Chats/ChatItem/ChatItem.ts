@@ -2,7 +2,6 @@ import Block, { type CommonBlockProps } from '@/services/Block.ts';
 import ChatItemTemplate from './ChatItem.hbs?raw';
 import connect from '@/store/connect';
 import store from '@/store/store.ts';
-import ChatController from '@/controllers/ChatController.ts';
 
 export type ChatItemProps = {
 	selectedChatId?: number;
@@ -29,8 +28,6 @@ class ChatItem extends Block {
 					click: async (e: Event) => {
 						if (props.id === store.getState().selectedChatId) return;
 						store.set('selectedChatId', props.id);
-						const controller = new ChatController();
-						await controller.getList({});
 						props.onClick?.(e);
 					},
 				},

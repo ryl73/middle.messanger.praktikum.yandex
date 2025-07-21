@@ -61,6 +61,10 @@ export type ChatGetUsersResponseData = {
 	role: string;
 };
 
+export type ChatGetNewMessagesResponseData = {
+	unread_count: number;
+};
+
 export default class ChatAPI extends API {
 	constructor() {
 		super('/chats');
@@ -95,5 +99,9 @@ export default class ChatAPI extends API {
 			`/${id}/users`,
 			options
 		);
+	}
+
+	public getNewMessages(id: number, options: OptionsWithoutMethod<null>) {
+		return this.http().get<null, ChatGetNewMessagesResponseData>(`/new/${id}`, options);
 	}
 }

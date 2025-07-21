@@ -1,11 +1,10 @@
 import Block from '@/services/Block.ts';
 import MessagesGroupListTemplate from './MessagesGroupList.hbs?raw';
 import connect from '@/store/connect';
-import cloneDeep from '@/utils/cloneDeep.ts';
 import type { WSMessage } from '@/services/WebSocketService.ts';
 import MessagesGroup from '@/components/Messages/MessagesGroup/MessagesGroup.ts';
-import isEqual from '@/utils/isEqual.ts';
 import groupByDate from '@/utils/groupByDate.ts';
+import cloneDeep from '@/utils/cloneDeep.ts';
 
 const setMessagesGroupList = (messages: WSMessage[]) => {
 	return Object.entries(groupByDate(messages)).map(([date, messages]) => {
@@ -18,13 +17,14 @@ const setMessagesGroupList = (messages: WSMessage[]) => {
 };
 
 type MessagesGroupListProps = {
-	messages?: WSMessage[];
+	messages?: Record<string, WSMessage[]>;
+	selectedChatId?: number;
 };
 
 class MessagesGroupList extends Block {
-	constructor({ messages }: MessagesGroupListProps) {
+	constructor({ messages, selectedChatId }: MessagesGroupListProps) {
 		super({
-			MessageList: setMessagesGroupList(messages || []),
+			MessageList: setMessagesGroupList(messages?.[selectedChatId!] || []),
 		});
 	}
 
@@ -33,11 +33,14 @@ class MessagesGroupList extends Block {
 	}
 
 	override componentDidUpdate(
-		oldProps: MessagesGroupListProps,
+		_: MessagesGroupListProps,
 		newProps: MessagesGroupListProps
 	): boolean {
-		if (!isEqual(oldProps.messages!, newProps.messages!) && newProps.messages) {
-			this.setLists({ MessageList: setMessagesGroupList(newProps.messages) });
+		const newMessages = newProps.messages;
+		const newSelectedChatId = newProps.selectedChatId;
+
+		if (newMessages && newSelectedChatId && newMessages[newSelectedChatId]) {
+			this.setLists({ MessageList: setMessagesGroupList(newMessages[newSelectedChatId]) });
 			return true;
 		}
 
@@ -45,9 +48,9 @@ class MessagesGroupList extends Block {
 	}
 }
 
-const withState = connect((state) => {
-	const messages = cloneDeep(state.messages);
-	return messages ? { messages } : {};
-});
+const withState = connect((state) => ({
+	messages: cloneDeep(state.messages),
+	selectedChatId: state.selectedChatId,
+}));
 
 export default withState(MessagesGroupList);

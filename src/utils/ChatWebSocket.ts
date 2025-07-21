@@ -1,8 +1,4 @@
-import WebSocketService, {
-	WSEvents,
-	type WSMessage,
-	WSMessageType,
-} from '@/services/WebSocketService.ts';
+import WebSocketService, { WSEvents, type WSMessage } from '@/services/WebSocketService.ts';
 import store from '@/store/store.ts';
 import type { EventCallback } from '@/utils/eventBus.ts';
 
@@ -36,7 +32,6 @@ export class ChatWebSocket extends WebSocketService {
 	}
 
 	private _onOpen() {
-		this.send(WSMessageType.GET_OLD, '0');
 		this.onOpen?.();
 	}
 

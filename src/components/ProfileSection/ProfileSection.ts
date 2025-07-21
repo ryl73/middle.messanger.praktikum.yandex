@@ -13,7 +13,8 @@ import type { ProfileRequestData } from '@/api/ProfileAPI.ts';
 import UserController from '@/controllers/UserController.ts';
 import type { ChangePasswordRequestData } from '@/api/UserAPI.ts';
 import AuthController from '@/controllers/AuthController.ts';
-import withUser from '@/store/connect/withUser.ts';
+import connect from '@/store/connect';
+import cloneDeep from '@/utils/cloneDeep.ts';
 
 type ProfileSectionProps = {
 	user?: Partial<AuthUserData>;
@@ -291,5 +292,9 @@ class ProfileSection extends Block<ProfileSectionProps> {
 		profileContent[index].classList.add('active');
 	}
 }
+
+const withUser = connect((state) => ({
+	user: cloneDeep(state.user),
+}));
 
 export default withUser(ProfileSection);
