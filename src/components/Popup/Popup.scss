@@ -1,0 +1,25 @@
+@use '../../styles/utils/variables' as *;
+
+.popup {
+	max-width: 600px;
+	padding: 16px;
+	background-color: $lotion;
+	border-radius: 8px;
+
+	&__container {
+		position: fixed;
+		top: 16px;
+		right: 16px;
+		z-index: 999;
+	}
+
+	&.error {
+		color: $white;
+		background-color: $red;
+	}
+
+	&.success {
+		color: $white;
+		background-color: $green;
+	}
+}

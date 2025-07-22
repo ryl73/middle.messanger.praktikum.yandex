@@ -106,6 +106,8 @@ export default abstract class Block<
 
 	protected componentDidMount(): void {}
 
+	protected componentWillUnmount(): void {}
+
 	protected componentBeforeMount(): void {}
 
 	public dispatchComponentDidMount(): void {
@@ -275,5 +277,28 @@ export default abstract class Block<
 		if (content) {
 			content.style.display = 'none';
 		}
+	}
+
+	public unmount(): void {
+		this.componentWillUnmount();
+		this._removeEvents();
+
+		Object.values(this.children).forEach((child) => {
+			child.unmount();
+		});
+
+		Object.values(this.lists).forEach((list) => {
+			list.forEach((item) => {
+				if (item instanceof Block) {
+					item.unmount();
+				}
+			});
+		});
+
+		if (this._element?.parentNode) {
+			this._element.remove();
+		}
+
+		this._element = null;
 	}
 }
