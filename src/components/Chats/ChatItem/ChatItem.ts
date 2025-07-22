@@ -1,10 +1,8 @@
-import Block, { type CommonBlockProps } from '@/services/Block.ts';
+import Block from '@/services/Block.ts';
 import ChatItemTemplate from './ChatItem.hbs?raw';
-import connect from '@/store/connect';
 import store from '@/store/store.ts';
 
 export type ChatItemProps = {
-	selectedChatId?: number;
 	id: number;
 	title: string;
 	lastMessageContent: string;
@@ -13,12 +11,12 @@ export type ChatItemProps = {
 	unreadCount?: number;
 	avatar: string | null;
 	active?: boolean;
-	onClick?: (e: Event) => void;
+	onClick?: (e: Event) => Promise<void>;
 };
 
-class ChatItem extends Block {
-	constructor({ selectedChatId, ...props }: ChatItemProps) {
-		const active = selectedChatId === props.id;
+export default class ChatItem extends Block {
+	constructor({ ...props }: ChatItemProps) {
+		const active = store.getState().selectedChatId === props.id;
 
 		super({
 			...props,
@@ -36,29 +34,10 @@ class ChatItem extends Block {
 	}
 
 	override render(): string {
-		this.setProps({
-			active: this.props.id === this.props.selectedChatId,
-		});
 		return ChatItemTemplate;
 	}
 
-	protected componentDidUpdate(
-		oldProps: ChatItemProps & CommonBlockProps,
-		newProps: ChatItemProps & CommonBlockProps
-	): boolean {
-		if (oldProps.selectedChatId !== newProps.selectedChatId && newProps.selectedChatId) {
-			this.setProps({
-				active: newProps.id === newProps.selectedChatId,
-			});
-
-			return true;
-		}
-		return false;
+	get id() {
+		return this.props.id;
 	}
 }
-
-const withSelectedChatId = connect((state) => ({
-	selectedChatId: state.selectedChatId,
-}));
-
-export default withSelectedChatId(ChatItem);

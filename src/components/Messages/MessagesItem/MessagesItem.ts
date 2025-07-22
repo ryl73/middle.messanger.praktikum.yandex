@@ -7,6 +7,7 @@ type ChatMessageProps = {
 	read?: boolean;
 	outcome?: boolean;
 	image?: boolean;
+	author?: string;
 };
 
 export default class MessagesItem extends Block<ChatMessageProps> {

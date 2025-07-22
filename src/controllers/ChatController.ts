@@ -55,6 +55,8 @@ export default class ChatController {
 			store.set('ws', undefined);
 
 			const chatId = store.getState().selectedChatId;
+			const users = await this.getUsers({});
+			store.set('chatUsers', users);
 			const { token } = await api.getToken(chatId);
 			const ws = new ChatWebSocket(chatId!, token);
 
@@ -197,8 +199,7 @@ export default class ChatController {
 	public async getUsers({ name, email, offset, limit = 12 }: ChatGetUsersRequestData) {
 		try {
 			const chatId = store.getState().selectedChatId;
-			const users = await api.getUsers(chatId, { data: { limit, offset, name, email } });
-			store.set('userSearchList', users);
+			return await api.getUsers(chatId, { data: { limit, offset, name, email } });
 		} catch (e) {
 			ErrorHandler.handle(e);
 		}
@@ -209,6 +210,19 @@ export default class ChatController {
 			const chatId = store.getState().selectedChatId;
 			const { unread_count } = await api.getNewMessages(chatId, {});
 			return unread_count;
+		} catch (e) {
+			ErrorHandler.handle(e);
+		}
+	}
+
+	public async setAvatar(file: File) {
+		try {
+			const chatId: number = store.getState().selectedChatId;
+			const formData = new FormData();
+			formData.append('avatar', file);
+			formData.append('chatId', chatId.toString());
+			await api.setAvatar({ data: formData });
+			await this.getList({});
 		} catch (e) {
 			ErrorHandler.handle(e);
 		}

@@ -1,9 +1,14 @@
 <div class="chat-message{{#if outcome}} outcome{{/if}}{{#if image}} image{{/if}}">
-	{{#if image}}
-		<img src="https://ya-praktikum.tech/api/v2/resources{{ content }}" alt="message">
-	{{else}}
-		{{{ content }}}
-	{{/if}}
+	<div class="chat-message__content">
+		{{#if author}}
+			<span class="chat-message__author">{{ author }}</span>
+		{{/if}}
+		{{#if image}}
+			<img src="https://ya-praktikum.tech/api/v2/resources{{ content }}" alt="message">
+		{{else}}
+			<span>{{{ content }}}</span>
+		{{/if}}
+	</div>
 	<span class="chat-message__time">
 		{{#if outcome}}
 			<span class="chat-message__time__check{{#if read}} read{{/if}}">

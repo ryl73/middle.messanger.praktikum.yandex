@@ -1,23 +1,21 @@
 import Block from '@/services/Block.ts';
 import UserItemTemplate from './UserItem.hbs?raw';
 import store from '@/store/store.ts';
-import connect from '@/store/connect';
 
 type UserItemProps = {
-	userSearchSelectedId: number;
 	id: number;
 	avatar: string;
 	first_name: string;
 	second_name: string;
 	display_name: string;
 	login: string;
-	active: boolean;
+	active?: boolean;
 	onClick?: (selectedId: number) => void;
 };
 
-class UserItem extends Block {
-	constructor({ userSearchSelectedId, ...props }: UserItemProps) {
-		const active = userSearchSelectedId === props.id;
+export default class UserItem extends Block {
+	constructor({ ...props }: UserItemProps) {
+		const active = store.getState().userSearchSelectedId === props.id;
 
 		super({
 			...props,
@@ -38,23 +36,7 @@ class UserItem extends Block {
 		return UserItemTemplate;
 	}
 
-	protected componentDidUpdate(oldProps: UserItemProps, newProps: UserItemProps): boolean {
-		if (
-			oldProps.userSearchSelectedId !== newProps.userSearchSelectedId &&
-			newProps.userSearchSelectedId
-		) {
-			this.setProps({
-				active: newProps.id === newProps.userSearchSelectedId,
-			});
-
-			return true;
-		}
-		return false;
+	get id() {
+		return this.props.id;
 	}
 }
-
-const withStore = connect((state) => ({
-	userSearchSelectedId: state.userSearchSelectedId,
-}));
-
-export default withStore(UserItem);

@@ -145,7 +145,8 @@ export default class MessengerMainNavbar extends Block<MainNavbarProps> {
 				setTimeout(async () => {
 					if (value !== '') {
 						const controller = new ChatController();
-						await controller.getUsers({ name: value });
+						const users = await controller.getUsers({ name: value });
+						store.set('userSearchList', users);
 					} else {
 						store.set('userSearchList', []);
 					}
@@ -184,7 +185,8 @@ export default class MessengerMainNavbar extends Block<MainNavbarProps> {
 
 		ChatUserRemoveModal.onOpen = async () => {
 			const controller = new ChatController();
-			await controller.getUsers({});
+			const users = await controller.getUsers({});
+			store.set('userSearchList', users);
 		};
 
 		const ChatRemoveButton = new Button({
@@ -217,6 +219,30 @@ export default class MessengerMainNavbar extends Block<MainNavbarProps> {
 			ChatRemoveModal,
 			ChatUserRemoveModal,
 			ChatUserAddModal,
+			events: {
+				'.main__navbar__info__avatar': {
+					click: () => {
+						const input = document.createElement('input');
+						input.type = 'file';
+						input.accept = 'image/*';
+						input.style.display = 'none';
+						document.body.appendChild(input);
+						input.click();
+						input.addEventListener('change', async (e) => {
+							const target = e.target;
+							if (target instanceof HTMLInputElement) {
+								const files = target.files;
+								if (files && files.length > 0) {
+									console.log(files[0]);
+									const controller = new ChatController();
+									await controller.setAvatar(files[0]);
+									document.body.removeChild(input);
+								}
+							}
+						});
+					},
+				},
+			},
 		});
 	}
 

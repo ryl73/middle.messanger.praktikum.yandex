@@ -2,6 +2,8 @@
 @use '../../../styles/utils/mixins' as *;
 
 .chat-message {
+	display: inline-flex;
+	align-items: flex-end;
 	width: fit-content;
 	max-width: min(60%, 600px);
 	padding: 8px;
@@ -36,6 +38,17 @@
 				color: $blue;
 			}
 		}
+	}
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__author {
+		@include set-font(12px, 12px);
+
+		color: $spanishgray;
 	}
 
 	&.image {

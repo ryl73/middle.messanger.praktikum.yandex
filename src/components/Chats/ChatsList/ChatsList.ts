@@ -43,7 +43,7 @@ function getLastMessageAuthor(lastMessage: LastMessage | null): string | undefin
 }
 
 const setChatList = (chats: ChatGetListResponseData[]) => {
-	return chats.map((chat) => {
+	const ChatList = chats.map((chat) => {
 		return new ChatItem({
 			id: chat.id,
 			avatar: chat.avatar,
@@ -53,11 +53,17 @@ const setChatList = (chats: ChatGetListResponseData[]) => {
 			lastMessageAuthor: getLastMessageAuthor(chat.last_message!),
 			time: chat.last_message ? getTime(chat.last_message.time) : '',
 			onClick: async () => {
+				ChatList.forEach((item) => {
+					item.setProps({
+						active: item.id === store.getState().selectedChatId,
+					});
+				});
 				const controller = new ChatController();
 				await controller.connect();
 			},
 		});
 	});
+	return ChatList;
 };
 
 class ChatsList extends Block {

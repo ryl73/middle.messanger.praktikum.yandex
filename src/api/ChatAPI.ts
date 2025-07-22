@@ -65,6 +65,11 @@ export type ChatGetNewMessagesResponseData = {
 	unread_count: number;
 };
 
+export type ChatSetAvatarRequestData = {
+	chatId: number;
+	avatar: FormData;
+};
+
 export default class ChatAPI extends API {
 	constructor() {
 		super('/chats');
@@ -103,5 +108,9 @@ export default class ChatAPI extends API {
 
 	public getNewMessages(id: number, options: OptionsWithoutMethod<null>) {
 		return this.http().get<null, ChatGetNewMessagesResponseData>(`/new/${id}`, options);
+	}
+
+	public setAvatar(options: OptionsWithoutMethod<FormData>) {
+		return this.http().put<FormData, ChatGetListResponseData>(`/avatar`, options);
 	}
 }
