@@ -22,17 +22,16 @@ export class FileInput extends Block<FileInputProps> {
 				},
 				input: {
 					change: (e: Event) => {
-						if (props.onChange) {
-							const target = e.target;
-							if (target instanceof HTMLInputElement) {
-								const files = target.files;
-								props.onChange(target.files);
-								if (files) {
-									this.setProps({
-										label: files[0].name,
-									});
-								}
+						const target = e.target;
+						if (target instanceof HTMLInputElement) {
+							const files = target.files;
+							if (files && files.length > 0) {
+								this.setProps({
+									label: files[0].name,
+									value: files[0],
+								});
 							}
+							props.onChange?.(target.files);
 						}
 					},
 				},

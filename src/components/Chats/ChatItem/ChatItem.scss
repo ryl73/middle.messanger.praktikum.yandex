@@ -100,7 +100,13 @@
 		flex: none;
 		width: 56px;
 		height: 56px;
+		overflow: hidden;
 		border-radius: 50%;
+
+		img {
+			width: 100%;
+			height: 100%;
+		}
 
 		&--default {
 			width: 100%;

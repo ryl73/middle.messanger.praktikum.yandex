@@ -1,4 +1,4 @@
-import EventBus, { type EventCallback } from '../utils/event-bus.ts';
+import EventBus, { type EventCallback } from '../utils/eventBus.ts';
 import Handlebars from 'handlebars';
 import isEqual from '@/utils/isEqual.ts';
 
@@ -29,9 +29,6 @@ export default abstract class Block<
 	protected children: Record<string, Block>;
 	protected lists: BlockLists;
 	protected eventBus: () => EventBus;
-
-	private _pendingPropsUpdate = false;
-	private _oldPropsSnapshot: (Props & CommonBlockProps) | null = null;
 
 	protected constructor(propsWithChildren: Partial<Props & CommonBlockProps> = {}) {
 		const eventBus = new EventBus();
@@ -109,6 +106,8 @@ export default abstract class Block<
 
 	protected componentDidMount(): void {}
 
+	protected componentWillUnmount(): void {}
+
 	protected componentBeforeMount(): void {}
 
 	public dispatchComponentDidMount(): void {
@@ -126,20 +125,6 @@ export default abstract class Block<
 		const response = this.componentDidUpdate(oldProps, newProps);
 		if (!response) return;
 		this._render();
-	}
-
-	private _queuePropsUpdate(oldProps: Props & CommonBlockProps): void {
-		if (!this._pendingPropsUpdate) {
-			this._pendingPropsUpdate = true;
-			this._oldPropsSnapshot = oldProps;
-
-			queueMicrotask(() => {
-				this._pendingPropsUpdate = false;
-				const latestProps = { ...this.props };
-				this.eventBus().emit(Block.EVENTS.FLOW_CDU, this._oldPropsSnapshot!, latestProps);
-				this._oldPropsSnapshot = null;
-			});
-		}
 	}
 
 	protected componentDidUpdate(
@@ -201,7 +186,6 @@ export default abstract class Block<
 	}
 
 	protected _render(): void {
-		console.log('Render');
 		this._removeEvents();
 
 		const propsAndStubs = { ...this.props };
@@ -267,7 +251,8 @@ export default abstract class Block<
 			set(target, prop: string, value: any) {
 				const oldProps = { ...target };
 				target[prop as keyof T] = value;
-				self._queuePropsUpdate(oldProps as unknown as Props & CommonBlockProps);
+				// self._queuePropsUpdate(oldProps as unknown as Props & CommonBlockProps);
+				self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, target);
 				return true;
 			},
 			deleteProperty() {
@@ -292,5 +277,28 @@ export default abstract class Block<
 		if (content) {
 			content.style.display = 'none';
 		}
+	}
+
+	public unmount(): void {
+		this.componentWillUnmount();
+		this._removeEvents();
+
+		Object.values(this.children).forEach((child) => {
+			child.unmount();
+		});
+
+		Object.values(this.lists).forEach((list) => {
+			list.forEach((item) => {
+				if (item instanceof Block) {
+					item.unmount();
+				}
+			});
+		});
+
+		if (this._element?.parentNode) {
+			this._element.remove();
+		}
+
+		this._element = null;
 	}
 }

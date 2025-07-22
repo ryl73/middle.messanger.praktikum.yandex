@@ -10,6 +10,8 @@ export type ModalProps = {
 };
 
 export class Modal extends Block<ModalProps> {
+	public onOpen?: () => void;
+
 	constructor(props: ModalProps) {
 		super({
 			...props,
@@ -44,6 +46,7 @@ export class Modal extends Block<ModalProps> {
 	public show() {
 		const target = this.getContent();
 		if (target instanceof HTMLDialogElement) {
+			this.onOpen?.();
 			target.showModal();
 			document.body.classList.add('scroll-lock');
 			target.addEventListener('click', this.handleModalClick);

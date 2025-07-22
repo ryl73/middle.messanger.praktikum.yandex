@@ -1,0 +1,11 @@
+.attachment-list {
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	height: 120px;
+	padding: 8px;
+
+	&__container {
+		overflow: auto;
+	}
+}

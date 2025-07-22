@@ -1,3 +1,5 @@
+import APIError from '@/api/APIError.ts';
+
 const METHODS = {
 	GET: 'GET',
 	POST: 'POST',
@@ -15,13 +17,15 @@ type Options<T = RequestData> = {
 	data?: T;
 	headers?: Record<string, string>;
 	timeout?: number;
+	withCredentials?: boolean;
+	responseType?: XMLHttpRequestResponseType;
 };
 
-type OptionsWithoutMethod<T = RequestData> = Omit<Options<T>, 'method'>;
+export type OptionsWithoutMethod<T = RequestData> = Omit<Options<T>, 'method'>;
 
 const queryStringify = (data: Exclude<RequestData, FormData>): string => {
 	if (typeof data !== 'object' || data === null) {
-		throw new Error('Data must be a non-null object');
+		throw new Error('input must be an object');
 	}
 	return `?${new URLSearchParams(
 		Object.entries(data).reduce<Record<string, string>>((acc, [key, value]) => {
@@ -33,9 +37,26 @@ const queryStringify = (data: Exclude<RequestData, FormData>): string => {
 	).toString()}`;
 };
 
-class HTTPTransport {
-	request = (url: string, options: Options, timeout = 5000): Promise<XMLHttpRequest> => {
-		const { method, data, headers = {} } = options;
+export default class HTTPTransport {
+	private static BASE_PATH: string = 'https://ya-praktikum.tech';
+	private readonly _baseUrl: string;
+
+	constructor(baseUrl?: string) {
+		this._baseUrl = baseUrl ? `${HTTPTransport.BASE_PATH}${baseUrl}` : HTTPTransport.BASE_PATH;
+	}
+
+	request<TData = RequestData, TResponse = unknown>(
+		url: string,
+		options: Options<TData>,
+		timeout = 5000
+	): Promise<TResponse> {
+		const {
+			method,
+			data,
+			headers = {},
+			withCredentials = true,
+			responseType = 'json',
+		} = options;
 
 		return new Promise((resolve, reject) => {
 			if (!method) {
@@ -45,10 +66,9 @@ class HTTPTransport {
 
 			const isGet = method === METHODS.GET;
 
-			const fullUrl =
-				isGet && data && !(data instanceof FormData)
-					? `${url}${queryStringify(data)}`
-					: url;
+			const fullUrl = `${this._baseUrl}${
+				isGet && data && !(data instanceof FormData) ? `${url}${queryStringify(data)}` : url
+			}`;
 
 			xhr.open(method, fullUrl);
 
@@ -56,15 +76,22 @@ class HTTPTransport {
 				xhr.setRequestHeader(key, value);
 			});
 
-			xhr.onload = function () {
-				resolve(xhr);
+			xhr.onload = () => {
+				if (xhr.status >= 200 && xhr.status < 300) {
+					resolve(xhr.response as TResponse);
+				} else {
+					reject(new APIError('API Error', xhr.status, xhr.response));
+				}
 			};
 
-			xhr.onload = () => resolve(xhr);
 			xhr.onerror = () => reject(new Error('Request error'));
 			xhr.onabort = () => reject(new Error('Request aborted'));
+
 			xhr.timeout = timeout;
 			xhr.ontimeout = () => reject(new Error('Request timed out'));
+
+			xhr.withCredentials = withCredentials;
+			xhr.responseType = responseType;
 
 			if (isGet || !data) {
 				xhr.send();
@@ -76,18 +103,33 @@ class HTTPTransport {
 				xhr.send(payload);
 			}
 		});
-	};
+	}
 
-	private createMethod =
-		(method: METHODS) =>
-		(url: string, options: OptionsWithoutMethod = {}) =>
-			this.request(url, { ...options, method }, options.timeout);
+	get<TData = RequestData, TResponse = unknown>(
+		url: string,
+		options: OptionsWithoutMethod<TData> = {}
+	): Promise<TResponse> {
+		return this.request<TData, TResponse>(url, { ...options, method: METHODS.GET });
+	}
 
-	get = this.createMethod(METHODS.GET);
-	post = this.createMethod(METHODS.POST);
-	put = this.createMethod(METHODS.PUT);
-	patch = this.createMethod(METHODS.PATCH);
-	delete = this.createMethod(METHODS.DELETE);
+	post<TData = RequestData, TResponse = unknown>(
+		url: string,
+		options: OptionsWithoutMethod<TData> = {}
+	): Promise<TResponse> {
+		return this.request<TData, TResponse>(url, { ...options, method: METHODS.POST });
+	}
+
+	put<TData = RequestData, TResponse = unknown>(
+		url: string,
+		options: OptionsWithoutMethod<TData> = {}
+	): Promise<TResponse> {
+		return this.request<TData, TResponse>(url, { ...options, method: METHODS.PUT });
+	}
+
+	delete<TData = RequestData, TResponse = unknown>(
+		url: string,
+		options: OptionsWithoutMethod<TData> = {}
+	): Promise<TResponse> {
+		return this.request<TData, TResponse>(url, { ...options, method: METHODS.DELETE });
+	}
 }
-
-export default new HTTPTransport();
