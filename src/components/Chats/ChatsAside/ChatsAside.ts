@@ -39,6 +39,7 @@ export default class ChatsAside extends Block<MainAsideProps> {
 
 		props.chatList?.forEach((chat) => {
 			const Chat = new ChatItem({
+				id: chat.id,
 				avatar: chat.avatar,
 				title: chat.title,
 				unreadCount: chat.unread_count > 0 ? chat.unread_count : undefined,
