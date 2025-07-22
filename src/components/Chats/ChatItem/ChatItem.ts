@@ -11,7 +11,7 @@ export type ChatItemProps = {
 	unreadCount?: number;
 	avatar: string | null;
 	active?: boolean;
-	onClick?: (e: Event) => Promise<void>;
+	onClick?: (e: Event) => void;
 };
 
 export default class ChatItem extends Block {
@@ -23,7 +23,7 @@ export default class ChatItem extends Block {
 			active,
 			events: {
 				root: {
-					click: async (e: Event) => {
+					click: (e: Event) => {
 						if (props.id === store.getState().selectedChatId) return;
 						store.set('selectedChatId', props.id);
 						props.onClick?.(e);
