@@ -5,6 +5,7 @@ import type { WSMessage } from '@/services/WebSocketService.ts';
 import MessagesGroup from '@/components/Messages/MessagesGroup/MessagesGroup.ts';
 import groupByDate from '@/utils/groupByDate.ts';
 import cloneDeep from '@/utils/cloneDeep.ts';
+import type { ChatGetUsersResponseData } from '@/api/ChatAPI.ts';
 
 const setMessagesGroupList = (messages: WSMessage[]) => {
 	return Object.entries(groupByDate(messages)).map(([date, messages]) => {
@@ -19,6 +20,7 @@ const setMessagesGroupList = (messages: WSMessage[]) => {
 type MessagesGroupListProps = {
 	messages?: Record<string, WSMessage[]>;
 	selectedChatId?: number;
+	chatUsers: ChatGetUsersResponseData[];
 };
 
 class MessagesGroupList extends Block {
@@ -38,8 +40,9 @@ class MessagesGroupList extends Block {
 	): boolean {
 		const newMessages = newProps.messages;
 		const newSelectedChatId = newProps.selectedChatId;
+		const newChatUsers = newProps.chatUsers;
 
-		if (newMessages && newSelectedChatId && newMessages[newSelectedChatId]) {
+		if (newMessages && newSelectedChatId && newMessages[newSelectedChatId] && newChatUsers) {
 			this.setLists({ MessageList: setMessagesGroupList(newMessages[newSelectedChatId]) });
 			return true;
 		}
@@ -51,6 +54,7 @@ class MessagesGroupList extends Block {
 const withState = connect((state) => ({
 	messages: cloneDeep(state.messages),
 	selectedChatId: state.selectedChatId,
+	chatUsers: cloneDeep(state.chatUsers),
 }));
 
 export default withState(MessagesGroupList);
