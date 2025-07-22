@@ -72,7 +72,7 @@ export default class ChatController {
 					ws.send(WSMessageType.GET_OLD, '0');
 				}
 				if (!isAllMessages || !isAllMessages[chatId]) {
-					this.observe();
+					this.observe(chatId);
 				}
 			};
 
@@ -118,13 +118,14 @@ export default class ChatController {
 		}
 	}
 
-	public observe() {
+	public observe(chatId: number) {
 		this.observer = new IntersectionObserver(
 			(entries) => {
 				const entry = entries[0];
 				if (entry.isIntersecting) {
 					const ws = store.getState().ws as ChatWebSocket;
-					ws.send(WSMessageType.GET_OLD, '20');
+					const messages = store.getState().messages[chatId];
+					ws.send(WSMessageType.GET_OLD, messages.length.toString());
 				}
 			},
 			{

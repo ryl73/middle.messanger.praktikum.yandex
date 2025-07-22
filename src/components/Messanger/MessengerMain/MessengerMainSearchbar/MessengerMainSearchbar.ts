@@ -10,6 +10,34 @@ import AttachmentList from '@/components/Attachments/AttachmentList/AttachmentLi
 
 export default class MessengerMainSearchbar extends Block {
 	constructor() {
+		function onClickHandler(accept?: string) {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.accept = accept || '';
+			input.multiple = true;
+			input.style.display = 'none';
+			document.body.appendChild(input);
+			input.click();
+			input.addEventListener('change', (e) => {
+				const target = e.target;
+				if (target instanceof HTMLInputElement) {
+					const files = target.files;
+					if (files && files.length > 0) {
+						const oldFiles: string[] = store.getState().attachedFiles;
+						if (oldFiles && oldFiles.length > 0) {
+							store.set('attachedFiles', [...oldFiles, ...[...files]]);
+						} else {
+							store.set('attachedFiles', [...files]);
+						}
+
+						ButtonSendMessage.setProps({
+							disabled: false,
+						});
+						document.body.removeChild(input);
+					}
+				}
+			});
+		}
 		const attachFileListItems: ListItemProps[] = [
 			{
 				icon: `
@@ -19,49 +47,20 @@ export default class MessengerMainSearchbar extends Block {
 				`,
 				label: 'Фото или видео',
 				onClick: () => {
-					const input = document.createElement('input');
-					input.type = 'file';
-					input.accept = 'image/*';
-					input.multiple = true;
-					input.style.display = 'none';
-					document.body.appendChild(input);
-					input.click();
-					input.addEventListener('change', (e) => {
-						const target = e.target;
-						if (target instanceof HTMLInputElement) {
-							const files = target.files;
-							if (files && files.length > 0) {
-								const oldFiles: string[] = store.getState().attachedFiles;
-								if (oldFiles && oldFiles.length > 0) {
-									store.set('attachedFiles', [...oldFiles, ...[...files]]);
-								} else {
-									store.set('attachedFiles', [...files]);
-								}
-
-								ButtonSendMessage.setProps({
-									disabled: false,
-								});
-								document.body.removeChild(input);
-							}
-						}
-					});
+					onClickHandler('image/*');
 				},
 			},
 			{
 				icon: `
-					<svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M18.2061 0.00488281C20.3194 0.112115 22 1.85996 22 4V18C22 18.162 21.9884 18.3215 21.9697 18.4785C21.9418 18.7122 21.8945 18.9396 21.8281 19.1592C21.8212 19.1821 21.814 19.2048 21.8066 19.2275C21.7542 19.3902 21.6921 19.5483 21.6201 19.7012C21.6112 19.7202 21.602 19.739 21.5928 19.7578C21.5735 19.7972 21.5538 19.8363 21.5332 19.875C21.5237 19.8929 21.5147 19.911 21.5049 19.9287C21.4832 19.9681 21.4595 20.0063 21.4365 20.0449C21.4288 20.0578 21.4219 20.0712 21.4141 20.084C21.3559 20.179 21.2932 20.2708 21.2275 20.3604C21.2161 20.376 21.205 20.3918 21.1934 20.4072C20.969 20.7044 20.7044 20.969 20.4072 21.1934C20.3918 21.205 20.376 21.2161 20.3604 21.2275C20.2708 21.2932 20.179 21.3559 20.084 21.4141C20.0712 21.4219 20.0578 21.4288 20.0449 21.4365C20.0071 21.4591 19.9693 21.4816 19.9307 21.5029C19.9122 21.5131 19.8937 21.5233 19.875 21.5332C19.8363 21.5538 19.7972 21.5735 19.7578 21.5928C19.739 21.602 19.7202 21.6112 19.7012 21.6201C19.6599 21.6395 19.6182 21.6578 19.5762 21.6758C19.5657 21.6803 19.5554 21.6851 19.5449 21.6895C19.4413 21.7329 19.3354 21.7719 19.2275 21.8066C19.2048 21.814 19.1821 21.8212 19.1592 21.8281C19.1184 21.8405 19.0774 21.8522 19.0361 21.8633C19.0208 21.8674 19.0056 21.8721 18.9902 21.876C18.9322 21.8908 18.8735 21.9038 18.8145 21.916C18.8105 21.9168 18.8067 21.9181 18.8027 21.9189C18.7462 21.9305 18.6892 21.9401 18.6318 21.9492C18.6224 21.9507 18.613 21.9527 18.6035 21.9541C18.5621 21.9604 18.5203 21.9647 18.4785 21.9697C18.4554 21.9725 18.4324 21.9771 18.4092 21.9795L18.2061 21.9951L18 22H4L3.79395 21.9951C1.7488 21.8913 0.108652 20.2512 0.00488281 18.2061L0 18V4C6.24113e-08 1.85996 1.68056 0.112115 3.79395 0.00488281L4 0H18L18.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V18C1.5 19.3807 2.61929 20.5 4 20.5H12V16C12 13.7909 13.7909 12 16 12H20.5V4C20.5 2.61929 19.3807 1.5 18 1.5H4Z" fill="currentColor"/>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+						<path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 12.6477 21.7004 13.2503 21.2424 13.7083L13.7083 21.2424C13.2503 21.7004 12.6477 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+						<path d="M12 17C10.8846 17 9.85038 16.6303 9 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+						<ellipse cx="15" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>
+						<ellipse cx="9" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>
+						<path d="M12 22C12 19.2071 12 17.8107 12.3928 16.688C13.0964 14.6773 14.6773 13.0964 16.688 12.3928C17.8107 12 19.2071 12 22 12" stroke="currentColor" stroke-width="1.5"/>
 					</svg>
 				`,
-				label: 'Файл',
-			},
-			{
-				icon: `
-					<svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22C4.92487 22 0 17.0751 0 11C0 4.92487 4.92487 0 11 0ZM11 1.5C5.75329 1.5 1.5 5.75329 1.5 11C1.5 16.2467 5.75329 20.5 11 20.5C16.2467 20.5 20.5 16.2467 20.5 11C20.5 5.75329 16.2467 1.5 11 1.5ZM11 8C12.6569 8 14 9.34315 14 11C14 12.6569 12.6569 14 11 14C9.34315 14 8 12.6569 8 11C8 9.34315 9.34315 8 11 8Z" fill="currentColor"/>
-					</svg>
-				`,
-				label: 'Локация',
+				label: 'Стикер',
 			},
 		];
 

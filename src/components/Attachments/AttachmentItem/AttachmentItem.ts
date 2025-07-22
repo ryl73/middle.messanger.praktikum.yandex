@@ -9,9 +9,13 @@ type AttachmentItemProps = {
 export class AttachmentItem extends Block {
 	constructor({ file }: AttachmentItemProps) {
 		const url = URL.createObjectURL(file);
+		const name = file.name;
+		const isImage = file.type.includes('image');
 
 		super({
 			url,
+			name,
+			isImage,
 			events: {
 				'.attachment-item__remove': {
 					click: () => {
