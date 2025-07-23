@@ -1,7 +1,7 @@
 import Block from '@/services/Block.ts';
 import ProfileTemplate from './settings.hbs?raw';
 import { Button } from '@/components/Button/Button.ts';
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 import ProfileSection from '@/components/ProfileSection/ProfileSection.ts';
 
 export default class ProfilePage extends Block {
@@ -16,7 +16,7 @@ export default class ProfilePage extends Block {
 						</svg>
 					`,
 				onClick: () => {
-					router.go('/messenger');
+					router.go(routes.MESSENGER);
 				},
 			}),
 		});

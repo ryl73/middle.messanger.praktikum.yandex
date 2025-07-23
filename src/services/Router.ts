@@ -2,6 +2,7 @@ import Route from './Route.ts';
 import type Block from '@/services/Block.ts';
 import { render } from '@/utils/render.ts';
 import Page404 from '@/pages/404';
+import type { RouteTypes } from '@/router/router.ts';
 
 export default class Router {
 	protected routes: Route[] = [];
@@ -19,7 +20,7 @@ export default class Router {
 		Router.__instance = this;
 	}
 
-	use(pathname: string, block: new () => Block): this {
+	use(pathname: RouteTypes, block: new () => Block): this {
 		const route = new Route(pathname, block, { rootQuery: this._rootQuery });
 		this.routes.push(route);
 		return this;
@@ -34,7 +35,7 @@ export default class Router {
 		this._onRoute(window.location.pathname);
 	}
 
-	private _onRoute(pathname: string): void {
+	private _onRoute(pathname: RouteTypes | string): void {
 		const from = window.location.pathname;
 		const to = pathname;
 
@@ -57,7 +58,7 @@ export default class Router {
 		}
 	}
 
-	go(pathname: string): void {
+	go(pathname: RouteTypes): void {
 		if (window.location.pathname === pathname) {
 			return;
 		}
@@ -73,7 +74,7 @@ export default class Router {
 		this.history.forward();
 	}
 
-	getRoute(pathname: string): Route | undefined {
+	getRoute(pathname: RouteTypes | string): Route | undefined {
 		return this.routes.find((route) => route.match(pathname));
 	}
 

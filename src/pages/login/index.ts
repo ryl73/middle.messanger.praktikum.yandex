@@ -2,7 +2,7 @@ import Block from '@/services/Block.ts';
 import Login from './login.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
 import Form from '@/components/Form/Form.ts';
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 import AuthController from '@/controllers/AuthController.ts';
 import type { LoginRequestData } from '@/api/AuthAPI.ts';
 
@@ -30,7 +30,7 @@ export default class LoginPage extends Block {
 				label: 'Нет аккаунта? Зарегистрируйтесь!',
 			},
 			onCancel: () => {
-				router.go('/sign-up');
+				router.go(routes.SIGNUP);
 			},
 			onSubmit: async (data) => {
 				const controller = new AuthController();

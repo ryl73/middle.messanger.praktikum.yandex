@@ -8,3 +8,19 @@
 [build]
   publish = "dist"
   command = "npm run build"
+
+[redirects]
+  from = "/settings"
+  to = "/"
+
+[redirects]
+  from = "/sign-up"
+  to = "/"
+
+[redirects]
+  from = "/messenger"
+  to = "/"
+
+[redirects]
+  from = "/error"
+  to = "/"

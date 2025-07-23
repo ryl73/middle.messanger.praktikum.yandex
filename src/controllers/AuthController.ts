@@ -1,41 +1,41 @@
 import AuthAPI, { type LoginRequestData, type SignupRequestData } from '@/api/AuthAPI.ts';
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 import store from '@/store/store.ts';
 import ErrorService from '@/services/ErrorHandler.ts';
 
-const api = new AuthAPI();
-
 export default class AuthController {
+	private readonly api = new AuthAPI();
+
 	public async login(data: LoginRequestData) {
 		try {
-			await api.login({ data });
+			await this.api.login({ data });
 			await this.user();
-			router.go('/messenger');
+			router.go(routes.MESSENGER);
 		} catch (e) {
 			ErrorService.handle(e);
 		}
 	}
 	public async signUp(data: SignupRequestData) {
 		try {
-			await api.signup({ data });
+			await this.api.signup({ data });
 			await this.user();
-			router.go('/messenger');
+			router.go(routes.MESSENGER);
 		} catch (e) {
 			ErrorService.handle(e);
 		}
 	}
 	public async logout() {
 		try {
-			await api.logout();
+			await this.api.logout();
 			store.set('isAuth', false);
-			router.go('/');
+			router.go(routes.LOGIN);
 		} catch (e) {
 			ErrorService.handle(e);
 		}
 	}
 	public async user() {
 		try {
-			const userData = await api.user();
+			const userData = await this.api.user();
 			store.set('user', userData);
 			store.set('isAuth', true);
 		} catch (e) {

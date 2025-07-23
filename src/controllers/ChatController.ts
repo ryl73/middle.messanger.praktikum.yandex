@@ -9,15 +9,15 @@ import { ChatWebSocket } from '@/utils/ChatWebSocket.ts';
 import ErrorHandler from '@/services/ErrorHandler.ts';
 import ResourcesController from '@/controllers/ResourcesController.ts';
 
-const api = new ChatAPI();
-
 export default class ChatController {
+	private readonly api = new ChatAPI();
+
 	private observer: IntersectionObserver | null = null;
 	private sentinel: Element | null = null;
 
 	public async getList({ offset, title, limit = 12 }: ChatGetListRequestData) {
 		try {
-			const chats = await api.getList({ data: { title, limit, offset } });
+			const chats = await this.api.getList({ data: { title, limit, offset } });
 			store.set('chats', chats);
 		} catch (e) {
 			ErrorHandler.handle(e);
@@ -26,7 +26,7 @@ export default class ChatController {
 
 	public async create(data: ChatCreateRequestData) {
 		try {
-			const id = await api.create({ data });
+			const id = await this.api.create({ data });
 			await this.getList({});
 			store.set('selectedChatId', id);
 		} catch (e) {
@@ -38,7 +38,7 @@ export default class ChatController {
 		try {
 			const chatId = store.getState().selectedChatId;
 			if (chatId) {
-				await api.delete({ data: { chatId } });
+				await this.api.delete({ data: { chatId } });
 				await this.getList({});
 				store.set('selectedChatId', undefined);
 			}
@@ -57,7 +57,7 @@ export default class ChatController {
 			const chatId = store.getState().selectedChatId;
 			const users = await this.getUsers({});
 			store.set('chatUsers', users);
-			const { token } = await api.getToken(chatId);
+			const { token } = await this.api.getToken(chatId);
 			const ws = new ChatWebSocket(chatId!, token);
 
 			function scrollBottom() {
@@ -126,7 +126,7 @@ export default class ChatController {
 				const entry = entries[0];
 				if (entry.isIntersecting) {
 					const ws = store.getState().ws as ChatWebSocket;
-					const messages = store.getState().messages[chatId];
+					const messages = store.getState().messages[chatId] ?? [];
 					ws.send(WSMessageType.GET_OLD, messages.length.toString());
 				}
 			},
@@ -177,7 +177,7 @@ export default class ChatController {
 				users,
 				chatId,
 			};
-			await api.addUser({ data });
+			await this.api.addUser({ data });
 		} catch (e) {
 			ErrorHandler.handle(e);
 		}
@@ -190,7 +190,7 @@ export default class ChatController {
 				users,
 				chatId,
 			};
-			await api.deleteUser({ data });
+			await this.api.deleteUser({ data });
 		} catch (e) {
 			ErrorHandler.handle(e);
 		}
@@ -199,7 +199,7 @@ export default class ChatController {
 	public async getUsers({ name, email, offset, limit = 12 }: ChatGetUsersRequestData) {
 		try {
 			const chatId = store.getState().selectedChatId;
-			return await api.getUsers(chatId, { data: { limit, offset, name, email } });
+			return await this.api.getUsers(chatId, { data: { limit, offset, name, email } });
 		} catch (e) {
 			ErrorHandler.handle(e);
 		}
@@ -208,7 +208,7 @@ export default class ChatController {
 	public async getNewMessages() {
 		try {
 			const chatId = store.getState().selectedChatId;
-			const { unread_count } = await api.getNewMessages(chatId, {});
+			const { unread_count } = await this.api.getNewMessages(chatId, {});
 			return unread_count;
 		} catch (e) {
 			ErrorHandler.handle(e);
@@ -221,7 +221,7 @@ export default class ChatController {
 			const formData = new FormData();
 			formData.append('avatar', file);
 			formData.append('chatId', chatId.toString());
-			await api.setAvatar({ data: formData });
+			await this.api.setAvatar({ data: formData });
 			await this.getList({});
 		} catch (e) {
 			ErrorHandler.handle(e);

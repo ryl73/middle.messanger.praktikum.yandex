@@ -2,7 +2,7 @@ import Block from '@/services/Block.ts';
 import Registration from './signup.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
 import Form from '@/components/Form/Form.ts';
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 import AuthController from '@/controllers/AuthController.ts';
 import type { SignupRequestData } from '@/api/AuthAPI.ts';
 
@@ -70,7 +70,7 @@ export default class RegistrationPage extends Block {
 			},
 			removeList: ['password_repeat'],
 			onCancel: () => {
-				router.go('/');
+				router.go(routes.LOGIN);
 			},
 			onSubmit: async (data) => {
 				const controller = new AuthController();
