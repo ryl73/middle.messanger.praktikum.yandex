@@ -1,7 +1,7 @@
 import Block from '@/services/Block.ts';
 import Page500Template from './500.hbs?raw';
 import { Link } from '@/components/Link/Link.ts';
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 
 export default class Page500 extends Block {
 	constructor() {
@@ -11,7 +11,7 @@ export default class Page500 extends Block {
 				font: 'fs-default-bold',
 				page: 'main',
 				onClick: () => {
-					router.go('/messenger');
+					router.go(routes.MESSENGER);
 				},
 			}),
 		});

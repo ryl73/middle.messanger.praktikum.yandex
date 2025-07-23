@@ -2,12 +2,12 @@ import ProfileAPI, { type ProfileRequestData } from '@/api/ProfileAPI.ts';
 import store from '@/store/store.ts';
 import ErrorHandler from '@/services/ErrorHandler.ts';
 
-const api = new ProfileAPI();
-
 export default class ProfileController {
+	private readonly api = new ProfileAPI();
+
 	public async set(data: ProfileRequestData) {
 		try {
-			const userData = await api.set({ data });
+			const userData = await this.api.set({ data });
 			store.set('user', userData);
 		} catch (e) {
 			ErrorHandler.handle(e);
@@ -17,7 +17,7 @@ export default class ProfileController {
 		try {
 			const formData = new FormData();
 			formData.append('avatar', data.avatar, data.avatar.name);
-			const userData = await api.setAvatar({ data: formData });
+			const userData = await this.api.setAvatar({ data: formData });
 			store.set('user', userData);
 		} catch (e) {
 			ErrorHandler.handle(e);

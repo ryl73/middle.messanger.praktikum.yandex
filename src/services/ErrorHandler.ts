@@ -1,4 +1,4 @@
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 import store from '@/store/store.ts';
 import APIError, { ERROR_CODES } from '@/api/APIError.ts';
 import Popup from '@/components/Popup/Popup.ts';
@@ -42,12 +42,12 @@ class ErrorHandler {
 			app?.appendChild(PopupEl.getContent());
 		}
 		store.set('isAuth', false);
-		router.go('/');
+		router.go(routes.LOGIN);
 	}
 
 	private _handleUnexpected() {
 		store.set('isAuth', false);
-		router.go('/error');
+		router.go(routes.ERROR);
 	}
 
 	private _handleBadRequest(error: APIError) {

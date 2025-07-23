@@ -1,7 +1,7 @@
 import Block from '@/services/Block.ts';
 import ChatsAsideNavbarTemplate from './MessengerAsideNavbar.hbs?raw';
 import { Avatar } from '@/components/Avatar/Avatar.ts';
-import router from '@/router/router.ts';
+import router, { routes } from '@/router/router.ts';
 import { Input } from '@/components/Input/Input.ts';
 import connect from '@/store/connect';
 import ChatController from '@/controllers/ChatController.ts';
@@ -17,7 +17,7 @@ class MessengerAsideNavbar extends Block {
 			Avatar: new Avatar({
 				src: avatar,
 				onClick: () => {
-					router.go('/settings');
+					router.go(routes.SETTINGS);
 				},
 			}),
 			SearchInput: new Input({
