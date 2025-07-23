@@ -1,0 +1,16 @@
+<nav class="main__navbar">
+	<div class="main__navbar__info">
+		<div class="main__navbar__info__avatar">
+			{{#if avatar}}
+				<img src="https://ya-praktikum.tech/api/v2/resources{{ avatar }}" alt="avatar" />
+			{{else}}
+				<div class="main__navbar__info__avatar--default"></div>
+			{{/if}}
+		</div>
+		<span class="main__navbar__info__title">{{ title }}</span>
+	</div>
+	{{{ ChatSettingsPopover }}}
+	{{{ ChatRemoveModal }}}
+	{{{ ChatUserRemoveModal }}}
+	{{{ ChatUserAddModal }}}
+</nav>

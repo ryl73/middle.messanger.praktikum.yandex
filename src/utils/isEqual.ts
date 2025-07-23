@@ -1,24 +1,48 @@
-export function isEqual(a: unknown, b: unknown): boolean {
-	if (a === b) return true;
+type PlainObject<T = any> = {
+	[k in string]: T;
+};
 
-	if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+function isPlainObject(value: unknown): value is PlainObject {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		value.constructor === Object &&
+		Object.prototype.toString.call(value) === '[object Object]'
+	);
+}
+
+function isArray(value: unknown): value is [] {
+	return Array.isArray(value);
+}
+
+function isArrayOrObject(value: unknown): value is [] | PlainObject {
+	return isPlainObject(value) || isArray(value);
+}
+
+function isEqual(lhs?: PlainObject | null, rhs?: PlainObject | null) {
+	if (lhs === null || rhs === null) {
 		return false;
 	}
 
-	if (Array.isArray(a) !== Array.isArray(b)) return false;
+	if (lhs === undefined || rhs === undefined) {
+		return false;
+	}
+	if (Object.keys(lhs).length !== Object.keys(rhs).length) {
+		return false;
+	}
 
-	const keysA = Object.keys(a as object);
-	const keysB = Object.keys(b as object);
+	for (const [key, value] of Object.entries(lhs)) {
+		const rightValue = rhs[key];
+		if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
+			if (isEqual(value, rightValue)) {
+				continue;
+			}
+			return false;
+		}
 
-	if (keysA.length !== keysB.length) return false;
-
-	for (const key of keysA) {
-		if (!keysB.includes(key)) return false;
-
-		const valA = (a as Record<string, unknown>)[key];
-		const valB = (b as Record<string, unknown>)[key];
-
-		if (!isEqual(valA, valB)) return false;
+		if (value !== rightValue) {
+			return false;
+		}
 	}
 
 	return true;

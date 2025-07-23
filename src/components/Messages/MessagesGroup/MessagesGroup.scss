@@ -1,0 +1,19 @@
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
+
+.chat-message-group {
+	&__title {
+		width: 100%;
+		margin-bottom: 16px;
+		color: $spanishgray;
+		text-align: center;
+
+		@include set-font(16px, 20px);
+	}
+
+	&__list {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: 8px;
+	}
+}

@@ -71,4 +71,8 @@ export class Input extends Block<InputProps> {
 	get isValidate() {
 		return this.props.errorMessage;
 	}
+
+	get isError(): boolean | undefined {
+		return this.props.isError;
+	}
 }

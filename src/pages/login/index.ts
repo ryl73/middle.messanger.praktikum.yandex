@@ -1,8 +1,10 @@
 import Block from '@/services/Block.ts';
 import Login from './login.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
-import { Header } from '@/components/Header/Header.ts';
 import Form from '@/components/Form/Form.ts';
+import router, { routes } from '@/router/router.ts';
+import AuthController from '@/controllers/AuthController.ts';
+import type { LoginRequestData } from '@/api/AuthAPI.ts';
 
 export default class LoginPage extends Block {
 	constructor() {
@@ -19,7 +21,7 @@ export default class LoginPage extends Block {
 			errorMessage: 'Неверный пароль',
 		});
 
-		const LoginForm = new Form({
+		const LoginForm = new Form<LoginRequestData>({
 			InputList: [LoginInput, PasswordInput],
 			submitProps: {
 				label: 'Войти',
@@ -27,12 +29,16 @@ export default class LoginPage extends Block {
 			cancelProps: {
 				label: 'Нет аккаунта? Зарегистрируйтесь!',
 			},
-			onCancel: () => {},
-			onSubmit: () => {},
+			onCancel: () => {
+				router.go(routes.SIGNUP);
+			},
+			onSubmit: async (data) => {
+				const controller = new AuthController();
+				await controller.login(data);
+			},
 		});
 
 		super({
-			Header: new Header(),
 			LoginInput,
 			PasswordInput,
 			LoginForm,

@@ -1,0 +1,17 @@
+<li class="user-item {{#if active }} active{{/if}}">
+	<div class="user-item__avatar">
+		{{#if avatar }}
+			<img src="https://ya-praktikum.tech/api/v2/resources{{ avatar }}"  alt="avatar"/>
+		{{else}}
+			<div class="user-item__avatar--default"></div>
+		{{/if}}
+	</div>
+	<div class="user-item__content">
+		<div class="user-item__content__login">
+			<span class="fs-default-bold">{{ login }}</span>
+		</div>
+		<div class="user-item__content__name">
+			<span class="fs-default">{{ name }}</span>
+		</div>
+	</div>
+</li>

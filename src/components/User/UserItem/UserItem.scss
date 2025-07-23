@@ -1,0 +1,60 @@
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
+
+.user-item {
+	display: flex;
+	gap: 8px;
+	padding: 8px;
+	cursor: pointer;
+	border-radius: 8px;
+	transition: all $transition-duration $transition-function;
+
+	@include hover {
+		background-color: $blue02;
+	}
+
+	&__content {
+		display: flex;
+		flex: 1 1 0;
+		flex-direction: column;
+		justify-content: center;
+		overflow: hidden;
+
+		&__name {
+			color: $spanishgray;
+		}
+	}
+
+	&.active {
+		color: $white;
+		background-color: $blue;
+
+		.user-item__content__name {
+			color: $white;
+		}
+
+		.user-item__content__login {
+			color: $white;
+		}
+	}
+
+	&__avatar {
+		flex: none;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+
+		&--default {
+			width: 100%;
+			height: 100%;
+			background-color: $brightgray;
+			border-radius: 50%;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+		}
+	}
+}
