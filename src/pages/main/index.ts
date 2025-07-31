@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import MainTemplate from './main.hbs?raw';
 import { Header } from '@/components/Header/Header.ts';
 import ChatsAside from '@/components/Chats/ChatsAside/ChatsAside.ts';

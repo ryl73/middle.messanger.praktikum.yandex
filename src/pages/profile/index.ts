@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ProfileTemplate from './profile.hbs?raw';
 import { Button } from '@/components/Button/Button.ts';
 import { Input } from '@/components/Input/Input.ts';
