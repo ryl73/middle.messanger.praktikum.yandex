@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import MessengerMainTemplate from './MessengerMain.hbs?raw';
 import store from '@/store/store.ts';
 import type { WSMessage } from '@/services/WebSocketService.ts';

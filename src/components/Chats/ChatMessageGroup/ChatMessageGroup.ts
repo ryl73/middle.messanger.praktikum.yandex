@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatMessageGroupTemplate from './ChatMessageGroup.hbs?raw';
 import ChatMessage from '@/components/Chats/ChatMessage/ChatMessage.ts';
 import type { Message } from '@/types/message.ts';

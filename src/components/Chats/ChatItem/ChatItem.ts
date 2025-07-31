@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatItemTemplate from './ChatItem.hbs?raw';
 import store from '@/store/store.ts';
 

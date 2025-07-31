@@ -1,4 +1,4 @@
-import EventBus, { type EventCallback } from '../utils/eventBus.ts';
+import EventBus, { type EventCallback } from '../../utils/eventBus.ts';
 import Handlebars from 'handlebars';
 import isEqual from '@/utils/isEqual.ts';
 

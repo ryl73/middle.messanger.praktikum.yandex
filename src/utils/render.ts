@@ -1,4 +1,4 @@
-import type Block from '@/services/Block.ts';
+import type Block from '@/services/Block/Block.ts';
 
 export function render(query: string, block: Block) {
 	const root = document.querySelector(query);

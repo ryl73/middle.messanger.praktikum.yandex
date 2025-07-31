@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import AttachmentListTemplate from './AttachmentList.hbs?raw';
 import connect from '@/store/connect';
 import isEqual from '@/utils/isEqual.ts';

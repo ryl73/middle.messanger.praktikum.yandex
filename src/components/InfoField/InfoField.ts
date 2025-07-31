@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import InfoFieldTemplate from './InfoField.hbs?raw';
 
 export type InfoFieldProps = {

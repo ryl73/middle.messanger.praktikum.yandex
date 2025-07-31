@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatsAsideTemplate from './MessengerAside.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
 import { Button } from '@/components/Button/Button.ts';

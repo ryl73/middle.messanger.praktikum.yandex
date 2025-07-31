@@ -1,4 +1,4 @@
-import type Block from '@/services/Block.ts';
+import type Block from '@/services/Block/Block.ts';
 import store, { StoreEvents } from '@/store/store.ts';
 import type { Indexed } from '@/types/store.ts';
 import isEqual from '@/utils/isEqual.ts';

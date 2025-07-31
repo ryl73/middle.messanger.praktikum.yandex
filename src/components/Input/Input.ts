@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import InputTemplate from './Input.hbs?raw';
 import Validation from '@/services/Validation.ts';
 

@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatMessageGroupTemplate from './MessagesGroup.hbs?raw';
 import MessagesItem from '@/components/Messages/MessagesItem/MessagesItem.ts';
 import { getTimeStringFromUTC } from '@/utils/getTime.ts';

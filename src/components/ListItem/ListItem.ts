@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ListItemTemplate from './ListItem.hbs?raw';
 
 export type ListItemProps = {

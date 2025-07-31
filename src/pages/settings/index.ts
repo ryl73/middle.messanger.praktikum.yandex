@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ProfileTemplate from './settings.hbs?raw';
 import { Button } from '@/components/Button/Button.ts';
 import router, { routes } from '@/router/router.ts';
