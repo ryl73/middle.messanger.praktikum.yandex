@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import Page500Template from './500.hbs?raw';
 import { Link } from '@/components/Link/Link.ts';
 import router, { routes } from '@/router/router.ts';

@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import MessagesGroupListTemplate from './MessagesGroupList.hbs?raw';
 import connect from '@/store/connect';
 import type { WSMessage } from '@/services/WebSocketService.ts';

@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import Login from './login.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
 import Form from '@/components/Form/Form.ts';

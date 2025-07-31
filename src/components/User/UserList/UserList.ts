@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import UserListTemplate from './UserList.hbs?raw';
 import type { SearchResponseData } from '@/api/UserAPI.ts';
 import UserItem from '@/components/User/UserItem/UserItem.ts';

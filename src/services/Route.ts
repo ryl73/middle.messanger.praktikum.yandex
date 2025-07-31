@@ -1,4 +1,4 @@
-import type Block from '@/services/Block.ts';
+import type Block from '@/services/Block/Block.ts';
 import { render } from '@/utils/render.ts';
 
 function isEqual(lhs: string, rhs: string): boolean {

@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import LinkTemplate from './Link.hbs?raw';
 
 export type LinkProps = {

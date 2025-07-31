@@ -22,7 +22,9 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
 		"sourceMap": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"isolatedModules": true,
+		"esModuleInterop": true
 	},
 	"include": ["src"]
 }

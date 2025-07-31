@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import HeaderTemplate from './Header.hbs?raw';
 import { Link } from '@/components/Link/Link.ts';
 

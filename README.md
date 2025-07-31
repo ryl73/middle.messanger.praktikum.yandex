@@ -19,13 +19,20 @@
 - Припроцессор CSS - SCSS;
 - Сборщик - Vite;
 - Шаблонизатор - Handlebars;
-- Линтеры - ESLint, Stylelint;
-- Проект развернут на сервисе Netlify https://dapper-phoenix-812a34.netlify.app/.
+- Линтеры - ESLint, Stylelint, Prettier;
+- Тесты - Jest;
+- Проект развернут на сервисе Netlify https://dapper-phoenix-812a34.netlify.app/;
+- Утилита precommit реализована с помощью husky.
 
 Дизайн проекта был реализован с помощью Figma: https://www.figma.com/design/5ubKKr0YkuPfjdSPUIfvrJ/%D0%A7%D0%B0%D1%82-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D0%AF%D0%BD%D0%B4%D0%B5%D0%BA%D1%81.%D0%9F%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D1%83%D0%BC?m=auto&t=co7YiwVhNeyv81ty-1
 
 ## Установка
 
+- `npm ci` — запуск "чистой" установки npm пакетов,
 - `npm run dev` — запуск версии для разработчика,
 - `npm run build` — сборка стабильной версии,
 - `npm run preview` — просмотр собранной версии на локальном сервере.
+
+## Тестирование
+
+- `npm run test` — запуск всех имеющихся тестов.

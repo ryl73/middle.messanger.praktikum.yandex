@@ -1,5 +1,5 @@
 import API from '@/api/API.ts';
-import { type OptionsWithoutMethod } from '@/services/HTTPTransport.ts';
+import { type OptionsWithoutMethod } from '@/services/HTTP/HTTPTransport.ts';
 
 export type ProfileRequestData = {
 	first_name: string;

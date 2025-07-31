@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatsMainTemplate from './ChatsMain.hbs?raw';
 import ChatMessageGroup from '@/components/Chats/ChatMessageGroup/ChatMessageGroup.ts';
 import MainNavbar from '@/components/Main/MainNavbar/MainNavbar.ts';

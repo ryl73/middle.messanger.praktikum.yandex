@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import FileInputTemplate from './FileInput.hbs?raw';
 
 export type FileInputProps = {

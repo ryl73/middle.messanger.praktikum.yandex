@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ProfileSectionTemplate from './ProfileSection.hbs?raw';
 import type { AuthUserData } from '@/api/AuthAPI.ts';
 import { Input } from '@/components/Input/Input.ts';

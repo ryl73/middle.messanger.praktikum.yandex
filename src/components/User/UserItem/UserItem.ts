@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import UserItemTemplate from './UserItem.hbs?raw';
 import store from '@/store/store.ts';
 

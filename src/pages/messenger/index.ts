@@ -1,7 +1,6 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import MainTemplate from './messenger.hbs?raw';
 import MessengerAside from '@/components/Messanger/MessengerAside/MessengerAside.ts';
-import CHAT_LIST from '@/mocks/chatList.ts';
 import ChatsMain from '@/components/Messanger/MessengerMain/MessengerMain.ts';
 
 export default class MainPage extends Block {
@@ -17,10 +16,6 @@ export default class MainPage extends Block {
 			ChatsAsideComponent,
 			ChatsMainComponent,
 		});
-	}
-
-	static getChatList() {
-		return CHAT_LIST;
 	}
 
 	override render(): string {
