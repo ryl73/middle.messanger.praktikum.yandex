@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import FormTemplate from './Form.hbs?raw';
 import { Input } from '@/components/Input/Input.ts';
 import { Link, type LinkProps } from '@/components/Link/Link.ts';

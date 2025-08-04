@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatsListTemplate from './ChatsList.hbs?raw';
 import type { ChatGetListResponseData, LastMessage } from '@/api/ChatAPI.ts';
 import isEqual from '@/utils/isEqual.ts';

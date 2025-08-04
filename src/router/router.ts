@@ -1,4 +1,4 @@
-import Router from '@/services/Router.ts';
+import Router from '@/services/Router/Router.ts';
 import LoginPage from '@/pages/login';
 import RegistrationPage from '@/pages/signup';
 import ProfilePage from '@/pages/settings';

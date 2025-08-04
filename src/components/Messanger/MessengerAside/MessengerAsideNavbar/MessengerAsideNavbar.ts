@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatsAsideNavbarTemplate from './MessengerAsideNavbar.hbs?raw';
 import { Avatar } from '@/components/Avatar/Avatar.ts';
 import router, { routes } from '@/router/router.ts';

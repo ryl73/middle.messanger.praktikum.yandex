@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ChatsAsideTemplate from './ChatsAside.hbs?raw';
 import ChatItem from '@/components/Chats/ChatItem/ChatItem.ts';
 import { Avatar } from '@/components/Avatar/Avatar.ts';

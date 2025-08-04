@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import MainSearchbarTemplate from './MessengerMainSearchbar.hbs?raw';
 import Popover from '@/components/Popover/Popover.ts';
 import ListItem, { type ListItemProps } from '@/components/ListItem/ListItem.ts';

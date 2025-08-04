@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import ModalTemplate from './Modal.hbs?raw';
 
 export type ModalProps = {

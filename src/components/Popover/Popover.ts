@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import PopoverTemplate from './Popover.hbs?raw';
 
 type PopoverProps = {

@@ -1,4 +1,4 @@
-import Block from '@/services/Block.ts';
+import Block from '@/services/Block/Block.ts';
 import AvatarTemplate from './Avatar.hbs?raw';
 import type { Modal } from '@/components/Modal/Modal.ts';
 

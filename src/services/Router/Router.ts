@@ -1,5 +1,5 @@
-import Route from './Route.ts';
-import type Block from '@/services/Block.ts';
+import Route from '../Route.ts';
+import type Block from '@/services/Block/Block.ts';
 import { render } from '@/utils/render.ts';
 import Page404 from '@/pages/404';
 import type { RouteTypes } from '@/router/router.ts';
@@ -20,7 +20,7 @@ export default class Router {
 		Router.__instance = this;
 	}
 
-	use(pathname: RouteTypes, block: new () => Block): this {
+	use(pathname: RouteTypes | string, block: new () => Block): this {
 		const route = new Route(pathname, block, { rootQuery: this._rootQuery });
 		this.routes.push(route);
 		return this;
@@ -58,7 +58,7 @@ export default class Router {
 		}
 	}
 
-	go(pathname: RouteTypes): void {
+	go(pathname: RouteTypes | string): void {
 		if (window.location.pathname === pathname) {
 			return;
 		}
